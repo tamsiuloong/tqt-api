@@ -1,0 +1,43 @@
+server:
+  port: 8888
+logging:
+  level:
+    org.springframework: debug
+spring:
+  #连接池
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tqt?useSSL=true
+    username: root
+    password: root
+    #类型
+    type: com.alibaba.druid.pool.DruidDataSource
+  #JPA
+  jpa:
+    hibernate:
+      #是否自动创建ddl
+      ddl-auto: update
+      #是否控制台输出sql
+    show-sql: true
+    #数据库
+    database: mysql
+    properties:
+      #hibernate 其它属性，可以用来配置其它hibernate配置
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL55Dialect
+        show_sql: true
+    #是否在视图层也打开session(open session in view)
+    open-in-view: true
+
+tqt:
+  security:
+    oauth2:
+      storeType: jwt #或者jwt
+      jwtSigningKey: tqt
+      clients[0]:
+        clientId: tqt
+        clientSecret: tqt
+      clients[1]:
+        clientId: tqt1
+        clientSecret: tqt1
+
