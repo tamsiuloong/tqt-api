@@ -1,7 +1,9 @@
 package com.coachtam.tqt.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,12 +16,14 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name="t_feedback")
+@Table(name="FEEDBACK_P")
 public class Feedback {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "jpa-uuid")
+    private String id;
     /*日期*/
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date backTime;
     /*计划*/
     private String plan;
@@ -36,12 +40,16 @@ public class Feedback {
     /*课程第几天*/
     private Integer dayNum;
 
+    /*吸收程度*/
+    private String absorption;
     /*所属课程*/
     @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
 
     /*所属用户*/
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 

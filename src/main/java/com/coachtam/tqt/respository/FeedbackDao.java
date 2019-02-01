@@ -1,8 +1,11 @@
 package com.coachtam.tqt.respository;
 
 import com.coachtam.tqt.entity.Feedback;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Copyright (C), 2018-2019
@@ -12,5 +15,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface FeedbackDao extends CrudRepository<Feedback,Integer> {
+public interface FeedbackDao extends JpaRepository<Feedback,String> {
+
+    @Query(value = "select absorption,count(absorption) from feedback_p group by absorption",nativeQuery = true)
+    List<Object[]> findAbsorption();
 }

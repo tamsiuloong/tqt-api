@@ -1,4 +1,17 @@
 package com.coachtam.tqt.web;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+
 
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +24,15 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-/**
- * @Copyright (C), 2018-2019
- * @Author: JAVA在召唤
- * @Date: 2019-01-28 21:59
- * @Description:
- */
-@Configuration
+//
+///**
+// * @Copyright (C), 2018-2019
+// * @Author: JAVA在召唤
+// * @Date: 2019-01-28 21:59
+// * @Description:
+// */
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@Configuration
 public class CORSFilter implements Filter {
 
     @Override
@@ -40,8 +53,9 @@ public class CORSFilter implements Filter {
 
     }
 
+    @Override
     public void init(FilterConfig filterConfig) {}
-
+    @Override
     public void destroy() {}
 
 }

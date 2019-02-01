@@ -1,27 +1,69 @@
 package com.coachtam.tqt.entity;
 
-import lombok.Data;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-
 /**
- * @Copyright (C), 2018-2019
- * @Author: JAVA在召唤
- * @Date: 2019-01-28 16:46
- * @Description:
+ * @Description:	用户
+ * @Author:			Coach tam
+ * @Company:		坚持灵活  灵活坚持
+ * @CreateDate:		2019-1-31 11:38:33
  */
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name="t_user")
+@Table(name="user_p")
+@JsonIgnoreProperties({"roleSet"})
 public class User {
+	@Id
+	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "jpa-uuid")
+	@Column(name = "user_id")
+	private String id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	//姓名
+	@Column(name = "user_name")
+	private String userName;
+	//密码
+	@Column(name = "password")
+	private String password;
+	//状态
+	@Column(name = "state")
+	private Integer state;
 
-    private String name;
-    private String username;
-    private String password;
+	//创建部门
+	@Column(name = "dept_id")
+	private String deptId;
+	//班级
+	@Column(name = "class_id")
+	private String classId;
+	//笔记地址
+	@Column(name = "note_url")
+	private String noteUrl;
 
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+	private UserInfo userInfo;
+
+//	@ManyToMany(
+//			targetEntity=Role.class,
+//			cascade={CascadeType.PERSIST, CascadeType.MERGE}
+//	)
+//	@JoinTable(
+//			name="user_role_p",
+//			joinColumns=@JoinColumn(name="USER_ID"),
+//			inverseJoinColumns=@JoinColumn(name="ROLE_ID")
+//	)
+
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "ROLE_USER_P",joinColumns = @JoinColumn(name="USER_ID",referencedColumnName = "USER_ID"),inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ROLE_ID"))
+	private Set<Role> roleSet = new HashSet<>();
 
 }

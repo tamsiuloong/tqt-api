@@ -1,71 +1,70 @@
 package com.coachtam.tqt.web;
 
-import com.coachtam.tqt.entity.Feedback;
-import com.coachtam.tqt.service.FeedbackService;
+import com.coachtam.tqt.entity.Course;
+import com.coachtam.tqt.service.CourseService;
 import com.coachtam.tqt.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * @Description:	学习反馈
+ * @Description:	课程
  * @Author:			Coach tam
  * @Company:		坚持灵活  灵活坚持
- * @CreateDate:		2019-1-30 17:14:52
+ * @CreateDate:		2019-1-30 18:20:19
  */
-@RequestMapping("/api/feedback")
+@RequestMapping("/api/course")
 @RestController
-public class FeedbackCtrl {
+public class CourseCtrl {
 
     @Autowired
-    private FeedbackService feedbackService;
+    private CourseService courseService;
 
     @GetMapping
     public ResultVO<Page> list(Integer pageNo, Integer pageSize)
     {
-        Page result = feedbackService.page(pageNo,pageSize);
+        Page result = courseService.page(pageNo,pageSize);
         return ResultVO.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Feedback> list(@PathVariable("id") String id)
+    public ResultVO<Course> list(@PathVariable("id") String id)
     {
-        Feedback feedback = feedbackService.findById(id);
+        Course course = courseService.findById(id);
 
-        return ResultVO.success(feedback);
+        return ResultVO.success(course);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Feedback>> getAll()
+    public ResultVO<List<Course>> getAll()
     {
-        List<Feedback> result = feedbackService.findAll();
+        List<Course> result = courseService.findAll();
         return ResultVO.success(result);
     }
 
     @DeleteMapping
     public ResultVO<String> delete(@RequestBody String[] ids)
     {
-        feedbackService.deleteByIds(ids);
+        courseService.deleteByIds(ids);
         return ResultVO.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Feedback feedback)
+    public ResultVO<String> update(@RequestBody Course course)
     {
-        feedbackService.update(feedback);
+        courseService.update(course);
         return ResultVO.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Feedback feedback)
+    public ResultVO<String> add(@RequestBody Course course)
     {
-        feedbackService.save(feedback);
+        courseService.save(course);
         return ResultVO.success(null);
     }
 }

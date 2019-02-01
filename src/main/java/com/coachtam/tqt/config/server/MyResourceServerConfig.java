@@ -28,7 +28,9 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.formLogin()
                 .successHandler(appLoginInSuccessHandler)//登录成功处理器
                 .and()
-                .authorizeRequests().anyRequest().authenticated().and()
+                .authorizeRequests()
+                .antMatchers("/api/user/register","/api/user/checkUsername/*","/api/classes/all").permitAll()
+                .anyRequest().authenticated().and()
                 .csrf().disable();
     }
 

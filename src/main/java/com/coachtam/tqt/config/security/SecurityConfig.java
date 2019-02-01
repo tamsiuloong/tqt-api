@@ -34,11 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .requestMatchers().antMatchers(HttpMethod.OPTIONS, "/oauth/*", "/**")
+                .authorizeRequests()
+                .antMatchers("/api/user/register").permitAll()
+//                .requestMatchers()
+//                .antMatchers(HttpMethod.POST,"/api/user/register")
+//                .antMatchers(HttpMethod.OPTIONS, "/oauth/*", "/**")
 //                .and()
 //                .cors()
-//                .and()
-//                .formLogin().and()
+                .and()
+                .formLogin().and()
                 .httpBasic().and()
                 .csrf().disable();
 
