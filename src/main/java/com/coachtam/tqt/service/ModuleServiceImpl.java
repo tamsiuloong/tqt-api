@@ -38,6 +38,10 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public void save(Module bean) {
+        if(bean.getParentId()==null||bean.getParentId().isEmpty())
+        {
+            bean.setParentId(null);
+        }
         moduleDao.save(bean);
     }
 
@@ -51,6 +55,12 @@ public class ModuleServiceImpl implements ModuleService {
             moduleDao.deleteById(id);
         }
 
+    }
+
+    @Override
+    public List<Module> getListByLayerNum(Long layerNum) {
+
+        return  moduleDao.getListByLayerNum(layerNum);
     }
 
     @Override

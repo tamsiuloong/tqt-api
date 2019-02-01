@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.Role;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.UserDao;
 import com.coachtam.tqt.utils.PageUtils;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Description:	用户
@@ -25,6 +28,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -43,7 +48,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User model) {
+    public Boolean save(User model) {
+        //检查用户名是否存在
+        User user = userDao.findByUserName(model.getUserName());
+        if(user!=null)
+        {
+            //保存失败
+            return false;
+        }
+
         model.getUserInfo().setUser(model);
         model.getUserInfo().setCreateTime(new Date());
 
@@ -52,9 +65,22 @@ public class UserServiceImpl implements UserService {
         {
             password = "123456";
         }
+        else
+        {
+            password = model.getPassword();
+        }
         //初始化密码
         model.setPassword(passwordEncoder.encode(password));
+        //默认角色就是学生
+        Role role = roleService.findById("40289f6e68a880bb0168a8864eb90001");
+        model.getRoleSet().add(role);
+
+        //默认状态可用
+        model.setState(1);
         userDao.save(model);
+
+        return true;
+
     }
 
     @Override
@@ -82,6 +108,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(String id) {
         return userDao.findById(id).get();
+    }
+
+    @Override
+    public void updateRole(String id, String[] roleIds) {
+        //设置用户和角色的关系
+        User user = userDao.getOne(id);
+        //roleids-->roleSet
+        Set<Role> roleSet = new HashSet<>(roleIds.length);
+        for(String roleId:roleIds)
+        {
+            //roleid-->role
+            Role role = new Role();
+            role.setId(roleId);
+
+            roleSet.add(role);
+
+        }
+
+        user.setRoleSet(roleSet);
+        userDao.saveAndFlush(user);
     }
 
     @Override

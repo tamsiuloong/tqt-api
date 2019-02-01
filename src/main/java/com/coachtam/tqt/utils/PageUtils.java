@@ -12,10 +12,18 @@ import org.springframework.data.domain.Sort;
  */
 public class PageUtils {
     public static Pageable of(Integer pageNo, Integer pageSize) {
+        if(pageNo<=0)
+        {
+            pageNo = 1;
+        }
         return PageRequest.of(pageNo-1,pageSize);
     }
 
     public static Pageable of(Integer pageNo, Integer pageSize, Sort sort) {
+        if(pageNo<=0)
+        {
+            pageNo = 1;
+        }
         return PageRequest.of(pageNo-1,pageSize,sort);
     }
 }

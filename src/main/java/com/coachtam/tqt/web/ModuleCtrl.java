@@ -73,7 +73,12 @@ public class ModuleCtrl {
         moduleService.save(module);
         return ResultVO.success(null);
     }
-
+    @GetMapping("/getParent/{layerNum}")
+    public ResultVO<List<Module>> getParentList(@PathVariable("layerNum") Long layerNum)
+    {
+        List<Module> data = moduleService.getListByLayerNum(layerNum);
+        return ResultVO.success(data);
+    }
     @GetMapping("/all/{roleId}")
     public ResultVO<List<ZtreeVO>> all(@PathVariable("roleId") String roleId)
     {

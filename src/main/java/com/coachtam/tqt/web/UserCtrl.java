@@ -3,6 +3,7 @@ package com.coachtam.tqt.web;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.vo.ResultVO;
+import com.coachtam.tqt.vo.RoleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -107,11 +108,28 @@ public class UserCtrl {
         return ResultVO.success(null);
     }
 
+    @PutMapping("/role")
+    public ResultVO<String> role(@RequestBody RoleVO role)
+    {
+        userService.updateRole(role.getId(),role.getRoleIds());
+        return ResultVO.success(null);
+    }
 
     @PostMapping("/register")
     public ResultVO<String> register(User user)
     {
-        userService.save(user);
-        return ResultVO.success(null);
+        Boolean ok = userService.save(user);
+        ResultVO<String> result= new ResultVO<>();
+        if(ok)
+        {
+            result.setCode(1);
+            result.setDesc("注册成功");
+        }
+        else
+        {
+            result.setCode(0);
+            result.setDesc("注册失败");
+        }
+        return result;
     }
 }

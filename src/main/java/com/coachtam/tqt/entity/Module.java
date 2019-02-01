@@ -36,10 +36,10 @@ public class Module {
 	private String name;
 
 	@Column(name = "layer_num")
-	private String layerNum;
+	private Long layerNum;
 
 	@Column(name = "is_leaf")
-	private String isLeaf;
+	private Long isLeaf;
 
 	@Column(name = "ico")
 	private String ico;
@@ -51,10 +51,10 @@ public class Module {
 	private String curl;
 
 	@Column(name = "ctype")
-	private String ctype;
+	private Long ctype;
 
 	@Column(name = "state")
-	private String state;
+	private Long state;
 
 	@Column(name = "belong")
 	private String belong;
@@ -69,7 +69,7 @@ public class Module {
 	private String remark;
 
 	@Column(name = "order_no")
-	private String orderNo;
+	private Long orderNo;
 
 	@Column(name = "create_by")
 	private String createBy;

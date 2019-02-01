@@ -21,4 +21,6 @@ public interface ModuleService {
     void update(Module model);
 
     void deleteByIds(String[] id);
+
+    List<Module> getListByLayerNum(Long layerNum);
 }

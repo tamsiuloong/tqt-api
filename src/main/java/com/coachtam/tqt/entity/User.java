@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="user_p")
-@JsonIgnoreProperties({"roleSet"})
+//@JsonIgnoreProperties({"roleSet"})
 public class User {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")

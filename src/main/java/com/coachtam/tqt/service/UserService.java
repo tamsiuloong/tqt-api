@@ -16,7 +16,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    void save(User model);
+    Boolean save(User model);
 
     User findById(String id);
 
@@ -25,4 +25,6 @@ public interface UserService {
     void deleteByIds(String[] id);
 
     User findByUsername(String username);
+
+    void updateRole(String id, String[] roleIds);
 }
