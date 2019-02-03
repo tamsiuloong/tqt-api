@@ -1,6 +1,7 @@
 package com.coachtam.tqt.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,6 +18,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name="FEEDBACK_P")
+@JsonIgnoreProperties({"user"})
 public class Feedback {
     @Id
     @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
@@ -43,16 +45,24 @@ public class Feedback {
     /*吸收程度*/
     private String absorption;
     /*所属课程*/
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
 
     /*所属用户*/
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
 
-
-
+    @Transient
+    private String stuName;
+    /*学生名字*/
+    public String getStuName() {
+        if(user!=null&&user.getUserInfo()!=null)
+        {
+            stuName = user.getUserInfo().getName();
+        }
+        return stuName;
+    }
 }

@@ -6,6 +6,7 @@ import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
     @Override
-    public Page<Feedback> page(Integer pageNo,Integer pageSize)
+    public Page<Feedback> page(Integer pageNo, Integer pageSize, String userId)
     {
         Sort sort = new Sort(Sort.Direction.DESC, "backTime");
-        return  feedbackDao.findAll(PageUtils.of(pageNo,pageSize,sort));
+        return  feedbackDao.findAllByUserId(userId,PageUtils.of(pageNo,pageSize,sort));
     }
 
-
+    @Override
+    public Page<Feedback> page(Integer pageNo, Integer pageSize, Specification<Feedback> specification) {
+        Sort sort = new Sort(Sort.Direction.DESC, "backTime");
+        return feedbackDao.findAll(specification,PageUtils.of(pageNo,pageSize,sort));
+    }
 
     @Override
     public List<Feedback> findAll() {

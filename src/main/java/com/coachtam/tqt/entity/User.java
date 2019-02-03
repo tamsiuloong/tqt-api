@@ -1,13 +1,14 @@
 package com.coachtam.tqt.entity;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.*;
 /**
  * @Description:	用户
@@ -19,8 +20,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="user_p")
-//@JsonIgnoreProperties({"roleSet"})
-public class User {
+@JsonIgnoreProperties({"classes"})
+public class User  {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "jpa-uuid")
@@ -40,9 +41,8 @@ public class User {
 	//创建部门
 	@Column(name = "dept_id")
 	private String deptId;
-	//班级
-	@Column(name = "class_id")
-	private String classId;
+
+
 	//笔记地址
 	@Column(name = "note_url")
 	private String noteUrl;
@@ -50,6 +50,12 @@ public class User {
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
 	private UserInfo userInfo;
+
+
+	/*所属班级*/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "class_id")
+	private Classes classes;
 
 //	@ManyToMany(
 //			targetEntity=Role.class,
@@ -65,5 +71,7 @@ public class User {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "ROLE_USER_P",joinColumns = @JoinColumn(name="USER_ID",referencedColumnName = "USER_ID"),inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ROLE_ID"))
 	private Set<Role> roleSet = new HashSet<>();
+
+
 
 }

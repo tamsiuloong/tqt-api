@@ -1,5 +1,6 @@
 package com.coachtam.tqt.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name="COURSE_P")
+@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class Course {
 
     @Id
@@ -22,4 +24,6 @@ public class Course {
     private String id;
 
     private String name;
+
+    private Integer state;
 }
