@@ -38,6 +38,7 @@ public class User  {
 	@Column(name = "state")
 	private Integer state;
 
+
 	//创建部门
 	@Column(name = "dept_id")
 	private String deptId;

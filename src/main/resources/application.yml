@@ -28,6 +28,11 @@ spring:
         show_sql: true
     #是否在视图层也打开session(open session in view)
     open-in-view: true
+  #ACTIVITI
+  activiti:
+    database-schema-update: true
+    check-process-definitions: true
+    history-level: full
 
 tqt:
   security:

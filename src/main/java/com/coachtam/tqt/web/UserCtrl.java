@@ -34,14 +34,30 @@ public class UserCtrl {
     }
 
 
-    @GetMapping("/{id}")
-    public ResultVO<User> list(@PathVariable("id") String id)
+//    @GetMapping("/{id}")
+//    public ResultVO<User> list(@PathVariable("id") String id)
+//    {
+//        User user = userService.findById(id);
+//
+//        return ResultVO.success(user);
+//    }
+
+    /**
+     * 我的资料(用于编辑用户)
+     * @return
+     */
+    @GetMapping("/myinfo")
+    public ResultVO<User> myinfo()
     {
-        User user = userService.findById(id);
+        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User dbuser = userService.findByUsername(user.getUsername());
 
-        return ResultVO.success(user);
+        return ResultVO.success(dbuser);
     }
-
+    /**
+     * 我的资料(用于返回权限信息)
+     * @return
+     */
     @GetMapping("/info")
     public ResultVO<Map<String,Object>> info(String access_token)
     {
@@ -131,5 +147,18 @@ public class UserCtrl {
             result.setDesc("注册失败");
         }
         return result;
+    }
+
+    /**
+     * 更新我的资料
+     * @param user
+     * @return
+     */
+    @PutMapping("/updateMyInfo")
+    public ResultVO<String> updateMyInfo(@RequestBody User user)
+    {
+        userService.updateMyInfo(user);
+
+        return ResultVO.success(null);
     }
 }

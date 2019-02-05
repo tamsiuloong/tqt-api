@@ -27,4 +27,10 @@ public interface UserService {
     User findByUsername(String username);
 
     void updateRole(String id, String[] roleIds);
+
+    /**
+     * 更新我的资料
+     * @param user
+     */
+    void updateMyInfo(User user);
 }

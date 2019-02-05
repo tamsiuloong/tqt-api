@@ -2,6 +2,7 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Role;
 import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.respository.UserDao;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
@@ -96,7 +97,6 @@ public class UserServiceImpl implements UserService {
         //密码，创建日期不变
         User dbUser = userDao.findByUserName(model.getUserName());
 
-
         model.setPassword(dbUser.getPassword());
         model.getUserInfo().setCreateTime(dbUser.getUserInfo().getCreateTime());
         model.getUserInfo().setUpdateTime(new Date());
@@ -128,6 +128,27 @@ public class UserServiceImpl implements UserService {
 
         user.setRoleSet(roleSet);
         userDao.saveAndFlush(user);
+    }
+
+    @Override
+    public void updateMyInfo(User user) {
+        User dbUser = userDao.getOne(user.getId());
+
+        if(user.getPassword()!=null && !user.getPassword().isEmpty())
+        {
+            dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        UserInfo userInfo = user.getUserInfo();
+        if(userInfo!=null)
+        {
+            dbUser.getUserInfo().setName(userInfo.getName());
+            dbUser.getUserInfo().setGender(userInfo.getGender());
+            dbUser.getUserInfo().setTelephone(userInfo.getTelephone());
+            dbUser.getUserInfo().setEmail(userInfo.getEmail());
+            dbUser.getUserInfo().setBirthday(userInfo.getBirthday());
+        }
+
+        userDao.saveAndFlush(dbUser);
     }
 
     @Override
