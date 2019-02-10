@@ -84,6 +84,13 @@ public class UserCtrl {
         return ResultVO.success(result);
     }
 
+    @GetMapping("/teachers")
+    public ResultVO<List<User>> teachers()
+    {
+        List<User> result = userService.findAllTeachers();
+        return ResultVO.success(result);
+    }
+
     @GetMapping("/checkUsername/{username}")
     public ResultVO<String> checkUsername(@PathVariable("username")String username)
     {

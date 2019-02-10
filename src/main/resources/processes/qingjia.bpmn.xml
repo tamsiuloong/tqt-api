@@ -3,9 +3,9 @@
   <process id="qingjia" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" name="StartEvent"/>
     <endEvent id="_3" name="EndEvent"/>
-    <userTask activiti:assignee="${student}" activiti:exclusive="true" id="_4" name="发出请假申请"/>
-    <userTask activiti:assignee="${teacher}" activiti:exclusive="true" id="_5" name="任课老师审批"/>
-    <userTask activiti:assignee="${boss}" activiti:exclusive="true" id="_6" name="杨老师审批"/>
+    <userTask activiti:assignee="${to}" activiti:exclusive="true" id="_4" name="发出请假申请"/>
+    <userTask activiti:assignee="${to}" activiti:exclusive="true" id="_5" name="任课老师审批"/>
+    <userTask activiti:assignee="${to}" activiti:exclusive="true" id="_6" name="杨老师审批"/>
     <sequenceFlow id="_7" name="to student" sourceRef="_2" targetRef="_4"/>
     <sequenceFlow id="_8" name="to teacher" sourceRef="_4" targetRef="_5"/>
     <sequenceFlow id="_9" name="to boss" sourceRef="_5" targetRef="_6"/>

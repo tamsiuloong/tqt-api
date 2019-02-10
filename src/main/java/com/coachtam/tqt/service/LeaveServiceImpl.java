@@ -1,13 +1,15 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Leave;
-import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.LeaveDao;
 import com.coachtam.tqt.utils.PageUtils;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,10 +37,14 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Autowired
     private RuntimeService runtimeService;
+
+    @Autowired
+    private TaskService taskService;
     @Override
-    public Page<Leave> page(Integer pageNo,Integer pageSize)
+    public Page<Leave> page(Integer pageNo, Integer pageSize, String username)
     {
-        return  leaveDao.findAll(PageUtils.of(pageNo,pageSize));
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        return  leaveDao.findAllByCreateBy(username,PageUtils.of(pageNo,pageSize,sort));
     }
 
 
@@ -56,7 +62,7 @@ public class LeaveServiceImpl implements LeaveService {
         //1.开启申请流程
         //用来封装流程所需要的变量
         Map<String,Object> valMap = new HashMap<String, Object>();
-        valMap.put("student",user.getUsername());
+        valMap.put("to",user.getUsername());
         //流程实例
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("qingjia",valMap);
 
@@ -66,6 +72,18 @@ public class LeaveServiceImpl implements LeaveService {
         bean.setCreateBy(user.getUsername());
         bean.setCreateTime(new Date());
         leaveDao.save(bean);
+
+        //确定请假
+        List<Task> list = taskService.createTaskQuery().taskAssignee(user.getUsername()).orderByTaskCreateTime().desc().list();
+
+        if(list!=null&&list.size()>0)
+        {
+            Task task = list.get(0);
+            //完成该任务，并指定由他的上级来处理
+            valMap.put("to",bean.getReviewer());
+            taskService.complete(task.getId(),valMap);
+        }
+
     }
 
     @Override
@@ -84,5 +102,10 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public Leave findById(String id) {
         return leaveDao.findById(id).get();
+    }
+
+    @Override
+    public Leave findByProcessInstanceId(String processInstanceId) {
+        return leaveDao.findByProcessInstanceId(processInstanceId);
     }
 }

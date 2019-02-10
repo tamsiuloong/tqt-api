@@ -5,6 +5,8 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 /**
@@ -17,6 +19,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="user_info_p")
+@DynamicInsert
+@DynamicUpdate
 @JsonIgnoreProperties({"user"})
 public class UserInfo {
 	@Id

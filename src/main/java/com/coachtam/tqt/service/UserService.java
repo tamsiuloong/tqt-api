@@ -33,4 +33,6 @@ public interface UserService {
      * @param user
      */
     void updateMyInfo(User user);
+
+    List<User> findAllTeachers();
 }

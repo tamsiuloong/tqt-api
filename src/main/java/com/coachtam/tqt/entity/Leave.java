@@ -1,6 +1,8 @@
 package com.coachtam.tqt.entity;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,13 +27,18 @@ public class Leave {
 
 	//开始日期
 	@Column(name = "start_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 	//结束日期
 	@Column(name = "end_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	//天数
 	@Column(name = "total_day")
 	private Integer totalDay;
+	//审核人
+	@Column(name = "reviewer")
+	private String reviewer;
 	//原因
 	@Column(name = "reason")
 	private String reason;
@@ -45,6 +52,8 @@ public class Leave {
 	@Column(name = "create_time")
 	private Date createTime;
 
-
+	//备注
+	@Transient
+	private String comment;
 
 }

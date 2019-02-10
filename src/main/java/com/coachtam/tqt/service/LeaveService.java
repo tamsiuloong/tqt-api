@@ -10,7 +10,7 @@ import java.util.List;
  * @CreateDate:		2019-2-5 22:48:29
  */
 public interface LeaveService {
-    public Page<Leave> page(Integer pageNo, Integer pageSize);
+    public Page<Leave> page(Integer pageNo, Integer pageSize, String username);
 
     List<Leave> findAll();
 
@@ -21,4 +21,6 @@ public interface LeaveService {
     void update(Leave model);
 
     void deleteByIds(String[] id);
+
+    Leave findByProcessInstanceId(String processInstanceId);
 }
