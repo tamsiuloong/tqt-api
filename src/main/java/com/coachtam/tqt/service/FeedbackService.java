@@ -1,6 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Feedback;
+import com.coachtam.tqt.to.FeedbackForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -25,5 +26,5 @@ public interface FeedbackService {
 
     void deleteByIds(String[] id);
 
-    List<Object[]> absorption();
+    List<Object[]> absorption(FeedbackForm specification);
 }

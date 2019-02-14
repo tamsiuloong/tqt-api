@@ -15,5 +15,5 @@ import java.util.List;
 @Data
 public class EchartVO {
     private List<String> titles = new ArrayList<>();
-    private List<BigInteger> values = new ArrayList<>();
+    private List<Long> values = new ArrayList<>();
 }

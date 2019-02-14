@@ -1,12 +1,17 @@
 package com.coachtam.tqt.web;
 
+import com.coachtam.tqt.entity.Classes;
+import com.coachtam.tqt.entity.Feedback;
+import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.service.FeedbackService;
+import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.vo.EchartVO;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -22,15 +27,16 @@ public class ReportCtrl {
 
     @Autowired
     private FeedbackService feedbackService;
-    @GetMapping("/absorption")
-    public EchartVO absorption()
+    @PostMapping("/absorption")
+    public EchartVO absorption(@RequestBody FeedbackForm searchForm)
     {
+
         EchartVO result = new EchartVO();
-        List<Object[]> list = feedbackService.absorption();
+        List<Object[]> list = feedbackService.absorption(searchForm);
 
         list.forEach(objects -> {
             result.getTitles().add((String) objects[0]);
-            result.getValues().add((BigInteger) objects[1]);
+            result.getValues().add((Long) objects[1]);
         });
         return result;
     }

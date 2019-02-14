@@ -59,6 +59,9 @@ public class FeedbackCtrl {
         //查询当前用户学习反馈
         Page result = feedbackService.page(pageNo,pageSize,(root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();
+
+            query.multiselect(builder.count(root.get("absorption")))
+                 .multiselect(root.get("absorption"));
             if(searchForm.getClassId()!=null && !searchForm.getClassId().isEmpty() &&!"all".equals(searchForm.getClassId()))
             {
                 Join<Feedback, Classes> joins = root.join("user").join("classes");
@@ -118,6 +121,11 @@ public class FeedbackCtrl {
     @PutMapping
     public ResultVO<String> update(@RequestBody Feedback feedback)
     {
+        //所属用户是不能变的
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
+
+        feedback.setUser(dbUser);
         feedbackService.update(feedback);
         return ResultVO.success(null);
     }
@@ -127,6 +135,7 @@ public class FeedbackCtrl {
     {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
+
         feedback.setUser(dbUser);
 
         feedbackService.save(feedback);

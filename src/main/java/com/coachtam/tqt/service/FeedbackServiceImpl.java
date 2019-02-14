@@ -2,6 +2,7 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.respository.FeedbackDao;
+import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Description:	学习反馈
@@ -25,6 +29,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackDao feedbackDao;
 
+
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Page<Feedback> page(Integer pageNo, Integer pageSize, String userId)
@@ -60,6 +68,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void update(Feedback bean) {
+
         feedbackDao.saveAndFlush(bean);
     }
 
@@ -69,7 +78,43 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Object[]> absorption() {
-        return feedbackDao.findAbsorption();
+    public List<Object[]> absorption(FeedbackForm feedbackForm) {
+        Map<String, Object> paras = new HashMap<>();
+
+        StringBuilder sb = new StringBuilder("select f.absorption,count(f.absorption) from Feedback  f  join f.user u join f.course course  join u.classes c  where 1 = 1");
+
+        if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
+        {
+            sb.append(" and c.id = :classId");
+            paras.put("classId",feedbackForm.getClassId());
+        }
+
+        if(feedbackForm.getCourseId()!=null && !feedbackForm.getCourseId().isEmpty())
+        {
+            sb.append(" and course.id = :courseId");
+            paras.put("courseId",feedbackForm.getCourseId());
+        }
+
+        if(feedbackForm.getDayNum()!=null && !feedbackForm.getDayNum().isEmpty())
+        {
+            sb.append(" and f.dayNum = :dayNum");
+            paras.put("dayNum",Integer.valueOf(feedbackForm.getDayNum()));
+        }
+
+        if(feedbackForm.getStuName()!=null && !feedbackForm.getStuName().isEmpty())
+        {
+            sb.append(" and u.userInfo.name = :stuName");
+            paras.put("stuName",feedbackForm.getStuName());
+        }
+
+        sb.append(" group by f.absorption");
+
+        Query query = entityManager.createQuery(sb.toString());
+
+        paras.forEach((key,value)->{
+            query.setParameter(key,value);
+        });
+
+        return query.getResultList();
     }
 }
