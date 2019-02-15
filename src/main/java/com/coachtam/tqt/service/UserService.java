@@ -35,4 +35,6 @@ public interface UserService {
     void updateMyInfo(User user);
 
     List<User> findAllTeachers();
+
+    List<User> findByClassId(String classId);
 }

@@ -33,6 +33,17 @@ public class UserCtrl {
         return ResultVO.success(result);
     }
 
+    /**
+     * 根据班级查询学生列表
+     * @param classId
+     * @return
+     */
+    @GetMapping("/stu_list/{classId}")
+    public ResultVO<List<User>> stu_list(@PathVariable("classId") String classId)
+    {
+        List<User> result = userService.findByClassId(classId);
+        return ResultVO.success(result);
+    }
 
 //    @GetMapping("/{id}")
 //    public ResultVO<User> list(@PathVariable("id") String id)

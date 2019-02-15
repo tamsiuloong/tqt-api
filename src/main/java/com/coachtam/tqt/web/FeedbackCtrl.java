@@ -60,8 +60,8 @@ public class FeedbackCtrl {
         Page result = feedbackService.page(pageNo,pageSize,(root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();
 
-            query.multiselect(builder.count(root.get("absorption")))
-                 .multiselect(root.get("absorption"));
+//            query.multiselect(builder.count(root.get("absorption")))
+//                 .multiselect(root.get("absorption"));
             if(searchForm.getClassId()!=null && !searchForm.getClassId().isEmpty() &&!"all".equals(searchForm.getClassId()))
             {
                 Join<Feedback, Classes> joins = root.join("user").join("classes");

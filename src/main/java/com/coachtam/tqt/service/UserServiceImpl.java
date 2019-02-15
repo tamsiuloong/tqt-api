@@ -160,4 +160,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllTeachers() {
         return userDao.findByRoleName("老师");
     }
+
+    @Override
+    public List<User> findByClassId(String classId) {
+        return userDao.findByClassId(classId);
+    }
 }

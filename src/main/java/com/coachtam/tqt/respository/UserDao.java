@@ -25,4 +25,12 @@ public interface UserDao extends JpaRepository<User,String> {
      */
     @Query("select u from User u join fetch u.roleSet r where r.name = ?1")
     List<User> findByRoleName(String name);
+
+    /**
+     * 根据班级id查询学生列表
+     * @param classId
+     * @return
+     */
+    @Query("select u from User u where u.classes.id = ?1")
+    List<User> findByClassId(String classId);
 }
