@@ -21,9 +21,10 @@ public class Course {
     @Id
     @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
     @GeneratedValue(generator = "jpa-uuid")
+    @Column(name = "id")
     private String id;
-
+    @Column(name = "name")
     private String name;
-
+    @Column(name = "state")
     private Integer state;
 }

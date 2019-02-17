@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="classes_p")
+@Table(name="CLASSES_P")
 public class Classes {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")

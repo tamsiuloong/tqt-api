@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="user_p")
+@Table(name="USER_P")
 @JsonIgnoreProperties({"classes","hibernateLazyInitializer","handler"})
 public class User  {
 	@Id

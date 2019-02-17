@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="user_info_p")
+@Table(name="USER_INFO_P")
 @DynamicInsert
 @DynamicUpdate
 @JsonIgnoreProperties({"user"})
@@ -29,7 +29,7 @@ public class UserInfo {
 			name = "pkGenerator",
 			strategy = "foreign",
 			parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user"))
-	@Column(name = "user_info_id")
+	@Column(name = "USER_INFO_ID")
 	private String id;
 
 

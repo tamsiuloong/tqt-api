@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="role_p")
+@Table(name="ROLE_P")
 @JsonIgnoreProperties({"moduleSet"})
 public class Role {
 	@Id

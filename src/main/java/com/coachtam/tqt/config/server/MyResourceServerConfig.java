@@ -29,7 +29,10 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .successHandler(appLoginInSuccessHandler)//登录成功处理器
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/register","/api/user/checkUsername/*","/api/classes/all").permitAll()
+                .antMatchers("/api/user/register"
+                        ,"/api/user/checkUsername/*"
+                        ,"/api/classes/all"
+                        ,"/tqt/*").permitAll()
                 .anyRequest().authenticated().and()
                 .csrf().disable();
     }

@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="leave_p")
+@Table(name="LEAVE_P")
 public class Leave {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
