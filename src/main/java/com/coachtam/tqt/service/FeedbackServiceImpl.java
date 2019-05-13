@@ -15,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Description:	学习反馈
@@ -26,13 +25,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Transactional
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
     @Autowired
     private FeedbackDao feedbackDao;
 
 
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public Page<Feedback> page(Integer pageNo, Integer pageSize, String userId)
@@ -81,7 +82,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<Object[]> absorption(FeedbackForm feedbackForm) {
         Map<String, Object> paras = new HashMap<>();
 
-        StringBuilder sb = new StringBuilder("select f.absorption,count(f.absorption) from Feedback  f  join f.user u join f.course course  join u.classes c  where 1 = 1");
+        StringBuilder sb
+                = new StringBuilder("select f.absorption,count(f.absorption) " +
+                "from Feedback  f  " +
+                "join f.user u " +
+                "join f.course course " +
+                "join u.classes c " +
+                " where 1 = 1");
 
         if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
         {
@@ -108,9 +115,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
         sb.append(" group by f.absorption");
-
+        //创建jpql查询(hql)
         Query query = entityManager.createQuery(sb.toString());
-
+        //设置查询参数
         paras.forEach((key,value)->{
             query.setParameter(key,value);
         });
