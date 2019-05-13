@@ -6,6 +6,7 @@ import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.vo.FeedbackVO;
 import com.coachtam.tqt.vo.ResultVO;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
@@ -52,12 +53,12 @@ public class FeedbackCtrl {
      * @return
      */
     @PostMapping("/teaching")
-    public ResultVO<Page> page(Integer pageNo, Integer pageSize,
-                               @RequestBody FeedbackForm searchForm)
+    public ResultVO<FeedbackVO> page(Integer pageNo, Integer pageSize,
+                                     @RequestBody FeedbackForm searchForm)
     {
 //
         //查询当前用户学习反馈
-        Page result = feedbackService.page(pageNo,pageSize,(root,query,builder)->{
+        Page page = feedbackService.page(pageNo,pageSize,(root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();
 
 //            query.multiselect(builder.count(root.get("absorption")))
@@ -90,8 +91,14 @@ public class FeedbackCtrl {
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         });
+        FeedbackVO result= new FeedbackVO();
+        result.setPage(page);
+        List<com.coachtam.tqt.entity.User> unCommitedList = feedbackService.unCommitedList(page,searchForm);
+        result.setUnCommitedList(unCommitedList);
         return ResultVO.success(result);
     }
+
+
 
 
     @GetMapping("/{id}")

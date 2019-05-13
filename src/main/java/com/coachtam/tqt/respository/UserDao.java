@@ -1,7 +1,9 @@
 package com.coachtam.tqt.respository;
 
+import com.coachtam.tqt.entity.Track;
 import com.coachtam.tqt.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +17,7 @@ import java.util.List;
  */
 
 @Repository
-public interface UserDao extends JpaRepository<User,String> {
+public interface UserDao extends JpaRepository<User,String>,JpaSpecificationExecutor<User> {
     User findByUserName(String username);
 
     /**

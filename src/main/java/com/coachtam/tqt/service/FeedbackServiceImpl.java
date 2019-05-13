@@ -1,6 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Feedback;
+import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.FeedbackDao;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.utils.PageUtils;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description:	学习反馈
@@ -33,6 +35,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackDao feedbackDao;
 
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -123,5 +127,13 @@ public class FeedbackServiceImpl implements FeedbackService {
         });
 
         return query.getResultList();
+    }
+
+    @Override
+    public List<User> unCommitedList(Page page, FeedbackForm searchForm) {
+        //查询当前班级所有人,存入map中，然后根据查询到的人一个一个的剔除，剩下的就是未提交的人
+        List<User> userList = userService.findByClassId(searchForm.getClassId());
+
+        return userList.stream().filter(user -> !page.getContent().contains(user)).collect(Collectors.toList());
     }
 }

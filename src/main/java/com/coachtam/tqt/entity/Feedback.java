@@ -66,6 +66,9 @@ public class Feedback {
 
     @Transient
     private String stuName;
+
+    @Transient
+    private String noteUrl;
     /*学生名字*/
     public String getStuName() {
         if(user!=null&&user.getUserInfo()!=null)
@@ -73,5 +76,17 @@ public class Feedback {
             stuName = user.getUserInfo().getName();
         }
         return stuName;
+    }
+
+    public String getNoteUrl() {
+        if(user!=null&&user.getNoteUrl()!=null)
+        {
+            noteUrl = user.getNoteUrl();
+        }
+        else
+        {
+            noteUrl = "";
+        }
+        return noteUrl;
     }
 }

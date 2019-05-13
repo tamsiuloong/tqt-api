@@ -1,6 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Feedback;
+import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.to.FeedbackForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,4 +28,13 @@ public interface FeedbackService {
     void deleteByIds(String[] id);
 
     List<Object[]> absorption(FeedbackForm specification);
+
+    /**
+     * 查询未提交名单
+     * @param page
+     * @param searchForm
+     * @return
+     */
+    List<User> unCommitedList(Page page, FeedbackForm searchForm);
+
 }

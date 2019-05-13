@@ -2,6 +2,7 @@ package com.coachtam.tqt.web;
 
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.service.UserService;
+import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.vo.ResultVO;
 import com.coachtam.tqt.vo.RoleVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,10 @@ public class UserCtrl {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    @PostMapping("/search")
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize, @RequestBody UserForm userForm)
     {
-        Page result = userService.page(pageNo,pageSize);
+        Page result = userService.page(pageNo,pageSize,userForm);
         return ResultVO.success(result);
     }
 

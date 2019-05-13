@@ -1,17 +1,19 @@
 package com.coachtam.tqt.service;
 
-import com.coachtam.tqt.entity.Role;
-import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.entity.UserInfo;
+import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.UserDao;
+import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +38,30 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<User> page(Integer pageNo,Integer pageSize)
+    public Page<User> page(Integer pageNo, Integer pageSize, UserForm searchForm)
     {
-        return  userDao.findAll(PageUtils.of(pageNo,pageSize));
+
+        return  userDao.findAll((root,query,builder)->{
+            List<Predicate> predicates = Lists.newArrayList();
+
+            if(searchForm.getClassId()!=null && !searchForm.getClassId().isEmpty() &&!"all".equals(searchForm.getClassId()))
+            {
+                Join<User, Classes> joins = root.join("classes");
+                Predicate equal = builder.equal(joins.get("id"), searchForm.getClassId());
+
+                predicates.add(equal);
+            }
+            if(searchForm.getStuName()!=null && !searchForm.getStuName().isEmpty())
+            {
+                Join<User, UserInfo> joins = root.join("userInfo");
+                Predicate equal = builder.equal(joins.get("name"), searchForm.getStuName());
+
+                predicates.add(equal);
+            }
+
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        },PageUtils.of(pageNo,pageSize));
     }
 
 
