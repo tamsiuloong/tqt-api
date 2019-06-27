@@ -3,6 +3,7 @@ server:
 logging:
   level:
     org.springframework: error
+    org.springframework.boot.autoconfigure: ERROR
 spring:
   #连接池
   datasource:
@@ -35,7 +36,10 @@ spring:
     database-schema-update: true
     check-process-definitions: true
     history-level: full
-
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 tqt:
   security:
     oauth2:
@@ -47,4 +51,5 @@ tqt:
       clients[1]:
         clientId: tqt1
         clientSecret: tqt1
-
+  upload:
+    uploadPath: /users/macbook/desktop/files
