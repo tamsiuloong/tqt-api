@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.coachtam.tqt</groupId>
     <artifactId>tqt</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Teaching Quality Tracking</name>
     <description>教学质量跟踪系统</description>
 

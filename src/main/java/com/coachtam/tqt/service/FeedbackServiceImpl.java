@@ -134,6 +134,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         //查询当前班级所有人,存入map中，然后根据查询到的人一个一个的剔除，剩下的就是未提交的人
         List<User> userList = userService.findByClassId(searchForm.getClassId());
 
-        return userList.stream().filter(user -> !page.getContent().contains(user)).collect(Collectors.toList());
+        List<User> commitedList = ((List<Feedback>) page.getContent()).stream().map(f -> f.getUser()).collect(Collectors.toList());
+        return userList.stream().filter(user -> !commitedList.contains(user)).collect(Collectors.toList());
     }
 }

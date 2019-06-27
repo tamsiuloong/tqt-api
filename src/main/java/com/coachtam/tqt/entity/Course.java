@@ -27,4 +27,6 @@ public class Course {
     private String name;
     @Column(name = "state")
     private Integer state;
+    @Column(name = "order_no")
+    private Integer orderNo;
 }
