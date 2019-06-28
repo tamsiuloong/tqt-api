@@ -1,22 +1,24 @@
 package com.coachtam.tqt.entity;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 /**
- * @Description:	学员信息跟踪
+ * @Description:	知识点
  * @Author:			Coach tam
  * @Company:		坚持灵活  灵活坚持
- * @CreateDate:		2019-6-27 14:49:47
+ * @CreateDate:		2019-6-28 13:55:31
  */
 @Getter
 @Setter
 @Entity
-@Table(name="interview_question_p")
+@Table(name="knowledge_point_p")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class InterviewQuestion {
+public class KnowledgePoint {
 	@Id
 //	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "jpa-uuid")
@@ -24,24 +26,14 @@ public class InterviewQuestion {
 	@Column(name = "id")
 	private Integer id;
 
-	//题目
-	@Column(name = "title")
-	private String title;
-	//课程
+	//知识点
+	@Column(name = "name")
+	private String name;
+
+	//所属课程
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id")
 	private Course course;
-	//知识点
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "knowledge_point_id")
-	private KnowledgePoint knowledgePoint;
-	//答案
-	@Column(name = "answer")
-	private String answer;
-	//所属面试
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "interiew_id")
-	private Interview interview;
 
 
 }

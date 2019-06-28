@@ -1,13 +1,21 @@
 package com.coachtam.tqt.web;
 
+import com.coachtam.tqt.config.properties.UploadProperteis;
 import com.coachtam.tqt.entity.Interview;
 import com.coachtam.tqt.service.InterviewService;
+import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.to.InterviewForm;
 import com.coachtam.tqt.vo.ResultVO;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:	学员信息跟踪
@@ -17,21 +25,35 @@ import java.util.List;
  */
 @RequestMapping("/api/interview")
 @RestController
+@EnableConfigurationProperties(UploadProperteis.class)
 public class InterviewCtrl {
 
     @Autowired
+    private UploadProperteis uploadProperteis;
+    @Autowired
     private InterviewService interviewService;
 
-    @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    @PostMapping("/search")
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewForm searchForm)
     {
-        Page result = interviewService.page(pageNo,pageSize);
+        Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm);
+        result.forEach(interview ->{
+            interview.setSoundRecording(uploadProperteis.getAccessPath()+"/sound/"+interview.getSoundRecording());
+            //拼接完整访问地址
+            if(StringUtils.isNotBlank(interview.getAppendixs()))
+            {
+                List<String> imgs = Arrays.stream(interview.getAppendixs().split(",")).map(img -> uploadProperteis.getAccessPath() + "/image/" + img).collect(Collectors.toList());
+                interview.setAppendixs(StringUtils.join(imgs, ","));
+            }
+
+            }
+        );
         return ResultVO.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Interview> list(@PathVariable("id") String id)
+    public ResultVO<Interview> list(@PathVariable("id") Integer id)
     {
         Interview interview = interviewService.findById(id);
 
@@ -47,7 +69,7 @@ public class InterviewCtrl {
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
     {
         interviewService.deleteByIds(ids);
         return ResultVO.success(null);
@@ -55,14 +77,14 @@ public class InterviewCtrl {
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Interview interview)
+    public ResultVO<Integer> update(@RequestBody Interview interview)
     {
         interviewService.update(interview);
         return ResultVO.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Interview interview)
+    public ResultVO<Integer> add(@RequestBody Interview interview)
     {
         interviewService.save(interview);
         return ResultVO.success(null);

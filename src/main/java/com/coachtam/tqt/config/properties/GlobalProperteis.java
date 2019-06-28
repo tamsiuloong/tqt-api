@@ -3,6 +3,8 @@ package com.coachtam.tqt.config.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
+
 /**
  * @Copyright (C), 2018-2019
  * @Author: JAVA在召唤
@@ -10,11 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Description:
  */
 @Data
-@ConfigurationProperties(prefix = "tqt.upload")
-public class UploadProperteis {
-    //上传路径
-    private String uploadPath;
-
-    //访问路径
-    private String accessPath;
+@ConfigurationProperties(prefix = "tqt.global")
+public class GlobalProperteis {
+    private List<String> adminRoles;
 }

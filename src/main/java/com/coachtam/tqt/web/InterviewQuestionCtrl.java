@@ -2,6 +2,7 @@ package com.coachtam.tqt.web;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
 import com.coachtam.tqt.service.InterviewQuestionService;
+import com.coachtam.tqt.to.InterviewQuestionForm;
 import com.coachtam.tqt.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,22 @@ public class InterviewQuestionCtrl {
     private InterviewQuestionService interviewQuestionService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize,Integer interviewId)
     {
-        Page result = interviewQuestionService.page(pageNo,pageSize);
+        Page result = interviewQuestionService.page(pageNo,pageSize,interviewId);
         return ResultVO.success(result);
     }
 
 
+    @PostMapping("/search")
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewQuestionForm searchForm)
+    {
+        Page result = interviewQuestionService.page(pageNo,pageSize,searchForm);
+        return ResultVO.success(result);
+    }
+
     @GetMapping("/{id}")
-    public ResultVO<InterviewQuestion> list(@PathVariable("id") String id)
+    public ResultVO<InterviewQuestion> list(@PathVariable("id") Integer id)
     {
         InterviewQuestion interviewQuestion = interviewQuestionService.findById(id);
 
@@ -47,7 +55,7 @@ public class InterviewQuestionCtrl {
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
     {
         interviewQuestionService.deleteByIds(ids);
         return ResultVO.success(null);
@@ -55,14 +63,14 @@ public class InterviewQuestionCtrl {
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody InterviewQuestion interviewQuestion)
+    public ResultVO<Integer> update(@RequestBody InterviewQuestion interviewQuestion)
     {
         interviewQuestionService.update(interviewQuestion);
         return ResultVO.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody InterviewQuestion interviewQuestion)
+    public ResultVO<Integer> add(@RequestBody InterviewQuestion interviewQuestion)
     {
         interviewQuestionService.save(interviewQuestion);
         return ResultVO.success(null);

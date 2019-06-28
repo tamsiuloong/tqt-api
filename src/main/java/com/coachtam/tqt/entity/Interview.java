@@ -3,6 +3,7 @@ package com.coachtam.tqt.entity;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,13 +18,14 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="interview_p")
+@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class Interview {
 	@Id
 //	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "jpa-uuid")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private String id;
+	private Integer id;
 
 	//学生
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -55,7 +57,7 @@ public class Interview {
 	@Column(name = "company_tel")
 	private String companyTel;
 	//面试时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "interview_time")
 	private Date interviewTime;
 

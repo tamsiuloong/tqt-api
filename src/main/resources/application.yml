@@ -41,6 +41,10 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 tqt:
+  global:
+    adminRoles: #管理员角色
+      - 管理员
+      - 老师
   security:
     oauth2:
       storeType: jwt #或者jwt
@@ -52,4 +56,5 @@ tqt:
         clientId: tqt1
         clientSecret: tqt1
   upload:
-    uploadPath: /users/macbook/desktop/files
+    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
+    accessPath: http://localhost:9999

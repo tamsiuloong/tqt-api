@@ -1,6 +1,8 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
+import com.coachtam.tqt.to.InterviewForm;
+import com.coachtam.tqt.to.InterviewQuestionForm;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -10,15 +12,16 @@ import java.util.List;
  * @CreateDate:		2019-6-27 14:49:48
  */
 public interface InterviewQuestionService {
-    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize);
+    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, Integer interviewId);
+    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, InterviewQuestionForm searchForm);
 
     List<InterviewQuestion> findAll();
 
     void save(InterviewQuestion model);
 
-    InterviewQuestion findById(String id);
+    InterviewQuestion findById(Integer id);
 
     void update(InterviewQuestion model);
 
-    void deleteByIds(String[] id);
+    void deleteByIds(Integer[] id);
 }
