@@ -21,4 +21,6 @@ public interface ClassesService {
     void update(Classes model);
 
     void deleteByIds(String[] id);
+
+    List<Classes> findAllByClosed(Boolean closed);
 }

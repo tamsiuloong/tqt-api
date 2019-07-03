@@ -162,6 +162,11 @@ public class UserServiceImpl implements UserService {
         {
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+        if(StringUtils.isNotBlank(user.getNoteUrl()))
+        {
+            dbUser.setNoteUrl(user.getNoteUrl());
+        }
+
         UserInfo userInfo = user.getUserInfo();
         if(userInfo!=null)
         {

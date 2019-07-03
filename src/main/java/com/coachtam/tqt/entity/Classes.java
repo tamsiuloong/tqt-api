@@ -33,6 +33,8 @@ public class Classes {
 	//类型
 	@Column(name = "type")
 	private String type;
-
+	//关闭-停止注册
+	@Column(name = "closed")
+	private Boolean closed;
 
 }

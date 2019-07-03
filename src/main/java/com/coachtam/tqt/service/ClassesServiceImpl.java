@@ -4,6 +4,7 @@ import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.respository.ClassesDao;
 import com.coachtam.tqt.service.ClassesService;
 import com.coachtam.tqt.utils.PageUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,14 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public List<Classes> findAll() {
         return classesDao.findAll();
+    }
+
+    @Override
+    public List<Classes> findAllByClosed(Boolean closed) {
+        Classes classes = new Classes();
+        classes.setClosed(closed);
+        Example<Classes> example = Example.of(classes);
+        return classesDao.findAll(example);
     }
 
     @Override

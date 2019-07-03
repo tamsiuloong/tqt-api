@@ -39,6 +39,13 @@ public class ClassesCtrl {
     }
 
 
+    @GetMapping("/all/{closed}")
+    public ResultVO<List<Classes>> getAll(@PathVariable("closed")Boolean closed)
+    {
+        List<Classes> result = classesService.findAllByClosed(closed);
+        return ResultVO.success(result);
+    }
+
     @GetMapping("/all")
     public ResultVO<List<Classes>> getAll()
     {

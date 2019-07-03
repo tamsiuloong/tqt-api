@@ -38,13 +38,20 @@ public class InterviewCtrl {
     {
         Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm);
         result.forEach(interview ->{
-            interview.setSoundRecording(uploadProperteis.getAccessPath()+"/sound/"+interview.getSoundRecording());
-            //拼接完整访问地址
-            if(StringUtils.isNotBlank(interview.getAppendixs()))
-            {
-                List<String> imgs = Arrays.stream(interview.getAppendixs().split(",")).map(img -> uploadProperteis.getAccessPath() + "/image/" + img).collect(Collectors.toList());
-                interview.setAppendixs(StringUtils.join(imgs, ","));
-            }
+                //拼接完整访问地址
+                if(StringUtils.isNotBlank(interview.getSoundRecording()))
+                {
+                    interview.setSoundRecording(uploadProperteis.getAccessPath()+"/sound/"+interview.getSoundRecording());
+                }
+
+
+                if(StringUtils.isNotBlank(interview.getAppendixs()))
+                {
+                    List<String> imgs = Arrays.stream(interview.getAppendixs().split(",")).map(img ->
+                             StringUtils.isNotBlank(img)?uploadProperteis.getAccessPath() + "/image/" + img:img
+                    ).collect(Collectors.toList());
+                    interview.setAppendixs(StringUtils.join(imgs, ","));
+                }
 
             }
         );

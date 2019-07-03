@@ -1,12 +1,15 @@
 package com.coachtam.tqt.web;
 
 import com.coachtam.tqt.config.properties.UploadProperteis;
+import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,11 +36,19 @@ import java.util.UUID;
 public class UploadCtrl {
     @Autowired
     private UploadProperteis uploadProperteis;
+    @Autowired
+    private UserService userService;
 
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     //type:1 上传图片 , 2 上传音频
     @PostMapping("/api/uploadFiles/{type}")
-    public ResponseEntity<String> uploadFiles(@RequestParam("file")MultipartFile[] files,@PathVariable("type") Integer type){
+    public ResponseEntity<String> uploadFiles(@RequestParam("file")MultipartFile[] files,@PathVariable("type") Integer type,@RequestParam("companyName")String companyName){
+
+        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername();
+
+//        User dbUser = userService.findByUsername(username);
+
 
         if(files==null || files.length==0)
         {
@@ -58,10 +69,15 @@ public class UploadCtrl {
 
         List<String> result = new ArrayList<>();
 
+
         for(MultipartFile file :files)
         {
+
             //相对路径
-            String relativePath = dir+"/"+UUID.randomUUID().toString()+ "." +StringUtils.substringAfterLast(file.getOriginalFilename(),".");
+//            String relativePath = dir+"/"+UUID.randomUUID().toString()+ "." +StringUtils.substringAfterLast(file.getOriginalFilename(),".");
+
+            String relativePath = dir+"/"+username+"_"+companyName+"_"+file.getOriginalFilename();
+
             //完整路径
             String fullpath = baseDir + relativePath;
 

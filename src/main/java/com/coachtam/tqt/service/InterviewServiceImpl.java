@@ -131,12 +131,12 @@ public class InterviewServiceImpl implements InterviewService {
 
         if(StringUtils.isNotBlank(bean.getAppendixs()))
         {
-            dbBean.setAppendixs(bean.getAppendixs().replaceAll(uploadProperteis.getAccessPath()+"/image",""));
+            dbBean.setAppendixs(bean.getAppendixs().replaceAll(uploadProperteis.getAccessPath()+"/image/",""));
         }
 
         if(StringUtils.isNotBlank(bean.getSoundRecording()))
         {
-            dbBean.setSoundRecording(bean.getSoundRecording().replaceAll(uploadProperteis.getAccessPath()+"/sound",""));
+            dbBean.setSoundRecording(bean.getSoundRecording().replaceAll(uploadProperteis.getAccessPath()+"/sound/",""));
         }
 
         interviewDao.saveAndFlush(dbBean);

@@ -61,5 +61,6 @@ public class Interview {
 	@Column(name = "interview_time")
 	private Date interviewTime;
 
-
+	@Column(name = "experience")
+	private String experience;
 }

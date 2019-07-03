@@ -32,6 +32,7 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/api/user/register"
                         ,"/api/user/checkUsername/*"
                         ,"/api/classes/all"
+                        ,"/api/classes/all/*"
                         ,"/image/**"
                         ,"/sound/**"
                         ,"/tqt/*").permitAll()
