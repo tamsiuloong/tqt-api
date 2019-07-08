@@ -20,7 +20,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="USER_P")
-@JsonIgnoreProperties({"classes","hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User  {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")

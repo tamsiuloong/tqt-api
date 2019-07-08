@@ -85,6 +85,9 @@ public class UserInfo {
 	@Column(name = "manager_id")
 	private String managerId;
 
+	@Column(name = "school")
+	private String school;//学校
+
 	@Column(name = "major")
 	private String major;//专业
 

@@ -2,6 +2,7 @@ package com.coachtam.tqt.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Table(name="CLASSES_P")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Classes {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
