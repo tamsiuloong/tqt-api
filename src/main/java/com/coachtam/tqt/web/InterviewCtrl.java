@@ -33,10 +33,10 @@ public class InterviewCtrl {
     @Autowired
     private InterviewService interviewService;
 
-    @PostMapping("/search")
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewForm searchForm)
+    @PostMapping("/search/{all}")
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewForm searchForm,@PathVariable("all")Boolean all)
     {
-        Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm);
+        Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm,all);
         result.forEach(interview ->{
                 //拼接完整访问地址
                 if(StringUtils.isNotBlank(interview.getSoundRecording()))
@@ -57,6 +57,8 @@ public class InterviewCtrl {
         );
         return ResultVO.success(result);
     }
+
+
 
 
     @GetMapping("/{id}")

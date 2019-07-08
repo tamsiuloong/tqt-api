@@ -6,6 +6,7 @@ import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
         model.getUserInfo().setUser(model);
         model.getUserInfo().setCreateTime(new Date());
 
-        String password = "";
+        String password;
         if(model.getPassword()==null && StringUtils.isEmpty(model.getPassword()))
         {
             password = "123456";
@@ -102,6 +103,7 @@ public class UserServiceImpl implements UserService {
 
         //默认状态可用
         model.setState(1);
+
         userDao.save(model);
 
         return true;

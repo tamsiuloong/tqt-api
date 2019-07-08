@@ -45,7 +45,7 @@ public class InterviewServiceImpl implements InterviewService {
     private GlobalProperteis globalProperteis;
 
     @Override
-    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm)
+    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm,boolean all)
     {
 
 
@@ -53,8 +53,11 @@ public class InterviewServiceImpl implements InterviewService {
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);
+
+
+
         //如果是管理员,查询所有面试记录,否则只能查看自己的
-        if(!dbUser.getRoleSet().stream().anyMatch(role->globalProperteis.getAdminRoles().contains(role.getName()))){
+        if(!all&&!dbUser.getRoleSet().stream().anyMatch(role->globalProperteis.getAdminRoles().contains(role.getName()))){
             Interview interview = new Interview();
             User u = new User();
             u.setId(dbUser.getId());

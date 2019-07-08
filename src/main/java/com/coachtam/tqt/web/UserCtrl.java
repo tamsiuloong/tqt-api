@@ -1,5 +1,6 @@
 package com.coachtam.tqt.web;
 
+import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.UserForm;
@@ -151,8 +152,11 @@ public class UserCtrl {
     }
 
     @PostMapping("/register")
-    public ResultVO<String> register(User user)
+    public ResultVO<String> register(@RequestBody User user,@RequestParam("classesId") String classesId)
     {
+
+        user.setClasses(new Classes(classesId));
+
         Boolean ok = userService.save(user);
         ResultVO<String> result= new ResultVO<>();
         if(ok)

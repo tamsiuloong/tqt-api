@@ -4,6 +4,7 @@ logging:
   level:
     org.springframework: error
     org.springframework.boot.autoconfigure: ERROR
+    org.springframework.web: warn
 spring:
   #连接池
   datasource:

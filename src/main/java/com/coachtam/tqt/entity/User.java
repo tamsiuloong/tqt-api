@@ -28,7 +28,7 @@ public class User  {
 	@Column(name = "user_id")
 	private String id;
 
-	//姓名
+	//用户名
 	@Column(name = "user_name")
 	private String userName;
 	//密码

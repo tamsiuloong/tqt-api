@@ -1,7 +1,10 @@
 package com.coachtam.tqt.entity;
 
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
@@ -14,6 +17,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name="CLASSES_P")
 public class Classes {
 	@Id
@@ -37,4 +41,8 @@ public class Classes {
 	@Column(name = "closed")
 	private Boolean closed;
 
+
+	public Classes(String id) {
+		this.id = id;
+	}
 }

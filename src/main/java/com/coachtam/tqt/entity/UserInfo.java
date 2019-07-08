@@ -45,6 +45,7 @@ public class UserInfo {
 	@Column(name = "birthday")
 	private Date birthday;
 
+
 	@Column(name = "gender")
 	private String gender;
 
@@ -84,6 +85,17 @@ public class UserInfo {
 	@Column(name = "manager_id")
 	private String managerId;
 
+	@Column(name = "major")
+	private String major;//专业
+
+	@Column(name = "experience")
+	private Boolean experience;//工作经验
+
+	@Column(name = "education")
+	private Integer education;//学历
+
+	@Column(name = "graduation_time")
+	private Date graduationTime;//毕业时间
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@PrimaryKeyJoinColumn  // 这个注解不能少。如果不加这个注解，添加扩展信息时，就会自动在person_ext表中增加了一个外键列person_id.
