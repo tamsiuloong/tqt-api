@@ -16,9 +16,9 @@ public interface VoteTopicService {
 
     void save(VoteTopic model);
 
-    VoteTopic findById(String id);
+    VoteTopic findById(Integer id);
 
     void update(VoteTopic model);
 
-    void deleteByIds(String[] id);
+    void deleteByIds(Integer[] id);
 }

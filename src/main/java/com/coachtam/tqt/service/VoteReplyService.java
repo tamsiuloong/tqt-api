@@ -11,11 +11,11 @@ import java.util.List;
  * @CreateDate:		2019-7-8 16:51:29
  */
 public interface VoteReplyService {
-    public Page<VoteReply> page(Integer pageNo, Integer pageSize);
+    Page<VoteReply> page(Integer pageNo, Integer pageSize);
 
     List<VoteReply> findAll();
 
-    public void save(List<VoteReply> beanList, VoteRecord voteRecord);
+    void save(List<VoteReply> beanList, VoteRecord voteRecord);
 
     VoteReply findById(String id);
 

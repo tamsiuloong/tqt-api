@@ -43,8 +43,8 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     }
 
     @Override
-    public void deleteByIds(String[] ids) {
-        for (String id:ids) {
+    public void deleteByIds(Integer[] ids) {
+        for (Integer id:ids) {
             voteTopicDao.deleteById(id);
         }
 
@@ -56,7 +56,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     }
 
     @Override
-    public VoteTopic findById(String id) {
+    public VoteTopic findById(Integer id) {
         return voteTopicDao.findById(id).get();
     }
 }

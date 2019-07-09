@@ -2,6 +2,7 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
+import com.coachtam.tqt.entity.VoteTopic;
 import com.coachtam.tqt.respository.VoteRecordDao;
 import com.coachtam.tqt.respository.VoteReplyDao;
 import com.coachtam.tqt.utils.PageUtils;
@@ -26,6 +27,9 @@ public class VoteReplyServiceImpl implements VoteReplyService {
     @Autowired
     private VoteRecordDao voteRecordDao;
 
+    @Autowired
+    private VoteTopicService voteTopicService;
+
     @Override
     public Page<VoteReply> page(Integer pageNo,Integer pageSize)
     {
@@ -41,6 +45,9 @@ public class VoteReplyServiceImpl implements VoteReplyService {
 
     @Override
     public void save(List<VoteReply> beanList, VoteRecord voteRecord) {
+        //累计投票数
+        VoteTopic voteTopic = voteTopicService.findById(voteRecord.getVotetopicId());
+        voteTopic.setTotalCount(voteTopic.getTotalCount()+1);
 
         voteRecordDao.save(voteRecord);
         voteReplyDao.saveAll(beanList);
