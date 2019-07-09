@@ -1,6 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.VoteSubtopic;
+import com.coachtam.tqt.entity.VoteTopic;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.service.VoteSubtopicService;
 import com.coachtam.tqt.utils.PageUtils;
@@ -64,8 +65,11 @@ public class VoteSubtopicServiceImpl implements VoteSubtopicService {
 
     @Override
     public List<VoteSubtopic> findAllByVotetopicId(Integer votetopicId) {
+        VoteTopic voteTopic = new VoteTopic();
+        voteTopic.setId(votetopicId);
+
         VoteSubtopic voteSubtopic = new VoteSubtopic();
-        voteSubtopic.setVotetopicId(votetopicId);
+        voteSubtopic.setVoteTopic(voteTopic);
 
         Example<VoteSubtopic> example = Example.of(voteSubtopic);
         return voteSubtopicDao.findAll(example,new Sort(Sort.Direction.ASC,"priority"));

@@ -1,9 +1,13 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.entity.VoteSubtopic;
 import com.coachtam.tqt.entity.VoteTopic;
+import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
 import com.coachtam.tqt.service.VoteTopicService;
 import com.coachtam.tqt.utils.PageUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,8 @@ import java.util.List;
 public class VoteTopicServiceImpl implements VoteTopicService {
     @Autowired
     private VoteTopicDao voteTopicDao;
-
+    @Autowired
+    private VoteSubtopicDao voteSubtopicDao;
 
     @Override
     public Page<VoteTopic> page(Integer pageNo,Integer pageSize)
@@ -39,12 +44,27 @@ public class VoteTopicServiceImpl implements VoteTopicService {
 
     @Override
     public void save(VoteTopic bean) {
+        User teacher = new User();
+        teacher.setId(bean.getTeacherId());
+        bean.setTeacher(teacher);
+
+        bean.setTotalCount(0);
         voteTopicDao.save(bean);
+        bean.getVoteSubtopicList().forEach(voteSubtopic -> {
+            voteSubtopic.setVoteTopic(bean);
+        });
+        voteSubtopicDao.saveAll(bean.getVoteSubtopicList());
     }
 
     @Override
     public void deleteByIds(Integer[] ids) {
         for (Integer id:ids) {
+            VoteSubtopic voteSubtopic = new VoteSubtopic();
+            VoteTopic voteTopic = new VoteTopic();
+            voteTopic.setId(id);
+            voteSubtopic.setVoteTopic(voteTopic);
+
+            voteSubtopicDao.deleteAll(voteSubtopicDao.findAll(Example.of(voteSubtopic)));
             voteTopicDao.deleteById(id);
         }
 

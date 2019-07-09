@@ -1,6 +1,7 @@
 package com.coachtam.tqt.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -79,9 +80,15 @@ public class VoteTopic {
 	@JsonIgnore
 	private User teacher;
 
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="votetopic_id",referencedColumnName = "votetopic_id")
+	private List<VoteSubtopic> voteSubtopicList;
 
 	@Transient
 	private String teacherName;
+
+	@Transient
+	private String teacherId;
 
 	public String getTeacherName() {
 		if(teacher!=null&&teacher.getUserInfo()!=null&& StringUtils.isNotBlank(teacher.getUserInfo().getName())) {
