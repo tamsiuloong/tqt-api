@@ -1,9 +1,12 @@
 package com.coachtam.tqt.entity;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import javax.persistence.*;
 /**
  * @Description:	投票主题
@@ -15,14 +18,12 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name="VOTE_TOPIC_P")
+@JsonIgnoreProperties({"teacher"})
 public class VoteTopic {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private String id;
-
 	@Column(name = "votetopic_id")
-	private Integer votetopicId;
+	private Integer id;
 
 	@Column(name = "site_id")
 	private Integer siteId;
@@ -69,11 +70,25 @@ public class VoteTopic {
 	@Column(name = "vote_day")
 	private Integer voteDay;
 	//班级
-	@Column(name = "class_id")
-	private String classId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "class_id")
+	private Classes classes;
 	//教师
-	@Column(name = "teacher")
-	private String teacher;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "teacher_id")
+	@JsonIgnore
+	private User teacher;
 
 
+	@Transient
+	private String teacherName;
+
+	public String getTeacherName() {
+		if(teacher!=null&&teacher.getUserInfo()!=null&& StringUtils.isNotBlank(teacher.getUserInfo().getName())) {
+			return teacher.getUserInfo().getName();
+		}
+		else {
+			return "";
+		}
+	}
 }

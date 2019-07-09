@@ -4,6 +4,7 @@ import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.respository.VoteRecordDao;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.utils.PageUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,14 @@ public class VoteRecordServiceImpl implements VoteRecordService {
     @Override
     public VoteRecord findById(String id) {
         return voteRecordDao.findById(id).get();
+    }
+
+    @Override
+    public Boolean findByVoteTopicId(Integer voteTopicId, String userId) {
+        VoteRecord voteRecord = new VoteRecord();
+        voteRecord.setVotetopicId(voteTopicId);
+        voteRecord.setUserId(userId);
+        Example<VoteRecord> example = Example.of(voteRecord);
+        return voteRecordDao.findAll(example).size()>0?true:false;
     }
 }

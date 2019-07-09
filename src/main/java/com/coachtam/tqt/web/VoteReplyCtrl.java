@@ -1,12 +1,19 @@
 package com.coachtam.tqt.web;
 
+import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
+import com.coachtam.tqt.service.UserService;
+import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.service.VoteReplyService;
 import com.coachtam.tqt.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +29,11 @@ public class VoteReplyCtrl {
     @Autowired
     private VoteReplyService voteReplyService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private VoteRecordService voteRecordService;
     @GetMapping
     public ResultVO<Page> list(Integer pageNo, Integer pageSize)
     {
@@ -62,9 +74,27 @@ public class VoteReplyCtrl {
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody VoteReply voteReply)
+    public ResultVO<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
     {
-        voteReplyService.save(voteReply);
+        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername();
+        User dbUser = userService.findByUsername(username);
+
+        //判断是否已经提交过
+        Boolean hasCommited = voteRecordService.findByVoteTopicId(voteTopicId,dbUser.getId());
+
+        if(hasCommited)
+        {
+           return ResultVO.fail("已经提交过该问卷调查!");
+        }
+
+        VoteRecord voteRecord = new VoteRecord();
+        voteRecord.setVotetopicId(voteTopicId);
+        voteRecord.setUserId(dbUser.getId());
+        voteRecord.setVoteIp(request.getRemoteAddr());
+        voteRecord.setVoteTime(new Date());
+
+        voteReplyService.save(voteReplyList,voteRecord);
         return ResultVO.success(null);
     }
 }

@@ -4,8 +4,10 @@ import com.coachtam.tqt.entity.VoteSubtopic;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.service.VoteSubtopicService;
 import com.coachtam.tqt.utils.PageUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,5 +60,14 @@ public class VoteSubtopicServiceImpl implements VoteSubtopicService {
     @Override
     public VoteSubtopic findById(String id) {
         return voteSubtopicDao.findById(id).get();
+    }
+
+    @Override
+    public List<VoteSubtopic> findAllByVotetopicId(Integer votetopicId) {
+        VoteSubtopic voteSubtopic = new VoteSubtopic();
+        voteSubtopic.setVotetopicId(votetopicId);
+
+        Example<VoteSubtopic> example = Example.of(voteSubtopic);
+        return voteSubtopicDao.findAll(example,new Sort(Sort.Direction.ASC,"priority"));
     }
 }

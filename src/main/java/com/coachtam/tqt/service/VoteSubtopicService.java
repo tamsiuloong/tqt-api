@@ -21,4 +21,6 @@ public interface VoteSubtopicService {
     void update(VoteSubtopic model);
 
     void deleteByIds(String[] id);
+
+    List<VoteSubtopic> findAllByVotetopicId(Integer votetopicId);
 }

@@ -1,6 +1,8 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
+import com.coachtam.tqt.respository.VoteRecordDao;
 import com.coachtam.tqt.respository.VoteReplyDao;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,8 @@ import java.util.List;
 public class VoteReplyServiceImpl implements VoteReplyService {
     @Autowired
     private VoteReplyDao voteReplyDao;
-
+    @Autowired
+    private VoteRecordDao voteRecordDao;
 
     @Override
     public Page<VoteReply> page(Integer pageNo,Integer pageSize)
@@ -37,8 +40,10 @@ public class VoteReplyServiceImpl implements VoteReplyService {
     }
 
     @Override
-    public void save(VoteReply bean) {
-        voteReplyDao.save(bean);
+    public void save(List<VoteReply> beanList, VoteRecord voteRecord) {
+
+        voteRecordDao.save(voteRecord);
+        voteReplyDao.saveAll(beanList);
     }
 
     @Override

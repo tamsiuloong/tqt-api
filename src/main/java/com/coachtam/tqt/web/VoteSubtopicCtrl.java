@@ -39,10 +39,10 @@ public class VoteSubtopicCtrl {
     }
 
 
-    @GetMapping("/all")
-    public ResultVO<List<VoteSubtopic>> getAll()
+    @GetMapping("/all/{votetopicId}")
+    public ResultVO<List<VoteSubtopic>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
-        List<VoteSubtopic> result = voteSubtopicService.findAll();
+        List<VoteSubtopic> result = voteSubtopicService.findAllByVotetopicId(votetopicId);
         return ResultVO.success(result);
     }
 

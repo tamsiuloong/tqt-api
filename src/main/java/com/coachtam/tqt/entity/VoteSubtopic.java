@@ -18,11 +18,8 @@ import javax.persistence.*;
 public class VoteSubtopic {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private String id;
-
 	@Column(name = "subtopic_id")
-	private Integer subtopicId;
+	private Integer id;
 	//标题
 	@Column(name = "title")
 	private String title;

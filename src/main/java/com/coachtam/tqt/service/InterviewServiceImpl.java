@@ -130,6 +130,7 @@ public class InterviewServiceImpl implements InterviewService {
         dbBean.setCompanyAddr(bean.getCompanyAddr());
         dbBean.setCompanyName(bean.getCompanyName());
         dbBean.setCompanyTel(bean.getCompanyTel());
+        dbBean.setInterviewTime(bean.getInterviewTime());
 
 
         if(StringUtils.isNotBlank(bean.getAppendixs()))

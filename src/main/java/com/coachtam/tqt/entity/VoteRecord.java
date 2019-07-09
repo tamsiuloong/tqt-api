@@ -18,14 +18,11 @@ import javax.persistence.*;
 public class VoteRecord {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private String id;
-
 	@Column(name = "voterecored_id")
-	private Integer voterecoredId;
+	private Integer id;
 
 	@Column(name = "user_id")
-	private Integer userId;
+	private String userId;
 
 	@Column(name = "votetopic_id")
 	private Integer votetopicId;

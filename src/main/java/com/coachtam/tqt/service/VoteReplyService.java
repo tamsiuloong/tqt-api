@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
 import org.springframework.data.domain.Page;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface VoteReplyService {
 
     List<VoteReply> findAll();
 
-    void save(VoteReply model);
+    public void save(List<VoteReply> beanList, VoteRecord voteRecord);
 
     VoteReply findById(String id);
 

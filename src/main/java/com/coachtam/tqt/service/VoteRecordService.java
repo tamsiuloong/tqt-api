@@ -21,4 +21,6 @@ public interface VoteRecordService {
     void update(VoteRecord model);
 
     void deleteByIds(String[] id);
+
+    Boolean findByVoteTopicId(Integer voteTopicId, String id);
 }

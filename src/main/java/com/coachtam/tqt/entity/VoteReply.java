@@ -18,11 +18,9 @@ import javax.persistence.*;
 public class VoteReply {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private String id;
-
 	@Column(name = "votereply_id")
-	private Integer votereplyId;
+	private Integer id;
+
 	//回复内容
 	@Column(name = "reply")
 	private String reply;
