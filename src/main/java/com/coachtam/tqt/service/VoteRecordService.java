@@ -12,7 +12,7 @@ import java.util.List;
 public interface VoteRecordService {
     public Page<VoteRecord> page(Integer pageNo, Integer pageSize);
 
-    List<VoteRecord> findAll();
+    List<VoteRecord> findAll(Integer votetopicId);
 
     void save(VoteRecord model);
 

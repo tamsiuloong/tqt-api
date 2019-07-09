@@ -1,8 +1,8 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.respository.VoteRecordDao;
-import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -34,8 +34,10 @@ public class VoteRecordServiceImpl implements VoteRecordService {
 
 
     @Override
-    public List<VoteRecord> findAll() {
-        return voteRecordDao.findAll();
+    public List<VoteRecord> findAll(Integer votetopicId) {
+        VoteRecord voteRecord = new VoteRecord();
+        voteRecord.setVotetopicId(votetopicId);
+        return voteRecordDao.findAll(Example.of(voteRecord));
     }
 
     @Override
@@ -65,7 +67,7 @@ public class VoteRecordServiceImpl implements VoteRecordService {
     public Boolean findByVoteTopicId(Integer voteTopicId, String userId) {
         VoteRecord voteRecord = new VoteRecord();
         voteRecord.setVotetopicId(voteTopicId);
-        voteRecord.setUserId(userId);
+        voteRecord.setUser(new User(userId));
         Example<VoteRecord> example = Example.of(voteRecord);
         return voteRecordDao.findAll(example).size()>0?true:false;
     }

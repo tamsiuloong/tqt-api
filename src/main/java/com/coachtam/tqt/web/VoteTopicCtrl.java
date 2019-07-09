@@ -31,7 +31,7 @@ public class VoteTopicCtrl {
 
 
     @GetMapping("/{id}")
-    public ResultVO<VoteTopic> list(@PathVariable("id") String id)
+    public ResultVO<VoteTopic> list(@PathVariable("id") Integer id)
     {
         VoteTopic voteTopic = voteTopicService.findById(id);
 
@@ -47,7 +47,7 @@ public class VoteTopicCtrl {
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVO<String> delete(@RequestBody Integer[] ids)
     {
         voteTopicService.deleteByIds(ids);
         return ResultVO.success(null);

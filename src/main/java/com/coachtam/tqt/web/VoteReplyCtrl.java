@@ -90,7 +90,7 @@ public class VoteReplyCtrl {
 
         VoteRecord voteRecord = new VoteRecord();
         voteRecord.setVotetopicId(voteTopicId);
-        voteRecord.setUserId(dbUser.getId());
+        voteRecord.setUser(dbUser);
         voteRecord.setVoteIp(request.getRemoteAddr());
         voteRecord.setVoteTime(new Date());
 

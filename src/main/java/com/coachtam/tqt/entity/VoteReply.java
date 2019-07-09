@@ -28,5 +28,7 @@ public class VoteReply {
 	@Column(name = "subtopic_id")
 	private Integer subtopicId;
 
+	@Column(name = "voterecored_id")
+	private Integer voterecoredId;
 
 }

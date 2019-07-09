@@ -39,10 +39,10 @@ public class VoteRecordCtrl {
     }
 
 
-    @GetMapping("/all")
-    public ResultVO<List<VoteRecord>> getAll()
+    @GetMapping("/all/{votetopicId}")
+    public ResultVO<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
-        List<VoteRecord> result = voteRecordService.findAll();
+        List<VoteRecord> result = voteRecordService.findAll(votetopicId);
         return ResultVO.success(result);
     }
 

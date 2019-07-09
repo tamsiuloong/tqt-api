@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name="USER_P")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User  {
@@ -73,6 +75,10 @@ public class User  {
 	@JoinTable(name = "ROLE_USER_P",joinColumns = @JoinColumn(name="USER_ID",referencedColumnName = "USER_ID"),inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ROLE_ID"))
 	private Set<Role> roleSet = new HashSet<>();
 
+
+	public User(String id) {
+		this.id = id;
+	}
 
 
 }

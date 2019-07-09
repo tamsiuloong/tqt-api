@@ -50,6 +50,10 @@ public class VoteReplyServiceImpl implements VoteReplyService {
         voteTopic.setTotalCount(voteTopic.getTotalCount()+1);
 
         voteRecordDao.save(voteRecord);
+        //设置和投票记录的关系
+        beanList.forEach(reply->{
+            reply.setVoterecoredId(voteRecord.getId());
+        });
         voteReplyDao.saveAll(beanList);
     }
 
