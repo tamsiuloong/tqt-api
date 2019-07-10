@@ -25,7 +25,14 @@ public class VoteTopicCtrl {
     @GetMapping
     public ResultVO<Page> list(Integer pageNo, Integer pageSize)
     {
-        Page result = voteTopicService.page(pageNo,pageSize);
+        Page result = voteTopicService.page(pageNo,pageSize,true);
+        return ResultVO.success(result);
+    }
+
+    @GetMapping("/mine")
+    public ResultVO<Page> mylist(Integer pageNo, Integer pageSize)
+    {
+        Page result = voteTopicService.page(pageNo,pageSize,false);
         return ResultVO.success(result);
     }
 

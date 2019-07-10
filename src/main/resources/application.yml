@@ -12,6 +12,9 @@ spring:
     url: jdbc:mysql://localhost:3306/tqt?characterEncoding=utf-8&useSSL=true
     username: root
     password: root
+#    url: jdbc:mysql://39.108.56.138:3306/tqt?characterEncoding=utf-8&useSSL=true
+#    username: root
+#    password: 123456
     #类型
     type: com.alibaba.druid.pool.DruidDataSource
   #JPA
@@ -57,7 +60,7 @@ tqt:
         clientId: tqt1
         clientSecret: tqt1
   upload:
-    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
-    accessPath: http://localhost:9999
-#    uploadPath: /home/root/tomcat-tqt/webapps/ROOT
-#    accessPath: http://www.coachtam.cn:88
+#    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
+#    accessPath: http://localhost:9999
+    uploadPath: /home/root/tomcat-tqt/webapps/ROOT
+    accessPath: http://www.coachtam.cn:88

@@ -10,7 +10,14 @@ import java.util.List;
  * @CreateDate:		2019-7-8 16:50:38
  */
 public interface VoteTopicService {
-    public Page<VoteTopic> page(Integer pageNo, Integer pageSize);
+    /**
+     * 是否所有的
+     * @param pageNo
+     * @param pageSize
+     * @param isAll true:所有   false:只查自己班的
+     * @return
+     */
+    public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll);
 
     List<VoteTopic> findAll();
 

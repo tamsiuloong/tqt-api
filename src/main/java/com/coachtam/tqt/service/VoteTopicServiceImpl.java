@@ -1,15 +1,16 @@
 package com.coachtam.tqt.service;
 
+import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteSubtopic;
 import com.coachtam.tqt.entity.VoteTopic;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
-import com.coachtam.tqt.service.VoteTopicService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,32 @@ import java.util.List;
 public class VoteTopicServiceImpl implements VoteTopicService {
     @Autowired
     private VoteTopicDao voteTopicDao;
+
     @Autowired
     private VoteSubtopicDao voteSubtopicDao;
 
+    @Autowired
+    private UserService userService;
+
     @Override
-    public Page<VoteTopic> page(Integer pageNo,Integer pageSize)
+    public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll)
     {
+
+        if(!isAll)
+        {
+            org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = user.getUsername();
+            User dbUser = userService.findByUsername(username);
+
+            VoteTopic voteTopic = new VoteTopic();
+            if(dbUser!=null&&dbUser.getClasses()!=null)
+            {
+                voteTopic.setClasses(new Classes(dbUser.getClasses().getId()));
+            }
+
+            //查自己班的问卷调查
+            return  voteTopicDao.findAll(Example.of(voteTopic),PageUtils.of(pageNo,pageSize));
+        }
         return  voteTopicDao.findAll(PageUtils.of(pageNo,pageSize));
     }
 
