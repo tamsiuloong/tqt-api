@@ -57,8 +57,7 @@ public class FeedbackCtrl {
                                      @RequestBody FeedbackForm searchForm)
     {
 //
-        //查询当前用户学习反馈
-        Page page = feedbackService.page(pageNo,pageSize,(root,query,builder)->{
+        Specification<Feedback> specification = (root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();
 
 //            query.multiselect(builder.count(root.get("absorption")))
@@ -90,10 +89,13 @@ public class FeedbackCtrl {
             }
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
-        });
+        };
+        //查询当前用户学习反馈
+        Page page = feedbackService.page(pageNo,pageSize,specification);
         FeedbackVO result= new FeedbackVO();
         result.setPage(page);
-        List<com.coachtam.tqt.entity.User> unCommitedList = feedbackService.unCommitedList(page,searchForm);
+//        List<Feedback> commitedList = feedbackService.findCommitedList(specification);
+        List<com.coachtam.tqt.entity.User> unCommitedList = feedbackService.unCommitedList(specification,searchForm);
         result.setUnCommitedList(unCommitedList);
         return ResultVO.success(result);
     }

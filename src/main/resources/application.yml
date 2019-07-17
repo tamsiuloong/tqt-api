@@ -25,7 +25,7 @@ spring:
       #是否控制台输出sql
       naming:
         physical-strategy: com.coachtam.tqt.config.hibernate.MySQLUpperCaseStrategy
-    show-sql: true
+    show-sql: false
     #数据库
     database: mysql
     properties:
@@ -42,8 +42,8 @@ spring:
     history-level: full
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 tqt:
   global:
     adminRoles: #管理员角色

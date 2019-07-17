@@ -31,10 +31,10 @@ public interface FeedbackService {
 
     /**
      * 查询未提交名单
-     * @param page
+     * @param specification
      * @param searchForm
      * @return
      */
-    List<User> unCommitedList(Page page, FeedbackForm searchForm);
+    List<User> unCommitedList(Specification<Feedback> specification, FeedbackForm searchForm);
 
 }

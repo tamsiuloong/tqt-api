@@ -130,11 +130,15 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<User> unCommitedList(Page page, FeedbackForm searchForm) {
+    public List<User> unCommitedList(Specification<Feedback> specification, FeedbackForm searchForm) {
+        //所有已提交的反馈列表
+        List<Feedback> commitedList = feedbackDao.findAll(specification);
+
         //查询当前班级所有人,存入map中，然后根据查询到的人一个一个的剔除，剩下的就是未提交的人
         List<User> userList = userService.findByClassId(searchForm.getClassId());
 
-        List<User> commitedList = ((List<Feedback>) page.getContent()).stream().map(f -> f.getUser()).collect(Collectors.toList());
-        return userList.stream().filter(user -> !commitedList.contains(user)).collect(Collectors.toList());
+        //已提交的用户
+        List<User> commitedUserList = commitedList.stream().map(f -> f.getUser()).collect(Collectors.toList());
+        return userList.stream().filter(user -> !commitedUserList.contains(user)).collect(Collectors.toList());
     }
 }
