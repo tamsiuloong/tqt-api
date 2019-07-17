@@ -120,6 +120,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User model) {
+        //表单如果没有选中class，那么class.id为空字符串，因此需要解除无用关系
+        if(model.getClasses()!=null&&model.getClasses().getId()!=null)
+        {
+            if(model.getClasses().getId().isEmpty())
+            {
+                model.setClasses(null);
+            }
+        }
         //密码，创建日期不变
         User dbUser = userDao.findByUserName(model.getUserName());
 

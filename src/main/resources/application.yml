@@ -14,7 +14,7 @@ spring:
     password: root
 #    url: jdbc:mysql://39.108.56.138:3306/tqt?characterEncoding=utf-8&useSSL=true
 #    username: root
-#    password: 123456
+#    password: qweasdzxc!@#
     #类型
     type: com.alibaba.druid.pool.DruidDataSource
   #JPA
@@ -25,14 +25,13 @@ spring:
       #是否控制台输出sql
       naming:
         physical-strategy: com.coachtam.tqt.config.hibernate.MySQLUpperCaseStrategy
-    show-sql: false
     #数据库
     database: mysql
     properties:
       #hibernate 其它属性，可以用来配置其它hibernate配置
       hibernate:
         dialect: org.hibernate.dialect.MySQL55Dialect
-        show_sql: true
+        show_sql: false
     #是否在视图层也打开session(open session in view)
     open-in-view: true
   #ACTIVITI
