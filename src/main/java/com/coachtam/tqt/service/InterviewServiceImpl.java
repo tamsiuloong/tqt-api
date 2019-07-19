@@ -143,6 +143,7 @@ public class InterviewServiceImpl implements InterviewService {
             dbBean.setSoundRecording(bean.getSoundRecording().replaceAll(uploadProperteis.getAccessPath()+"/sound/",""));
         }
 
+        dbBean.setExperience(bean.getExperience());
         interviewDao.saveAndFlush(dbBean);
     }
 
