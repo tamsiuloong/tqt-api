@@ -1,6 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Leave;
+import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.LeaveDao;
 import com.coachtam.tqt.utils.PageUtils;
 import org.activiti.engine.RuntimeService;
@@ -105,7 +106,9 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Leave findByProcessInstanceId(String processInstanceId) {
-        return leaveDao.findByProcessInstanceId(processInstanceId);
+        Leave result = leaveDao.findByProcessInstanceId(processInstanceId);
+        return result;
     }
 }

@@ -107,7 +107,7 @@ public class UserCtrl {
     @GetMapping("/checkUsername/{username}")
     public ResultVO<String> checkUsername(@PathVariable("username")String username)
     {
-        User user  = userService.findByUsername(username);
+        User user  = userService.findByUsername(username.toLowerCase());
         ResultVO<String> result= new ResultVO<>();
         if(user==null)
         {
@@ -117,7 +117,7 @@ public class UserCtrl {
         else
         {
             result.setCode(0);
-            result.setDesc("用户名已经存在");
+            result.setDesc("用户名已经被【"+user.getUserInfo().getName()+"】霸占了");
         }
         return result;
     }

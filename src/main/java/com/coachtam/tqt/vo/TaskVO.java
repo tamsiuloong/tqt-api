@@ -7,6 +7,7 @@ public class TaskVO {
     private String description;
     private String assignee;
     private String processInstanceId;
+    private String createBy;
 
     public TaskVO() {
     }
@@ -19,6 +20,15 @@ public class TaskVO {
         this.description = description;
         this.assignee = assignee;
         this.processInstanceId = processInstanceId;
+    }
+
+    public TaskVO(String id, String name, String description, String assignee, String processInstanceId, String createBy) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.assignee = assignee;
+        this.processInstanceId = processInstanceId;
+        this.createBy = createBy;
     }
 
     public String getId() {
@@ -59,5 +69,13 @@ public class TaskVO {
 
     public void setProcessInstanceId(String processInstanceId) {
         this.processInstanceId = processInstanceId;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 }

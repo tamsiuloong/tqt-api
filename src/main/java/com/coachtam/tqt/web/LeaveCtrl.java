@@ -151,7 +151,16 @@ public class LeaveCtrl {
         List<TaskVO> result = list.stream()
                 //Task --> TaskVO
                 .map(x ->
-                        new TaskVO(x.getId(), x.getName(), x.getDescription(), x.getAssignee(),x.getProcessInstanceId()))
+                        {
+                            String assignee = x.getAssignee();
+                            com.coachtam.tqt.entity.User userInfo = userService.findByUsername(assignee);
+
+                            if(userInfo!=null&&userInfo.getUserInfo()!=null)
+                            {
+                                assignee = userInfo.getUserInfo().getName();
+                            }
+                            return new TaskVO(x.getId(), x.getName(), x.getDescription(), assignee,x.getProcessInstanceId());
+                        })
                 //将转好的数据封装到一个新list中
                 .collect(Collectors.toList());
 
@@ -165,7 +174,11 @@ public class LeaveCtrl {
     @GetMapping("/taskDetail/{processInstanceId}")
     public Leave taskDetail(@PathVariable("processInstanceId") String processInstanceId){
         Leave result = leaveService.findByProcessInstanceId(processInstanceId);
-
+        com.coachtam.tqt.entity.User user = userService.findByUsername(result.getCreateBy());
+        if(user!=null&&user.getUserInfo()!=null)
+        {
+            result.setCreateBy(user.getUserInfo().getName());
+        }
         return result;
     }
     /**
