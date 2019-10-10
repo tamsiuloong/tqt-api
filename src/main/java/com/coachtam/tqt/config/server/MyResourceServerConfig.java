@@ -33,6 +33,10 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                         ,"/api/user/checkUsername/*"
                         ,"/api/classes/all"
                         ,"/api/classes/all/*"
+                        ,"/swagger*/**"
+                        ,"/swagger-resources/**"
+                        ,"/v2/api-docs/**"
+                        ,"/webjars/**"
                         ,"/image/**"
                         ,"/sound/**"
                         ,"/tqt/*").permitAll()

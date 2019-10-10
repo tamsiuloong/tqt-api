@@ -6,6 +6,8 @@ import com.coachtam.tqt.service.InterviewService;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.to.InterviewForm;
 import com.coachtam.tqt.vo.ResultVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/interview")
 @RestController
 @EnableConfigurationProperties(UploadProperteis.class)
+@Api(value = "面试服务")
 public class InterviewCtrl {
 
     @Autowired
@@ -33,6 +36,7 @@ public class InterviewCtrl {
     @Autowired
     private InterviewService interviewService;
 
+    @ApiOperation(value = "分页查询")
     @PostMapping("/search/{all}")
     public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewForm searchForm,@PathVariable("all")Boolean all)
     {
@@ -60,9 +64,9 @@ public class InterviewCtrl {
 
 
 
-
+    @ApiOperation(value = "根据id查询面试详情")
     @GetMapping("/{id}")
-    public ResultVO<Interview> list(@PathVariable("id") Integer id)
+    public ResultVO<Interview> detail(@PathVariable("id") Integer id)
     {
         Interview interview = interviewService.findById(id);
 

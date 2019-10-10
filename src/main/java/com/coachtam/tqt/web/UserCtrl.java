@@ -6,6 +6,8 @@ import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.vo.ResultVO;
 import com.coachtam.tqt.vo.RoleVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,11 +25,13 @@ import java.util.Map;
  */
 @RequestMapping("/api/user")
 @RestController
+@Api(value = "用户服务")
 public class UserCtrl {
 
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "分页查询")
     @PostMapping("/search")
     public ResultVO<Page> list(Integer pageNo, Integer pageSize, @RequestBody UserForm userForm)
     {
@@ -40,6 +44,7 @@ public class UserCtrl {
      * @param classId
      * @return
      */
+    @ApiOperation(value = "根据班级查询学生列表")
     @GetMapping("/stu_list/{classId}")
     public ResultVO<List<User>> stu_list(@PathVariable("classId") String classId)
     {
@@ -60,6 +65,7 @@ public class UserCtrl {
      * @return
      */
     @GetMapping("/myinfo")
+    @ApiOperation(value = "我的资料(用于编辑用户)")
     public ResultVO<User> myinfo()
     {
         org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -72,6 +78,7 @@ public class UserCtrl {
      * @return
      */
     @GetMapping("/info")
+    @ApiOperation(value = "我的资料(用于返回权限信息)")
     public ResultVO<Map<String,Object>> info(String access_token)
     {
 //        name: 'admin',
@@ -91,12 +98,13 @@ public class UserCtrl {
     }
 
     @GetMapping("/all")
+    @ApiOperation(value = "所有用户")
     public ResultVO<List<User>> getAll()
     {
         List<User> result = userService.findAll();
         return ResultVO.success(result);
     }
-
+    @ApiOperation(value = "所有老师")
     @GetMapping("/teachers")
     public ResultVO<List<User>> teachers()
     {
@@ -104,6 +112,7 @@ public class UserCtrl {
         return ResultVO.success(result);
     }
 
+    @ApiOperation(value = "检查用户名是否可用")
     @GetMapping("/checkUsername/{username}")
     public ResultVO<String> checkUsername(@PathVariable("username")String username)
     {
@@ -122,6 +131,7 @@ public class UserCtrl {
         return result;
     }
 
+    @ApiOperation(value = "根据id删除用户")
     @DeleteMapping
     public ResultVO<String> delete(@RequestBody String[] ids)
     {
@@ -129,7 +139,7 @@ public class UserCtrl {
         return ResultVO.success(null);
     }
 
-
+    @ApiOperation(value = "更新用户")
     @PutMapping
     public ResultVO<String> update(@RequestBody User user)
     {
@@ -137,6 +147,7 @@ public class UserCtrl {
         return ResultVO.success(null);
     }
 
+    @ApiOperation(value = "新增用户")
     @PostMapping
     public ResultVO<String> add(@RequestBody User user)
     {
@@ -144,6 +155,7 @@ public class UserCtrl {
         return ResultVO.success(null);
     }
 
+    @ApiOperation(value = "更新用户角色")
     @PutMapping("/role")
     public ResultVO<String> role(@RequestBody RoleVO role)
     {
@@ -151,6 +163,7 @@ public class UserCtrl {
         return ResultVO.success(null);
     }
 
+    @ApiOperation(value = "注册学生")
     @PostMapping("/register")
     public ResultVO<String> register(@RequestBody User user,@RequestParam("classesId") String classesId)
     {
@@ -177,6 +190,7 @@ public class UserCtrl {
      * @param user
      * @return
      */
+    @ApiOperation(value = "更新个人资料")
     @PutMapping("/updateMyInfo")
     public ResultVO<String> updateMyInfo(@RequestBody User user)
     {

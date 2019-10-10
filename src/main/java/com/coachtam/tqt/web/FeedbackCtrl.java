@@ -8,6 +8,8 @@ import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.vo.FeedbackVO;
 import com.coachtam.tqt.vo.ResultVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 @RequestMapping("/api/feedback")
 @RestController
+@Api(value = "反馈服务")
 public class FeedbackCtrl {
 
     @Autowired
@@ -35,6 +38,7 @@ public class FeedbackCtrl {
 
     @Autowired
     private UserService userService;
+    @ApiOperation(value = "分页查询(作为学生查询自己的反馈)")
     @GetMapping
     public ResultVO<Page> page(Integer pageNo, Integer pageSize)
     {
@@ -52,6 +56,7 @@ public class FeedbackCtrl {
      * @param pageSize
      * @return
      */
+    @ApiOperation(value = "分页查询(作为老师查询所有学生反馈)")
     @PostMapping("/teaching")
     public ResultVO<FeedbackVO> page(Integer pageNo, Integer pageSize,
                                      @RequestBody FeedbackForm searchForm)
@@ -102,7 +107,7 @@ public class FeedbackCtrl {
 
 
 
-
+    @ApiOperation(value = "根据id查询反馈详情")
     @GetMapping("/{id}")
     public ResultVO<Feedback> list(@PathVariable("id") String id)
     {
@@ -111,7 +116,7 @@ public class FeedbackCtrl {
         return ResultVO.success(feedback);
     }
 
-
+    @ApiOperation(value = "查询所有")
     @GetMapping("/all")
     public ResultVO<List<Feedback>> getAll()
     {
