@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
-import com.coachtam.tqt.to.InterviewForm;
+import com.coachtam.tqt.to.BatchInterviewQuestionForm;
 import com.coachtam.tqt.to.InterviewQuestionForm;
 import org.springframework.data.domain.Page;
 import java.util.List;
@@ -24,4 +24,18 @@ public interface InterviewQuestionService {
     void update(InterviewQuestion model);
 
     void deleteByIds(Integer[] id);
+
+
+    /**
+     * 批量导入面试题
+     */
+    void batchImport(BatchInterviewQuestionForm form);
+
+
+    /**
+     * 将world转table
+     * @param text
+     * @return
+     */
+    List<InterviewQuestion> parseWord(String text);
 }

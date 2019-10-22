@@ -38,6 +38,9 @@ public class InterviewQuestion {
 	//答案
 	@Column(name = "answer")
 	private String answer;
+	//公司
+	@Column(name = "company")
+	private String company;
 	//所属面试
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "interiew_id")

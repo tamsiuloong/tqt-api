@@ -36,7 +36,7 @@ public class User  {
 	//密码
 	@Column(name = "password")
 	private String password;
-	//状态
+	//状态 0.不可用    1.可用
 	@Column(name = "state")
 	private Integer state;
 

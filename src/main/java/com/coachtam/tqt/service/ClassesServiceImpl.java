@@ -7,6 +7,7 @@ import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public Page<Classes> page(Integer pageNo,Integer pageSize)
     {
-        return  classesDao.findAll(PageUtils.of(pageNo,pageSize));
+        return  classesDao.findAll(PageUtils.of(pageNo,pageSize,Sort.by(Sort.Direction.DESC, "beginTime")));
     }
 
 

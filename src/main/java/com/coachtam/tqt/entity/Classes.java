@@ -2,6 +2,7 @@ package com.coachtam.tqt.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,9 +32,11 @@ public class Classes {
 	@Column(name = "name")
 	private String name;
 	//开班日期
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@Column(name = "begin_time")
 	private Date beginTime;
 	//结束日期
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@Column(name = "end_time")
 	private Date endTime;
 	//类型
