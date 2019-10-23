@@ -64,7 +64,7 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
     @Override
     public void save(KnowledgePoint bean) {
         //判断是不是批量导入
-        String name = bean.getName().replaceAll("，",",");
+        String name = bean.getName().replaceAll("，",SPLIT_KEY);
         if(bean!=null&& StringUtils.isNotBlank(name))
         {
             if (name.contains(SPLIT_KEY)) {
