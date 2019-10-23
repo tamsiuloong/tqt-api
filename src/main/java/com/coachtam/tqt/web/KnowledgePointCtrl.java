@@ -23,9 +23,9 @@ public class KnowledgePointCtrl {
     private KnowledgePointService knowledgePointService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,String keyWord)
+    public ResultVO<Page> list(Integer pageNo, Integer pageSize,String keyWord,String courseId)
     {
-        Page result = knowledgePointService.page(pageNo,pageSize,keyWord);
+        Page result = knowledgePointService.page(pageNo,pageSize,keyWord,courseId);
         return ResultVO.success(result);
     }
 

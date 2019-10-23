@@ -1,7 +1,8 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Offer;
 import com.coachtam.tqt.respository.OfferDao;
+import com.coachtam.tqt.service.OfferService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

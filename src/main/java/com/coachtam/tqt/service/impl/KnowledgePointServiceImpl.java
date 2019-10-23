@@ -1,14 +1,14 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.entity.Course;
-import com.coachtam.tqt.entity.InterviewQuestion;
-import com.coachtam.tqt.entity.KnowledgePoint;
+import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.KnowledgePointDao;
+import com.coachtam.tqt.service.KnowledgePointService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +36,7 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 
     private final static String SPLIT_KEY = ",";
     @Override
-    public Page<KnowledgePoint> page(Integer pageNo, Integer pageSize, String keyWord)
+    public Page<KnowledgePoint> page(Integer pageNo, Integer pageSize, String keyWord,String courseId)
     {
 
         return  knowledgePointDao.findAll((root,query,builder)->{
@@ -47,9 +47,16 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
                 Predicate equal = builder.like(root.get("name"), "%"+keyWord+"%");
                 predicates.add(equal);
             }
+            if(StringUtils.isNotBlank(courseId))
+            {
+                Join<KnowledgePoint, Course> joins = root.join("course");
+                Predicate equal = builder.equal(joins.get("id"), courseId);
+                predicates.add(equal);
+            }
+
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
-        },PageUtils.of(pageNo,pageSize));
+        },PageUtils.of(pageNo,pageSize, Sort.by(Sort.Direction.ASC,"id")));
     }
 
 
@@ -65,7 +72,7 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
     public void save(KnowledgePoint bean) {
         //判断是不是批量导入
         String name = bean.getName().replaceAll("，",SPLIT_KEY);
-        if(bean!=null&& StringUtils.isNotBlank(name))
+        if(bean!=null && StringUtils.isNotBlank(name))
         {
             if (name.contains(SPLIT_KEY)) {
                 String[] names = name.split(SPLIT_KEY);
@@ -84,10 +91,12 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
                 }
 
             }
+            else
+            {
+                knowledgePointDao.save(bean);
+            }
         }
-        else {
-            knowledgePointDao.save(bean);
-        }
+
 
     }
 

@@ -1,7 +1,8 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.InterviewQuestionDao;
+import com.coachtam.tqt.service.InterviewQuestionService;
 import com.coachtam.tqt.to.BatchInterviewQuestionForm;
 import com.coachtam.tqt.to.InterviewQuestionForm;
 import com.coachtam.tqt.utils.PageUtils;

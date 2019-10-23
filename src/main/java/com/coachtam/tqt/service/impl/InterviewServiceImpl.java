@@ -1,9 +1,11 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.config.properties.GlobalProperteis;
 import com.coachtam.tqt.config.properties.UploadProperteis;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.InterviewDao;
+import com.coachtam.tqt.service.InterviewService;
+import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.InterviewForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;

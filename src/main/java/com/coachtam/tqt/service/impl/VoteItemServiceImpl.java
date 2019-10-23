@@ -1,4 +1,4 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.VoteItem;
 import com.coachtam.tqt.respository.VoteItemDao;

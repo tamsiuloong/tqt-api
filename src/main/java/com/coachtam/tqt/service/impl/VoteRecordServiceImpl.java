@@ -1,8 +1,9 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.respository.VoteRecordDao;
+import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

@@ -10,7 +10,7 @@ import java.util.List;
  * @CreateDate:		2019-6-28 13:55:31
  */
 public interface KnowledgePointService {
-    public Page<KnowledgePoint> page(Integer pageNo, Integer pageSize, String keyWord);
+    public Page<KnowledgePoint> page(Integer pageNo, Integer pageSize, String keyWord,String courseId);
 
     List<KnowledgePoint> findAll(String courseId);
 

@@ -29,17 +29,23 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.coachtam.tqt.entity.User user = userService.findByUsername(username);
+        boolean enabled=true;
+        boolean accountNonExpired=true;
+        boolean credentialsNonExpired=true;
+        boolean accountNonLocked=true;
         if(user==null)
         {
             throw new UsernameNotFoundException("用户名错误");
         }
         if(user.getState()==0)
         {
-            throw new UsernameNotFoundException("用户名被停用");
+            enabled = false;
+//            throw new UsernameNotFoundException("用户名被停用");
         }
         if(user.getClasses()!=null&&user.getClasses().getClosed())
         {
-            throw new UsernameNotFoundException("班级已经毕业，账号停用");
+            accountNonExpired = false;
+//            throw new UsernameNotFoundException("班级已经毕业，账号停用");
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         user.getRoleSet().forEach(role ->
@@ -47,6 +53,17 @@ public class MyUserDetailsService implements UserDetailsService {
                     grantedAuthorities.add(new SimpleGrantedAuthority(module.getName())) )
         );
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return new User(username, user.getPassword(), grantedAuthorities);
+
+        User userDetails = new User(
+                username,
+                user.getPassword(),
+                enabled,
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
+                grantedAuthorities);
+
+        return userDetails;
     }
+
 }

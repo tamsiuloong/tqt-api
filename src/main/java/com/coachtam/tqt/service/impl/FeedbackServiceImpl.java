@@ -1,8 +1,10 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.FeedbackDao;
+import com.coachtam.tqt.service.FeedbackService;
+import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;

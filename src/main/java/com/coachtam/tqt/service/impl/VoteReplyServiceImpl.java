@@ -1,10 +1,12 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
 import com.coachtam.tqt.entity.VoteTopic;
 import com.coachtam.tqt.respository.VoteRecordDao;
 import com.coachtam.tqt.respository.VoteReplyDao;
+import com.coachtam.tqt.service.VoteReplyService;
+import com.coachtam.tqt.service.VoteTopicService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;

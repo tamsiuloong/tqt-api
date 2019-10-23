@@ -1,4 +1,4 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.respository.ClassesDao;

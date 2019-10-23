@@ -1,4 +1,4 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
@@ -6,6 +6,8 @@ import com.coachtam.tqt.entity.VoteSubtopic;
 import com.coachtam.tqt.entity.VoteTopic;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
+import com.coachtam.tqt.service.UserService;
+import com.coachtam.tqt.service.VoteTopicService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

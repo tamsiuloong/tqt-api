@@ -1,7 +1,8 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Module;
 import com.coachtam.tqt.respository.ModuleDao;
+import com.coachtam.tqt.service.ModuleService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;

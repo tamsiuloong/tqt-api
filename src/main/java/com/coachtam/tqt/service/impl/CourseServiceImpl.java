@@ -1,4 +1,4 @@
-package com.coachtam.tqt.service;
+package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Course;
 import com.coachtam.tqt.respository.CourseDao;
@@ -28,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<Course> page(Integer pageNo,Integer pageSize)
     {
-        return  courseDao.findAll(PageUtils.of(pageNo,pageSize));
+        return  courseDao.findAll(PageUtils.of(pageNo,pageSize,Sort.by(Sort.Direction.ASC,"orderNo")));
     }
 
 
