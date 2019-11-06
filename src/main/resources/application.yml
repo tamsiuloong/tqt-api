@@ -59,7 +59,7 @@ tqt:
         clientId: tqt1
         clientSecret: tqt1
   upload:
-#    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
-#    accessPath: http://localhost:9999
-    uploadPath: /home/root/tomcat-tqt/webapps/ROOT
-    accessPath: http://www.coachtam.cn:88
+    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
+    accessPath: http://localhost:9999
+#    uploadPath: /usr/local/nginx/html/ROOT
+#    accessPath: http://www.coachtam.cn:88

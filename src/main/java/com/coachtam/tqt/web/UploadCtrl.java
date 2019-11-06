@@ -72,11 +72,10 @@ public class UploadCtrl {
 
         for(MultipartFile file :files)
         {
-
             //相对路径
 //            String relativePath = dir+"/"+UUID.randomUUID().toString()+ "." +StringUtils.substringAfterLast(file.getOriginalFilename(),".");
 
-            String relativePath = dir+"/"+username+"_"+companyName+"_"+file.getOriginalFilename();
+            String relativePath = dir+"/"+username+"_"+companyName+"_"+UUID.randomUUID().toString().replace("-","");
 
             //完整路径
             String fullpath = baseDir + relativePath;
