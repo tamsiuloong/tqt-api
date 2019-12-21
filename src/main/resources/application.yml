@@ -41,8 +41,8 @@ spring:
     history-level: full
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 200MB
+      max-request-size: 200MB
 tqt:
   global:
     adminRoles: #管理员角色
@@ -59,7 +59,7 @@ tqt:
         clientId: tqt1
         clientSecret: tqt1
   upload:
-    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
-    accessPath: http://localhost:9999
-#    uploadPath: /usr/local/nginx/html/ROOT
-#    accessPath: http://www.coachtam.cn:88
+#    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
+#    accessPath: http://localhost:9999
+    uploadPath: /usr/local/nginx/html/ROOT
+    accessPath: http://www.coachtam.cn:88

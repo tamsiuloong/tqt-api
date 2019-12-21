@@ -1,13 +1,17 @@
 package com.coachtam.tqt.web;
 
+import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
+import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:	投票记录
@@ -21,6 +25,10 @@ public class VoteRecordCtrl {
 
     @Autowired
     private VoteRecordService voteRecordService;
+
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public ResultVO<Page> list(Integer pageNo, Integer pageSize)
@@ -43,6 +51,18 @@ public class VoteRecordCtrl {
     public ResultVO<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
         List<VoteRecord> result = voteRecordService.findAll(votetopicId);
+        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User dbuser = userService.findByUsername(user.getUsername());
+        if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {
+            result = result.stream().map(vr -> {
+                        vr.getUser().getUserInfo().setName("***");
+                        return vr;
+                    }
+
+            ).collect(Collectors.toList());
+
+        }
         return ResultVO.success(result);
     }
 
