@@ -5,6 +5,7 @@ import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.vo.EchartLineStackVO;
 import com.coachtam.tqt.vo.EchartVO;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,34 @@ public class ReportCtrl {
             result.getTitles().add((String) objects[0]);
             result.getValues().add((Long) objects[1]);
         });
+        return result;
+    }
+
+
+    /**
+     * 整体学习曲线
+     * @param searchForm
+     * @return
+     */
+    @PostMapping("/learncurve")
+    public EchartVO learncurve(@RequestBody FeedbackForm searchForm)
+    {
+
+        EchartVO result = feedbackService.learnCurve(searchForm);
+
+        return result;
+    }
+    /**
+     * 个人学习曲线
+     * @param searchForm
+     * @return
+     */
+    @PostMapping("/learncurvepro")
+    public EchartLineStackVO learncurvepro(@RequestBody FeedbackForm searchForm)
+    {
+
+        EchartLineStackVO result = feedbackService.learncurvepro(searchForm);
+
         return result;
     }
 }

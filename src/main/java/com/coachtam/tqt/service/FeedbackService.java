@@ -3,6 +3,8 @@ package com.coachtam.tqt.service;
 import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.vo.EchartLineStackVO;
+import com.coachtam.tqt.vo.EchartVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -37,4 +39,8 @@ public interface FeedbackService {
      */
     List<User> unCommitedList(Specification<Feedback> specification, FeedbackForm searchForm);
 
+
+    EchartVO learnCurve(FeedbackForm searchForm);
+
+    EchartLineStackVO learncurvepro(FeedbackForm searchForm);
 }

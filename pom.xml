@@ -30,12 +30,12 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <!-- spring boot热部署插件-->
+        <!-- spring boot热部署插件
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -160,6 +160,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
     <repositories>

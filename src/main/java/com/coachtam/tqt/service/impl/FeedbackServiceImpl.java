@@ -7,6 +7,10 @@ import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.vo.EchartLineStackVO;
+import com.coachtam.tqt.vo.EchartVO;
+import com.google.common.util.concurrent.AtomicDouble;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -93,7 +97,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 "from Feedback  f  " +
                 "join f.user u " +
                 "join f.course course " +
-                "join u.classes c " +
+                "left join u.classes c " +
                 " where 1 = 1");
 
         if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
@@ -129,6 +133,188 @@ public class FeedbackServiceImpl implements FeedbackService {
         });
 
         return query.getResultList();
+    }
+
+    @Override
+    public EchartVO learnCurve(FeedbackForm feedbackForm) {
+
+        EchartVO result = new EchartVO();
+
+        Map<String, Object> paras = new HashMap<>();
+
+        StringBuilder sb = new StringBuilder();
+
+        if(StringUtils.isNotBlank(feedbackForm.getStuName()))
+        {
+            sb.append("select DATE_FORMAT(f.backTime,'%Y-%m-%d'),f.absorption " +
+                    "from Feedback  f  " +
+                    "join f.user u " +
+                    "join f.course course " +
+                    "join u.classes c " +
+                    " where 1 = 1 ");
+
+            if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
+            {
+                sb.append(" and c.id = :classId");
+                paras.put("classId",feedbackForm.getClassId());
+            }
+
+            if(feedbackForm.getCourseId()!=null && !feedbackForm.getCourseId().isEmpty())
+            {
+                sb.append(" and course.id = :courseId");
+                paras.put("courseId",feedbackForm.getCourseId());
+            }
+
+            if(feedbackForm.getStuName()!=null && !feedbackForm.getStuName().isEmpty())
+            {
+                sb.append(" and u.userInfo.name = :stuName");
+                paras.put("stuName",feedbackForm.getStuName());
+            }
+
+            sb.append(" order by f.backTime asc");
+            //创建jpql查询(hql)
+            Query query = entityManager.createQuery(sb.toString());
+            //设置查询参数
+            paras.forEach((key,value)->
+                query.setParameter(key,value)
+            );
+            List<Object[]> list =  query.getResultList();
+
+            list.forEach(objects -> {
+                result.getTitles().add((String) objects[0]);
+                //60-90 --> 60L
+                try
+                {
+                    String[] split = ((String) objects[1]).split("-");
+                    Long data = Long.valueOf(split[0]);
+                    result.getValues().add(data);
+                }
+                catch (Exception e)
+                {
+                    result.getValues().add(0L);
+                }
+
+            });
+        }
+        else {
+            if(StringUtils.isBlank(feedbackForm.getClassId()))
+            {
+                return null;
+            }
+            sb.append("SELECT backtime , avg(ab) FROM( SELECT DATE_FORMAT(f.back_Time , '%Y-%m-%d') backtime , SUBSTRING_INDEX(f.ABSORPTION , '-' , 1) ab FROM FEEDBACK_P f ");
+
+            if(StringUtils.isNotBlank(feedbackForm.getClassId()))
+            {
+                sb.append("JOIN USER_P u ON f.USER_ID = u.USER_ID JOIN CLASSES_P c ON u.CLASS_ID = c.ID WHERE c.id = :classId");
+                paras.put("classId", feedbackForm.getClassId());
+            }
+            if(StringUtils.isNotBlank(feedbackForm.getCourseId()))
+            {
+                sb.append(" and COURSE_ID = :couseId");
+                paras.put("couseId", feedbackForm.getCourseId());
+            }
+
+            sb.append(") t GROUP BY backtime");
+            Query nativeQuery = entityManager.createNativeQuery(sb.toString());
+            //设置查询参数
+            paras.forEach((key,value)->
+                    nativeQuery.setParameter(key,value)
+            );
+            List<Object[]> list =   nativeQuery.getResultList();
+            list.forEach(objects -> {
+                result.getTitles().add((String) objects[0]);
+                result.getValues().add(((Double)objects[1]).longValue());
+            });
+        }
+
+        return result;
+    }
+
+    @Override
+    public EchartLineStackVO learncurvepro(FeedbackForm searchForm) {
+        EchartLineStackVO result = new EchartLineStackVO();
+        Map<String, Object> paras = new HashMap<>();
+
+        if(StringUtils.isNotBlank(searchForm.getClassId()))
+        {
+
+            //查询x轴日期列表
+            StringBuilder sb = new StringBuilder(
+                    "SELECT t.backtime FROM( SELECT DATE_FORMAT(f.back_Time , '%Y-%m-%d') backtime , ABSORPTION FROM FEEDBACK_P f JOIN USER_P u ON f.USER_ID = u.USER_ID WHERE u.CLASS_ID = :classId ");
+
+            paras.put("classId", searchForm.getClassId());
+            if(StringUtils.isNotBlank(searchForm.getCourseId()))
+            {
+                sb.append(" AND f.COURSE_ID = :courseId");
+                paras.put("courseId", searchForm.getCourseId());
+            }
+            sb.append(" ) t GROUP BY t.backtime");
+
+
+            Query nativeQuery = entityManager.createNativeQuery(sb.toString());
+            paras.forEach((key,value)->
+                    nativeQuery.setParameter(key,value)
+            );
+            List<String> dateList = nativeQuery.getResultList();
+            List<User> userList = userService.findByClassId(searchForm.getClassId());
+            List<String> userNameList = userList.stream().map(user -> user.getUserInfo().getName()).collect(Collectors.toList());
+
+            result.setLegendData(userNameList);
+            result.setXData(dateList);
+            List<Map<String, Object>> series = result.getSeries();
+            userList.forEach(user->{
+                    //查询这个人每一天吸收情况
+                    List<Object[]> resultList = entityManager
+                            .createNativeQuery("SELECT t.ti , avg(ab) FROM( SELECT DATE_FORMAT(f.back_Time , '%Y-%m-%d') ti , SUBSTRING_INDEX(f.ABSORPTION , '-' , 1) ab FROM FEEDBACK_P f WHERE f.USER_ID = :userId) t GROUP BY t.ti")
+                            .setParameter("userId",user.getId())
+                            .getResultList();
+
+                    Map<String, Double> map = new HashMap<>();
+                    resultList.forEach(objects -> {
+                        map.put((String)objects[0],(Double)objects[1]);
+                    });
+
+                    Map<String, Object> serie = new HashMap<>();
+                    //默认不选中
+                    result.getSelected().put(user.getUserInfo().getName(), false);
+                    serie.put("name",user.getUserInfo().getName());
+                    serie.put("type","line");
+                    serie.put("smooth",true);
+                    List<Double> data = new ArrayList<>();
+                    //获取这个同学的平均吸收情况
+                    AtomicDouble avg = new AtomicDouble();
+                    try{
+                        if(map.size()>0)
+                        {
+                            Double t =  map.values().stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+                            avg.set(t);
+                        }
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    dateList.forEach(date->{
+                        Double ab = map.get(date);
+                        if(ab!=null)
+                        {
+                            data.add(ab);
+                        }
+                        else {
+                            //如果当天没有提交，那么取他平均值
+                            data.add(avg.get());
+                        }
+                    });
+                    serie.put("data", data);
+                    series.add(serie);
+
+            });
+            result.setSeries(series);
+
+
+        }
+
+        return result;
     }
 
     @Override
