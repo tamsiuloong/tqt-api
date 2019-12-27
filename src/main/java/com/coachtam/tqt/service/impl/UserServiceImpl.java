@@ -115,7 +115,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteByIds(String[] ids) {
         for (String id:ids) {
-            userDao.deleteById(id);
+            User user = userDao.findById(id).get();
+            //不删除  只改状态
+            user.setState(0);
+//            userDao.deleteById(id);
         }
 
     }

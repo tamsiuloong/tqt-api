@@ -259,9 +259,12 @@ public class FeedbackServiceImpl implements FeedbackService {
             List<User> userList = userService.findByClassId(searchForm.getClassId());
             List<String> userNameList = userList.stream().map(user -> user.getUserInfo().getName()).collect(Collectors.toList());
 
-            result.setLegendData(userNameList);
+
             result.setXData(dateList);
             List<Map<String, Object>> series = result.getSeries();
+
+            //记录每个人的平均接收度
+            Map<String, Double> avgMap = new HashMap<>(userList.size());
             userList.forEach(user->{
                     //查询这个人每一天吸收情况
                     List<Object[]> resultList = entityManager
@@ -276,8 +279,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
                     Map<String, Object> serie = new HashMap<>();
                     //默认不选中
-                    result.getSelected().put(user.getUserInfo().getName(), false);
-                    serie.put("name",user.getUserInfo().getName());
+                    String name = user.getUserInfo().getName();
+                    result.getSelected().put(name, false);
+                    serie.put("name",name);
                     serie.put("type","line");
                     serie.put("smooth",true);
                     List<Double> data = new ArrayList<>();
@@ -288,6 +292,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                         {
                             Double t =  map.values().stream().mapToDouble(Double::doubleValue).average().getAsDouble();
                             avg.set(t);
+                            avgMap.put(name, t);
                         }
                     }catch (Exception e)
                     {
@@ -310,7 +315,37 @@ public class FeedbackServiceImpl implements FeedbackService {
 
             });
             result.setSeries(series);
+            //按照吸收程度升序排
+            List<String> sortUserNameList = avgMap.entrySet().stream().sorted((e1, e2) -> {
+                return e1.getValue().compareTo(e2.getValue());
+            }).map(e -> e.getKey()).collect(Collectors.toList());
+            result.setLegendData(sortUserNameList);
 
+            //整体平均分
+            Double totalAvg = avgMap.values().stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+            //查询平均接收最低的同学
+            Map.Entry<String, Double> lastStu = avgMap.entrySet().stream().min((e1, e2) -> {
+                return e1.getValue().compareTo(e2.getValue());
+            }).get();
+
+            result.getSelected().forEach((name,selected)->{
+                if(name.equals(lastStu.getKey()))
+                {
+                    result.getSelected().put(name, true);
+                }
+            });
+            //查询低于平均的同学
+//            Map<String, Double> lastStuMap = avgMap.entrySet().stream().sorted((e1, e2) -> {
+//                return e1.getValue().compareTo(e2.getValue());
+//            }).filter(e -> e.getValue() < totalAvg).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+//            //将低于平均分的同学选中
+//            result.getSelected().forEach((name,selected)->{
+//                if(lastStuMap.keySet().contains(name))
+//                {
+//                    result.getSelected().put(name, true);
+//                }
+//            });
 
         }
 
