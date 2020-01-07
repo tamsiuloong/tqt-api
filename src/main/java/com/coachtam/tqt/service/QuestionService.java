@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Question;
-import com.coachtam.tqt.vo.question.QuestionEditRequestVM;
+import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 

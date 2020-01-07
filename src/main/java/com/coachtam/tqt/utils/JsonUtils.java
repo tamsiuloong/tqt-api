@@ -54,4 +54,13 @@ public class JsonUtils {
         }
         return null;
     }
+
+    public static <T> String toJsonStr(T o) {
+        try {
+            return MAPPER.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
 }

@@ -1,6 +1,8 @@
 package com.coachtam.tqt.entity;
 
 import java.util.Date;
+
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -53,7 +55,7 @@ public class ExamPaperQuestionCustomerAnswer {
 	private Integer textContentId;
 	//是否正确
 	@Column(name = "do_right")
-	private String doRight;
+	private Boolean doRight;
 
 	@Column(name = "user_id")
 	private String userId;

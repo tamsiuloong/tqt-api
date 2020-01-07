@@ -1,6 +1,9 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaperAnswer;
+import com.coachtam.tqt.entity.ExamPaperAnswerInfo;
+import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -21,4 +24,6 @@ public interface ExamPaperAnswerService {
     void update(ExamPaperAnswer model);
 
     void deleteByIds(Integer[] id);
+
+    ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, User user);
 }

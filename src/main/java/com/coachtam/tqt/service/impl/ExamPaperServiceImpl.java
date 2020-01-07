@@ -7,6 +7,7 @@ import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.entity.exam.ExamPaperQuestionItemObject;
 import com.coachtam.tqt.entity.exam.ExamPaperTitleItemObject;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.respository.ExamPaperContentDao;
 import com.coachtam.tqt.respository.ExamPaperDao;
 import com.coachtam.tqt.respository.QuestionDao;
@@ -17,11 +18,13 @@ import com.coachtam.tqt.utils.DateTimeUtil;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
-import com.coachtam.tqt.vo.exam.ExamPaperEditRequestVM;
-import com.coachtam.tqt.vo.exam.ExamPaperPageRequestVM;
-import com.coachtam.tqt.vo.exam.ExamPaperTitleItemVM;
-import com.coachtam.tqt.vo.question.QuestionEditRequestVM;
+import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
+import com.coachtam.tqt.vo.admin.exam.ExamPaperTitleItemVM;
+import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
+import com.coachtam.tqt.vo.student.dashboard.PaperInfo;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -202,5 +205,17 @@ public class ExamPaperServiceImpl implements ExamPaperService {
             vm.setLimitDateTime(limitDateTime);
         }
         return vm;
+    }
+
+    @Override
+    public List<ExamPaper> findPaperByType(int type) {
+        ExamPaper examPaper = new ExamPaper();
+        examPaper.setPaperType(type);
+        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        examPaper.setClasses(user.getClasses());
+        Example<ExamPaper> example = Example.of(examPaper);
+        List<ExamPaper> all = examPaperDao.findAll(example);
+
+        return all;
     }
 }

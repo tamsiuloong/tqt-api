@@ -1,9 +1,0 @@
-public static void changeStr(String str){
-	str = "就算面100次";
-	str += "我也会坚持下去";
-}
-public static void main(String[] args){
-	String str = "我一定找得到工作";
-	changeStr(str);
-	System.out.println(str);
-}

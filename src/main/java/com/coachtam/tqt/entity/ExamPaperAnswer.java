@@ -29,7 +29,7 @@ public class ExamPaperAnswer {
 	private String paperName;
 
 	@Column(name = "paper_type")
-	private String paperType;
+	private Integer paperType;
 	//课程
 	@Column(name = "course_id")
 	private String courseId;

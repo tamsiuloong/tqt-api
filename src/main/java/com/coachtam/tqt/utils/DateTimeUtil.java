@@ -9,9 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 
-/**
- * @author alvis
- */
+
 public class DateTimeUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(DateTimeUtil.class);

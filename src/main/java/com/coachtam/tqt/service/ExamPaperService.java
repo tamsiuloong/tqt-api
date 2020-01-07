@@ -1,8 +1,9 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaper;
-import com.coachtam.tqt.vo.exam.ExamPaperEditRequestVM;
-import com.coachtam.tqt.vo.exam.ExamPaperPageRequestVM;
+import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
+import com.coachtam.tqt.vo.student.dashboard.PaperInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -29,4 +30,6 @@ public interface ExamPaperService {
     Page page(ExamPaperPageRequestVM model);
 
     ExamPaperEditRequestVM examPaperToVM(Integer id);
+
+    List<ExamPaper> findPaperByType(int type);
 }
