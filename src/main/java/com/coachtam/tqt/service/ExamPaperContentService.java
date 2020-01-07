@@ -1,8 +1,14 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaperContent;
+import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
+import com.coachtam.tqt.entity.task.TaskItemAnswerObject;
 import org.springframework.data.domain.Page;
+
+import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+
 /**
  * @Description:	试卷内容
  * @Author:			Coach tam
@@ -21,4 +27,9 @@ public interface ExamPaperContentService {
     void update(ExamPaperContent model);
 
     void deleteByIds(Integer[] id);
+
+    <T, R> ExamPaperContent jsonConvertInsert(List<T> list, Date now, Function<? super T, ? extends R> mapper);
+
+    <T, R> ExamPaperContent jsonConvertUpdate(ExamPaperContent textContent, List<T> list, Function<? super T, ? extends R> mapper);
+
 }

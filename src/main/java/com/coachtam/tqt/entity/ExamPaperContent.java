@@ -24,6 +24,7 @@ public class ExamPaperContent implements Serializable {
         this.createTime = createTime;
     }
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

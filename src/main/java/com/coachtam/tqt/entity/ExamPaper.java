@@ -77,5 +77,8 @@ public class ExamPaper {
 	@Column(name = "task_exam_id")
 	private Integer taskExamId;
 
+	@Column(name = "FRAME_TEXT_CONTENT_ID")
+	private Integer frameTextContentId;
+
 
 }

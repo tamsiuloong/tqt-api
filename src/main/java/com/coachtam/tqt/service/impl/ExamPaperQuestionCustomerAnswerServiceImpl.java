@@ -1,9 +1,17 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.config.utils.JsonUtil;
+import com.coachtam.tqt.entity.ExamPaperContent;
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
+import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
+import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
 import com.coachtam.tqt.respository.ExamPaperQuestionCustomerAnswerDao;
+import com.coachtam.tqt.service.ExamPaperContentService;
 import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
+import com.coachtam.tqt.utils.ExamUtil;
+import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +31,8 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
     @Autowired
     private ExamPaperQuestionCustomerAnswerDao examPaperQuestionCustomerAnswerDao;
 
+    @Autowired
+    private ExamPaperContentService examPaperContentService;
 
     @Override
     public Page<ExamPaperQuestionCustomerAnswer> page(Integer pageNo,Integer pageSize)
@@ -58,5 +68,64 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
     @Override
     public ExamPaperQuestionCustomerAnswer findById(Integer id) {
         return examPaperQuestionCustomerAnswerDao.findById(id).get();
+    }
+
+    @Override
+    public void saveAll(List<ExamPaperQuestionCustomerAnswer> list) {
+        examPaperQuestionCustomerAnswerDao.saveAll(list);
+    }
+
+    @Override
+    public ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa) {
+        ExamPaperSubmitItemVM examPaperSubmitItemVM = new ExamPaperSubmitItemVM();
+        examPaperSubmitItemVM.setId(qa.getId());
+        examPaperSubmitItemVM.setQuestionId(qa.getQuestionId());
+        examPaperSubmitItemVM.setDoRight(qa.getDoRight());
+        examPaperSubmitItemVM.setItemOrder(qa.getItemOrder());
+        examPaperSubmitItemVM.setQuestionScore(ExamUtil.scoreToVM(qa.getQuestionScore()));
+        examPaperSubmitItemVM.setScore(ExamUtil.scoreToVM(qa.getCustomerScore()));
+        setSpecialToVM(examPaperSubmitItemVM, qa);
+        return examPaperSubmitItemVM;
+    }
+
+    private void setSpecialToVM(ExamPaperSubmitItemVM examPaperSubmitItemVM, ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer) {
+        QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.fromCode(examPaperQuestionCustomerAnswer.getQuestionType());
+        switch (questionTypeEnum) {
+            case MultipleChoice:
+                examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
+                examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
+                break;
+            case GapFilling:
+                ExamPaperContent textContent = examPaperContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
+                List<String> correctAnswer = JsonUtils.toJsonListObject(textContent.getContent(), String.class);
+                examPaperSubmitItemVM.setContentArray(correctAnswer);
+                break;
+            default:
+                if (QuestionTypeEnum.needSaveTextContent(examPaperQuestionCustomerAnswer.getQuestionType())) {
+                    ExamPaperContent content = examPaperContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
+                    examPaperSubmitItemVM.setContent(content.getContent());
+                } else {
+                    examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public List<ExamPaperQuestionCustomerAnswer> findByExamPaperAnswerId(Integer id) {
+        return examPaperQuestionCustomerAnswerDao.findByExamPaperAnswerId(id);
+    }
+
+    public ExamPaperQuestionCustomerAnswerServiceImpl() {
+    }
+
+    @Override
+    public void updateScore(List<ExamPaperAnswerUpdate> examPaperAnswerUpdates) {
+        if(examPaperAnswerUpdates!=null)
+        {
+            examPaperAnswerUpdates.forEach(e->
+                examPaperQuestionCustomerAnswerDao.updateScore(e.getCustomerScore(),e.getDoRight(),e.getId())
+            );
+        }
     }
 }

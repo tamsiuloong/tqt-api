@@ -1,15 +1,21 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.ExamPaperContent;
+import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.respository.ExamPaperContentDao;
 import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @Description:	试卷内容
@@ -59,4 +65,35 @@ public class ExamPaperContentServiceImpl implements ExamPaperContentService {
     public ExamPaperContent findById(Integer id) {
         return examPaperContentDao.findById(id).get();
     }
+
+
+    @Override
+    public <T, R> ExamPaperContent jsonConvertInsert(List<T> list, Date now, Function<? super T, ? extends R> mapper) {
+        String frameTextContent = null;
+        if (null == mapper) {
+            frameTextContent = JsonUtils.toJsonStr(list);
+        } else {
+            List<R> mapList = list.stream().map(mapper).collect(Collectors.toList());
+            frameTextContent = JsonUtils.toJsonStr(mapList);
+        }
+        ExamPaperContent textContent = new ExamPaperContent(frameTextContent, now);
+        //insertByFilter(textContent);  cache useless
+        return textContent;
+    }
+
+    @Override
+    public <T, R> ExamPaperContent jsonConvertUpdate(ExamPaperContent textContent, List<T> list, Function<? super T, ? extends R> mapper) {
+        String frameTextContent = null;
+        if (null == mapper) {
+            frameTextContent = JsonUtils.toJsonStr(list);
+        } else {
+            List<R> mapList = list.stream().map(mapper).collect(Collectors.toList());
+            frameTextContent = JsonUtils.toJsonStr(mapList);
+        }
+        textContent.setContent(frameTextContent);
+        //this.updateByIdFilter(textContent);  cache useless
+        return textContent;
+    }
+
+
 }

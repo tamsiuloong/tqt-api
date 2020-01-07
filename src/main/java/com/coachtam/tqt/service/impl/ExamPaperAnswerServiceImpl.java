@@ -6,21 +6,30 @@ import com.coachtam.tqt.entity.enums.ExamPaperAnswerStatusEnum;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
 import com.coachtam.tqt.entity.exam.ExamPaperTitleItemObject;
-import com.coachtam.tqt.respository.ExamPaperAnswerDao;
-import com.coachtam.tqt.respository.ExamPaperContentDao;
-import com.coachtam.tqt.respository.ExamPaperDao;
-import com.coachtam.tqt.respository.QuestionDao;
+import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
+import com.coachtam.tqt.entity.task.TaskItemAnswerObject;
+import com.coachtam.tqt.respository.*;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
+import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
+import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
 import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
 import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitVM;
+import com.coachtam.tqt.vo.student.exampaper.ExamPaperAnswerPageVM;
+import org.apache.commons.lang.StringUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,11 +49,24 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     @Autowired
     private ExamPaperDao examPaperDao;
 
+
     @Autowired
-    private ExamPaperContentDao examPaperContentDao;
+    private ExamPaperService examPaperService;
+
+    @Autowired
+    private ExamPaperContentService examPaperContentService;
 
     @Autowired
     private QuestionDao questionDao;
+
+
+
+    @Autowired
+    private ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
+
+
+    @Autowired
+    private TaskExamCustomerAnswerDao taskExamCustomerAnswerDao;
 
     @Override
     public Page<ExamPaperAnswer> page(Integer pageNo,Integer pageSize)
@@ -86,14 +108,14 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     public ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, User user) {
         ExamPaperAnswerInfo examPaperAnswerInfo = new ExamPaperAnswerInfo();
         Date now = new Date();
-        ExamPaper examPaper = examPaperDao.getOne(examPaperSubmitVM.getId());
+        ExamPaper examPaper = examPaperDao.findById(examPaperSubmitVM.getId()).get();
         ExamPaperTypeEnum paperTypeEnum = ExamPaperTypeEnum.fromCode(examPaper.getPaperType());
         if (paperTypeEnum == ExamPaperTypeEnum.Task) {
             ExamPaperAnswer examPaperAnswer = examPaperAnswerDao.getOne(examPaperSubmitVM.getId());
             if (null != examPaperAnswer)
             {return null;}
         }
-        String frameTextContent = examPaperContentDao.getOne(examPaper.getId()).getContent();
+        String frameTextContent = examPaperContentService.findById(examPaper.getId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtils.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream().flatMap(t -> t.getQuestionItems().stream().map(q -> q.getId())).collect(Collectors.toList());
         List<Question> questions = questionDao.findByIdIn(questionIds);
@@ -185,5 +207,89 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
                 examPaperQuestionCustomerAnswer.setCustomerScore(0);
                 break;
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ExamPaperAnswer> findByUserIdAndCourseId(ExamPaperAnswerPageVM model) {
+        Specification<ExamPaperAnswer> specification = (root, query, builder)->{
+            List<Predicate> predicates = Lists.newArrayList();
+
+            if(StringUtils.isNotBlank(model.getCreateUser()))
+            {
+                Predicate equal = builder.equal(root.get("userId"), model.getCreateUser());
+                predicates.add(equal);
+            }
+
+            if(StringUtils.isNotBlank(model.getCourseId()))
+            {
+                Predicate equal = builder.equal(root.get("courseId"), model.getCourseId());
+                predicates.add(equal);
+            }
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return examPaperAnswerDao.findAll(specification,PageUtils.of(model.getPageIndex(), model.getPageSize()));
+    }
+
+    @Override
+    public ExamPaperSubmitVM examPaperAnswerToVM(Integer id) {
+        ExamPaperSubmitVM examPaperSubmitVM = new ExamPaperSubmitVM();
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerDao.findById(id).get();
+        examPaperSubmitVM.setId(examPaperAnswer.getId());
+        examPaperSubmitVM.setDoTime(examPaperAnswer.getDoTime());
+        examPaperSubmitVM.setScore(ExamUtil.scoreToVM(examPaperAnswer.getUserScore()));
+        List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperQuestionCustomerAnswerService.findByExamPaperAnswerId(examPaperAnswer.getId());
+        List<ExamPaperSubmitItemVM> examPaperSubmitItemVMS = examPaperQuestionCustomerAnswers.stream()
+                .map(a -> examPaperQuestionCustomerAnswerService.examPaperQuestionCustomerAnswerToVM(a))
+                .collect(Collectors.toList());
+        examPaperSubmitVM.setAnswerItems(examPaperSubmitItemVMS);
+        return examPaperSubmitVM;
+    }
+    @Override
+    @Transactional
+    public String judge(ExamPaperSubmitVM examPaperSubmitVM) {
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerDao.findById(examPaperSubmitVM.getId()).get();
+        List<ExamPaperSubmitItemVM> judgeItems = examPaperSubmitVM.getAnswerItems().stream().filter(d -> d.getDoRight() == null).collect(Collectors.toList());
+        List<ExamPaperAnswerUpdate> examPaperAnswerUpdates = new ArrayList<>(judgeItems.size());
+        Integer customerScore = examPaperAnswer.getUserScore();
+        Integer questionCorrect = examPaperAnswer.getQuestionCorrect();
+        for (ExamPaperSubmitItemVM d : judgeItems) {
+            ExamPaperAnswerUpdate examPaperAnswerUpdate = new ExamPaperAnswerUpdate();
+            examPaperAnswerUpdate.setId(d.getId());
+            examPaperAnswerUpdate.setCustomerScore(ExamUtil.scoreFromVM(d.getScore()));
+            boolean doRight = examPaperAnswerUpdate.getCustomerScore().equals(ExamUtil.scoreFromVM(d.getQuestionScore()));
+            examPaperAnswerUpdate.setDoRight(doRight);
+            examPaperAnswerUpdates.add(examPaperAnswerUpdate);
+            customerScore += examPaperAnswerUpdate.getCustomerScore();
+            if (examPaperAnswerUpdate.getDoRight()) {
+                ++questionCorrect;
+            }
+        }
+        examPaperAnswer.setUserScore(customerScore);
+        examPaperAnswer.setQuestionCorrect(questionCorrect);
+        examPaperAnswer.setStatus(ExamPaperAnswerStatusEnum.Complete.getCode());
+        examPaperAnswerDao.save(examPaperAnswer);
+        examPaperQuestionCustomerAnswerService.updateScore(examPaperAnswerUpdates);
+
+        ExamPaperTypeEnum examPaperTypeEnum = ExamPaperTypeEnum.fromCode(examPaperAnswer.getPaperType());
+        switch (examPaperTypeEnum) {
+            case Task:
+                ExamPaper examPaper = examPaperDao.findById(examPaperAnswer.getExamPaperId()).get();
+                Integer taskId = examPaper.getTaskExamId();
+                String userId = examPaperAnswer.getUserId();
+                TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerDao.getBytaskExamIdAndUserId(taskId, userId);
+                ExamPaperContent textContent = examPaperContentService.findById(taskExamCustomerAnswer.getTextContentId());
+                List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtils.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
+                taskItemAnswerObjects.stream()
+                        .filter(d -> d.getExamPaperAnswerId() .equals(examPaperAnswer.getId()) )
+                        .findFirst().ifPresent(taskItemAnswerObject -> taskItemAnswerObject.setStatus(examPaperAnswer.getStatus()));
+                examPaperContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
+                examPaperContentService.update(textContent);
+                break;
+            default:
+                break;
+        }
+        return ExamUtil.scoreToVM(customerScore);
     }
 }

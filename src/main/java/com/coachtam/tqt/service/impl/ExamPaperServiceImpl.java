@@ -92,6 +92,12 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         List<ExamPaperTitleItemVM> titleItemsVM = model.getTitleItems();
         List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
         String frameTextContentStr = JsonUtils.toJson(frameTextContentList);
+
+
+        //保存试卷详情
+        ExamPaperContent frameTextContent = new ExamPaperContent(frameTextContentStr, examPaper.getCreateTime());
+        examPaperContentDao.save(frameTextContent);
+
         examPaper = modelMapper.map(model, ExamPaper.class);
 
 
@@ -100,12 +106,11 @@ public class ExamPaperServiceImpl implements ExamPaperService {
 
         examPaper.setUser(currUser);
         examPaper.setCreateTime(new Date());
-//        examPaper.setScore(Integer.valueOf(model.getScore()));
+        //设置关系
+        examPaper.setFrameTextContentId(frameTextContent.getId());
         examPaperDao.save(examPaper);
 
-        ExamPaperContent frameTextContent = new ExamPaperContent(frameTextContentStr, examPaper.getCreateTime());
-        frameTextContent.setId(examPaper.getId());
-        examPaperContentDao.save(frameTextContent);
+
     }
 
     private void examPaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, ExamPaper examPaper, List<ExamPaperTitleItemVM> titleItemsVM) {
@@ -164,8 +169,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         examPaper.setDeleted(dbExamPaper.getDeleted());
         examPaper.setCreateTime(dbExamPaper.getCreateTime());
         examPaperDao.save(examPaper);
-
-        ExamPaperContent examPaperContent = examPaperContentDao.getOne(examPaper.getId());
+        //获取试卷对应详情
+        ExamPaperContent examPaperContent = examPaperContentDao.getOne(dbExamPaper.getFrameTextContentId());
         examPaperContent.setContent(frameTextContentStr);
         examPaperContentDao.save(examPaperContent);
     }

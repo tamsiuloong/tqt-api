@@ -4,6 +4,7 @@ import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.entity.ExamPaperAnswerInfo;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitVM;
+import com.coachtam.tqt.vo.student.exampaper.ExamPaperAnswerPageVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -26,4 +27,21 @@ public interface ExamPaperAnswerService {
     void deleteByIds(Integer[] id);
 
     ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, User user);
+
+    Page<ExamPaperAnswer> findByUserIdAndCourseId(ExamPaperAnswerPageVM model);
+
+    /**
+     * 试卷答题信息转成ViewModel 传给前台
+     *
+     * @param id 试卷id
+     * @return ExamPaperSubmitVM
+     */
+    ExamPaperSubmitVM examPaperAnswerToVM(Integer id);
+
+    /**
+     * 试卷批改
+     * @param examPaperSubmitVM  examPaperSubmitVM
+     * @return String
+     */
+    String judge(ExamPaperSubmitVM examPaperSubmitVM);
 }

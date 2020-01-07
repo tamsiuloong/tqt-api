@@ -1,6 +1,8 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
+import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
+import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -16,9 +18,18 @@ public interface ExamPaperQuestionCustomerAnswerService {
 
     void save(ExamPaperQuestionCustomerAnswer model);
 
+    void saveAll(List<ExamPaperQuestionCustomerAnswer> list);
+
     ExamPaperQuestionCustomerAnswer findById(Integer id);
 
     void update(ExamPaperQuestionCustomerAnswer model);
 
     void deleteByIds(Integer[] id);
+
+    List<ExamPaperQuestionCustomerAnswer> findByExamPaperAnswerId(Integer id);
+
+    public ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa);
+
+    void updateScore(List<ExamPaperAnswerUpdate> examPaperAnswerUpdates);
+
 }
