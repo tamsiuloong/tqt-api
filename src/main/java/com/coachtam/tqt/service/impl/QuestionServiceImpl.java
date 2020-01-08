@@ -190,4 +190,11 @@ public class QuestionServiceImpl implements QuestionService {
         questionEditRequestVM.setItems(editItems);
         return questionEditRequestVM;
     }
+
+    @Override
+    public QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId) {
+        //题目映射
+        Question question = questionDao.findById(questionId).get();
+        return getQuestionEditRequestVM(question);
+    }
 }

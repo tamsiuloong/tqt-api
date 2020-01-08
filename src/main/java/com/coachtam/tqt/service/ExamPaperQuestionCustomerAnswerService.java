@@ -2,6 +2,7 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
+import com.coachtam.tqt.vo.student.answer.QuestionPageStudentRequestVM;
 import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
@@ -32,4 +33,5 @@ public interface ExamPaperQuestionCustomerAnswerService {
 
     void updateScore(List<ExamPaperAnswerUpdate> examPaperAnswerUpdates);
 
+    Page<ExamPaperQuestionCustomerAnswer> findByUserId(QuestionPageStudentRequestVM model);
 }

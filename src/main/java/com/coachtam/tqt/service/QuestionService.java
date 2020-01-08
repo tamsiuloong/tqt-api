@@ -26,4 +26,6 @@ public interface QuestionService {
     void deleteByIds(Integer[] id);
 
     QuestionEditRequestVM getQuestionEditRequestVM(Question question);
+
+    QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId);
 }

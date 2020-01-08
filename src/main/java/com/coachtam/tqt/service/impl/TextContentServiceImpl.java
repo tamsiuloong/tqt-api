@@ -61,7 +61,7 @@ public class TextContentServiceImpl implements TextContentService {
 
     @Override
     public TextContent findById(Integer id) {
-        return textContentDao.findById(id).get();
+        return textContentDao.getOne(id);
     }
 
 

@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
@@ -10,12 +11,18 @@ import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.vo.student.answer.QuestionPageStudentRequestVM;
 import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
+import org.apache.commons.lang.StringUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
@@ -126,5 +133,23 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
                 examPaperQuestionCustomerAnswerDao.updateScore(e.getCustomerScore(),e.getDoRight(),e.getId())
             );
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ExamPaperQuestionCustomerAnswer> findByUserId(QuestionPageStudentRequestVM model) {
+        Specification<ExamPaperQuestionCustomerAnswer> specification = (root, query, builder)->{
+            List<Predicate> predicates = Lists.newArrayList();
+
+            if(StringUtils.isNotBlank(model.getCreateUser()))
+            {
+                Predicate equal = builder.equal(root.get("userId"), model.getCreateUser());
+                predicates.add(equal);
+            }
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+
+        return examPaperQuestionCustomerAnswerDao.findAll(specification,PageUtils.of(model.getPageIndex(), model.getPageSize(), Sort.by("createTime").descending()));
     }
 }
