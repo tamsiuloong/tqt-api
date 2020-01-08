@@ -16,6 +16,7 @@ import com.coachtam.tqt.vo.admin.question.QuestionEditItemVM;
 import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.coachtam.tqt.service.impl.ExamPaperServiceImpl.modelMapper;
@@ -73,7 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
         bean.setDeleted(false);
         if(form.getQuestionType().equals(2))
         {
-            bean.setCorrect(JsonUtils.toJson(form.getCorrectArray()));
+            bean.setCorrect(StringUtils.join(form.getCorrectArray(),","));
         }
         bean.setCreateTime(new Date());
 

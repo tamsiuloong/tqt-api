@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name="EXAM_PAPER_CONTENT_P")
+@Table(name="TEXT_CONTENT_P")
 public class TextContent implements Serializable {
 
 
