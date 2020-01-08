@@ -22,6 +22,7 @@ import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperTitleItemVM;
 import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
+import com.coachtam.tqt.vo.student.exam.ExamPaperPageVM;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -72,6 +73,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public Page page(ExamPaperPageRequestVM model) {
         return  examPaperDao.findAll(PageUtils.of(model.getPageIndex(),model.getPageSize()));
     }
+
+
 
     @Override
     public List<ExamPaper> findAll() {

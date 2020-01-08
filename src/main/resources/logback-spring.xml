@@ -172,7 +172,7 @@
 
     <!--开发环境:打印控制台-->
     <springProfile name="dev">
-        <logger name="com.coachtam.tqt" level="debug"/>
+        <logger name="com.coachtam.tqt" level="error"/>
     </springProfile>
 
     <root level="error">

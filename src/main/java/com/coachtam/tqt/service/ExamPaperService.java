@@ -4,6 +4,7 @@ import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
 import com.coachtam.tqt.vo.student.dashboard.PaperInfo;
+import com.coachtam.tqt.vo.student.exam.ExamPaperPageVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -28,6 +29,7 @@ public interface ExamPaperService {
     void deleteByIds(Integer[] id);
 
     Page page(ExamPaperPageRequestVM model);
+
 
     ExamPaperEditRequestVM examPaperToVM(Integer id);
 
