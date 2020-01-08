@@ -1,6 +1,5 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
@@ -11,8 +10,8 @@ import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
-import com.coachtam.tqt.vo.student.answer.QuestionPageStudentRequestVM;
-import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
+import com.coachtam.tqt.viewmodel.student.answer.QuestionPageStudentRequestVM;
+import com.coachtam.tqt.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;

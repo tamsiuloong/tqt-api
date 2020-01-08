@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.VoteItem;
 import com.coachtam.tqt.service.VoteItemService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +23,48 @@ public class VoteItemCtrl {
     private VoteItemService voteItemService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = voteItemService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<VoteItem> list(@PathVariable("id") String id)
+    public ResultVM<VoteItem> list(@PathVariable("id") String id)
     {
         VoteItem voteItem = voteItemService.findById(id);
 
-        return ResultVO.success(voteItem);
+        return ResultVM.success(voteItem);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<VoteItem>> getAll()
+    public ResultVM<List<VoteItem>> getAll()
     {
         List<VoteItem> result = voteItemService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         voteItemService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody VoteItem voteItem)
+    public ResultVM<String> update(@RequestBody VoteItem voteItem)
     {
         voteItemService.update(voteItem);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody VoteItem voteItem)
+    public ResultVM<String> add(@RequestBody VoteItem voteItem)
     {
         voteItemService.save(voteItem);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

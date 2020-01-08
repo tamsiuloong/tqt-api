@@ -1,10 +1,8 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaper;
-import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
-import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
-import com.coachtam.tqt.vo.student.dashboard.PaperInfo;
-import com.coachtam.tqt.vo.student.exam.ExamPaperPageVM;
+import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 

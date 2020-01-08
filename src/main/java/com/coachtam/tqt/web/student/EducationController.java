@@ -3,14 +3,12 @@ package com.coachtam.tqt.web.student;
 
 
 import com.coachtam.tqt.entity.Course;
-import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.CourseService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.ModelMapperSingle;
-import com.coachtam.tqt.vo.student.base.RestResponse;
-import com.coachtam.tqt.vo.student.education.CourseEditRequestVM;
-import com.coachtam.tqt.vo.student.education.CourseVM;
+import com.coachtam.tqt.viewmodel.student.base.RestResponse;
+import com.coachtam.tqt.viewmodel.student.education.CourseEditRequestVM;
+import com.coachtam.tqt.viewmodel.student.education.CourseVM;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.PathVariable;

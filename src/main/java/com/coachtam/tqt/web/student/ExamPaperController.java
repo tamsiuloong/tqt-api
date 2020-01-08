@@ -1,16 +1,15 @@
 package com.coachtam.tqt.web.student;
 
 
-import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
 import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.utils.DateTimeUtil;
 import com.coachtam.tqt.utils.ModelMapperSingle;
-import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
-import com.coachtam.tqt.vo.student.base.RestResponse;
-import com.coachtam.tqt.vo.student.exam.ExamPaperPageResponseVM;
-import com.coachtam.tqt.vo.student.exam.ExamPaperPageVM;
+import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.viewmodel.student.base.RestResponse;
+import com.coachtam.tqt.viewmodel.student.exam.ExamPaperPageResponseVM;
+import com.coachtam.tqt.viewmodel.student.exam.ExamPaperPageVM;
 import lombok.AllArgsConstructor;
 import org.assertj.core.util.Lists;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
 import java.util.HashMap;

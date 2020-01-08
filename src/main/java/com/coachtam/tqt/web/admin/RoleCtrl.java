@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.Role;
 import com.coachtam.tqt.service.RoleService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +23,48 @@ public class RoleCtrl {
     private RoleService roleService;
 
     @GetMapping
-    public ResultVO<Page> list(@RequestParam(defaultValue = "1")Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize)
+    public ResultVM<Page> list(@RequestParam(defaultValue = "1")Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize)
     {
         Page result = roleService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Role> list(@PathVariable("id") String id)
+    public ResultVM<Role> list(@PathVariable("id") String id)
     {
         Role role = roleService.findById(id);
 
-        return ResultVO.success(role);
+        return ResultVM.success(role);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Role>> getAll()
+    public ResultVM<List<Role>> getAll()
     {
         List<Role> result = roleService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         roleService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Role role)
+    public ResultVM<String> update(@RequestBody Role role)
     {
         roleService.update(role);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Role role)
+    public ResultVM<String> add(@RequestBody Role role)
     {
         roleService.save(role);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

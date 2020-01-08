@@ -2,8 +2,8 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.to.FeedbackForm;
-import com.coachtam.tqt.vo.admin.EchartLineStackVO;
-import com.coachtam.tqt.vo.admin.EchartVO;
+import com.coachtam.tqt.viewmodel.admin.EchartLineStackVM;
+import com.coachtam.tqt.viewmodel.admin.EchartVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +22,10 @@ public class ReportCtrl {
     @Autowired
     private FeedbackService feedbackService;
     @PostMapping("/absorption")
-    public EchartVO absorption(@RequestBody FeedbackForm searchForm)
+    public EchartVM absorption(@RequestBody FeedbackForm searchForm)
     {
 
-        EchartVO result = new EchartVO();
+        EchartVM result = new EchartVM();
         List<Object[]> list = feedbackService.absorption(searchForm);
 
         list.forEach(objects -> {
@@ -42,10 +42,10 @@ public class ReportCtrl {
      * @return
      */
     @PostMapping("/learncurve")
-    public EchartVO learncurve(@RequestBody FeedbackForm searchForm)
+    public EchartVM learncurve(@RequestBody FeedbackForm searchForm)
     {
 
-        EchartVO result = feedbackService.learnCurve(searchForm);
+        EchartVM result = feedbackService.learnCurve(searchForm);
 
         return result;
     }
@@ -55,10 +55,10 @@ public class ReportCtrl {
      * @return
      */
     @PostMapping("/learncurvepro")
-    public EchartLineStackVO learncurvepro(@RequestBody FeedbackForm searchForm)
+    public EchartLineStackVM learncurvepro(@RequestBody FeedbackForm searchForm)
     {
 
-        EchartLineStackVO result = feedbackService.learncurvepro(searchForm);
+        EchartLineStackVM result = feedbackService.learncurvepro(searchForm);
 
         return result;
     }

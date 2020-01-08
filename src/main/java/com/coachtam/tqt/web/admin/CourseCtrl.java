@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.Course;
 import com.coachtam.tqt.service.CourseService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +23,48 @@ public class CourseCtrl {
     private CourseService courseService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = courseService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Course> list(@PathVariable("id") String id)
+    public ResultVM<Course> list(@PathVariable("id") String id)
     {
         Course course = courseService.findById(id);
 
-        return ResultVO.success(course);
+        return ResultVM.success(course);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Course>> getAll()
+    public ResultVM<List<Course>> getAll()
     {
         List<Course> result = courseService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         courseService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Course course)
+    public ResultVM<String> update(@RequestBody Course course)
     {
         courseService.update(course);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Course course)
+    public ResultVM<String> add(@RequestBody Course course)
     {
         courseService.save(course);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

@@ -4,7 +4,7 @@ import com.coachtam.tqt.config.properties.UploadProperteis;
 import com.coachtam.tqt.entity.Interview;
 import com.coachtam.tqt.service.InterviewService;
 import com.coachtam.tqt.to.InterviewForm;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -36,7 +36,7 @@ public class InterviewCtrl {
 
     @ApiOperation(value = "分页查询")
     @PostMapping("/search/{all}")
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody InterviewForm searchForm,@PathVariable("all")Boolean all)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody InterviewForm searchForm, @PathVariable("all")Boolean all)
     {
         Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm,all);
         result.forEach(interview ->{
@@ -57,47 +57,47 @@ public class InterviewCtrl {
 
             }
         );
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
 
     @ApiOperation(value = "根据id查询面试详情")
     @GetMapping("/{id}")
-    public ResultVO<Interview> detail(@PathVariable("id") Integer id)
+    public ResultVM<Interview> detail(@PathVariable("id") Integer id)
     {
         Interview interview = interviewService.findById(id);
 
-        return ResultVO.success(interview);
+        return ResultVM.success(interview);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Interview>> getAll()
+    public ResultVM<List<Interview>> getAll()
     {
         List<Interview> result = interviewService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
+    public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
         interviewService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<Integer> update(@RequestBody Interview interview)
+    public ResultVM<Integer> update(@RequestBody Interview interview)
     {
         interviewService.update(interview);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<Integer> add(@RequestBody Interview interview)
+    public ResultVM<Integer> add(@RequestBody Interview interview)
     {
         interviewService.save(interview);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

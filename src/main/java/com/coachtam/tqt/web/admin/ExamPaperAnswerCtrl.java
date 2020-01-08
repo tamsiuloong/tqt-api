@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +23,48 @@ public class ExamPaperAnswerCtrl {
     private ExamPaperAnswerService examPaperAnswerService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = examPaperAnswerService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<ExamPaperAnswer> list(@PathVariable("id") Integer id)
+    public ResultVM<ExamPaperAnswer> list(@PathVariable("id") Integer id)
     {
         ExamPaperAnswer examPaperAnswer = examPaperAnswerService.findById(id);
 
-        return ResultVO.success(examPaperAnswer);
+        return ResultVM.success(examPaperAnswer);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<ExamPaperAnswer>> getAll()
+    public ResultVM<List<ExamPaperAnswer>> getAll()
     {
         List<ExamPaperAnswer> result = examPaperAnswerService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
+    public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
         examPaperAnswerService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<Integer> update(@RequestBody ExamPaperAnswer examPaperAnswer)
+    public ResultVM<Integer> update(@RequestBody ExamPaperAnswer examPaperAnswer)
     {
         examPaperAnswerService.update(examPaperAnswer);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<Integer> add(@RequestBody ExamPaperAnswer examPaperAnswer)
+    public ResultVM<Integer> add(@RequestBody ExamPaperAnswer examPaperAnswer)
     {
         examPaperAnswerService.save(examPaperAnswer);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

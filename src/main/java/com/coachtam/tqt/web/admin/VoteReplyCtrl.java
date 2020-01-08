@@ -6,7 +6,7 @@ import com.coachtam.tqt.entity.VoteReply;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.service.VoteReplyService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,46 +35,46 @@ public class VoteReplyCtrl {
     @Autowired
     private VoteRecordService voteRecordService;
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = voteReplyService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<VoteReply> list(@PathVariable("id") String id)
+    public ResultVM<VoteReply> list(@PathVariable("id") String id)
     {
         VoteReply voteReply = voteReplyService.findById(id);
 
-        return ResultVO.success(voteReply);
+        return ResultVM.success(voteReply);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<VoteReply>> getAll()
+    public ResultVM<List<VoteReply>> getAll()
     {
         List<VoteReply> result = voteReplyService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         voteReplyService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody VoteReply voteReply)
+    public ResultVM<String> update(@RequestBody VoteReply voteReply)
     {
         voteReplyService.update(voteReply);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
+    public ResultVM<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
     {
         org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
@@ -85,7 +85,7 @@ public class VoteReplyCtrl {
 
         if(hasCommited)
         {
-           return ResultVO.fail("已经提交过该问卷调查!");
+           return ResultVM.fail("已经提交过该问卷调查!");
         }
 
         VoteRecord voteRecord = new VoteRecord();
@@ -95,6 +95,6 @@ public class VoteReplyCtrl {
         voteRecord.setVoteTime(new Date());
 
         voteReplyService.save(voteReplyList,voteRecord);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

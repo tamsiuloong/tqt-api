@@ -6,8 +6,8 @@ import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
-import com.coachtam.tqt.vo.admin.FeedbackVO;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.FeedbackVM;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.assertj.core.util.Lists;
@@ -40,14 +40,14 @@ public class FeedbackCtrl {
     private UserService userService;
     @ApiOperation(value = "分页查询(作为学生查询自己的反馈)")
     @GetMapping
-    public ResultVO<Page> page(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> page(Integer pageNo, Integer pageSize)
     {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         //查询当前用户学习反馈
         Page result = feedbackService.page(pageNo,pageSize,dbUser.getId());
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     /**
@@ -58,7 +58,7 @@ public class FeedbackCtrl {
      */
     @ApiOperation(value = "分页查询(作为老师查询所有学生反馈)")
     @PostMapping("/teaching")
-    public ResultVO<FeedbackVO> page(Integer pageNo, Integer pageSize,
+    public ResultVM<FeedbackVM> page(Integer pageNo, Integer pageSize,
                                      @RequestBody FeedbackForm searchForm)
     {
 //
@@ -97,43 +97,43 @@ public class FeedbackCtrl {
         };
         //查询当前用户学习反馈
         Page page = feedbackService.page(pageNo,pageSize,specification);
-        FeedbackVO result= new FeedbackVO();
+        FeedbackVM result= new FeedbackVM();
         result.setPage(page);
 //        List<Feedback> commitedList = feedbackService.findCommitedList(specification);
         List<com.coachtam.tqt.entity.User> unCommitedList = feedbackService.unCommitedList(specification,searchForm);
         result.setUnCommitedList(unCommitedList);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
 
     @ApiOperation(value = "根据id查询反馈详情")
     @GetMapping("/{id}")
-    public ResultVO<Feedback> list(@PathVariable("id") String id)
+    public ResultVM<Feedback> list(@PathVariable("id") String id)
     {
         Feedback feedback = feedbackService.findById(id);
 
-        return ResultVO.success(feedback);
+        return ResultVM.success(feedback);
     }
 
     @ApiOperation(value = "查询所有")
     @GetMapping("/all")
-    public ResultVO<List<Feedback>> getAll()
+    public ResultVM<List<Feedback>> getAll()
     {
         List<Feedback> result = feedbackService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         feedbackService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Feedback feedback)
+    public ResultVM<String> update(@RequestBody Feedback feedback)
     {
         //所属用户是不能变的
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -141,11 +141,11 @@ public class FeedbackCtrl {
 
         feedback.setUser(dbUser);
         feedbackService.update(feedback);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Feedback feedback)
+    public ResultVM<String> add(@RequestBody Feedback feedback)
     {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
@@ -153,6 +153,6 @@ public class FeedbackCtrl {
         feedback.setUser(dbUser);
 
         feedbackService.save(feedback);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

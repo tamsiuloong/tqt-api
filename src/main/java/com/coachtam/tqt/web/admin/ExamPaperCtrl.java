@@ -4,8 +4,8 @@ import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.to.ExamPaperForm;
-import com.coachtam.tqt.vo.admin.ResultVO;
-import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
+import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ExamPaperCtrl {
     private ExamPaperService examPaperService;
 
     @PostMapping("page")
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody ExamPaperForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperForm searchForm)
     {
         Specification<ExamPaper> specification = (root, query, builder)->{
             List<Predicate> predicates = Lists.newArrayList();
@@ -61,51 +61,51 @@ public class ExamPaperCtrl {
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page result = examPaperService.page(pageNo,pageSize,specification);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<ExamPaper> list(@PathVariable("id") Integer id)
+    public ResultVM<ExamPaper> list(@PathVariable("id") Integer id)
     {
         ExamPaper examPaper = examPaperService.findById(id);
 
-        return ResultVO.success(examPaper);
+        return ResultVM.success(examPaper);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<ExamPaper>> getAll()
+    public ResultVM<List<ExamPaper>> getAll()
     {
         List<ExamPaper> result = examPaperService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
+    public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
         examPaperService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<Integer> update(@RequestBody @Valid ExamPaperEditRequestVM model)
+    public ResultVM<Integer> update(@RequestBody @Valid ExamPaperEditRequestVM model)
     {
         examPaperService.update(model);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<Integer> add(@RequestBody @Valid ExamPaperEditRequestVM model)
+    public ResultVM<Integer> add(@RequestBody @Valid ExamPaperEditRequestVM model)
     {
         examPaperService.save(model);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
-    public ResultVO<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
+    public ResultVM<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
         ExamPaperEditRequestVM vm = examPaperService.examPaperToVM(id);
-        return ResultVO.success(vm);
+        return ResultVM.success(vm);
     }
 }

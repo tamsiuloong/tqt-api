@@ -1,23 +1,19 @@
 package com.coachtam.tqt.web.student;
 
 
-import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.ExamPaper;
-import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.service.QuestionService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.DateTimeUtil;
-import com.coachtam.tqt.vo.student.base.RestResponse;
-import com.coachtam.tqt.vo.student.dashboard.*;
+import com.coachtam.tqt.viewmodel.student.base.RestResponse;
+import com.coachtam.tqt.viewmodel.student.dashboard.*;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.service.TrackService;
 import com.coachtam.tqt.to.TrackForm;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class TrackCtrl {
     private TrackService trackService;
 
     @PostMapping("/search")
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,@RequestBody TrackForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody TrackForm searchForm)
     {
         Page result = trackService.page(pageNo,pageSize,(root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();
@@ -52,48 +52,48 @@ public class TrackCtrl {
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         });
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Track> list(@PathVariable("id") String id)
+    public ResultVM<Track> list(@PathVariable("id") String id)
     {
         Track track = trackService.findById(id);
 
-        return ResultVO.success(track);
+        return ResultVM.success(track);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Track>> getAll()
+    public ResultVM<List<Track>> getAll()
     {
         List<Track> result = trackService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         trackService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Track track)
+    public ResultVM<String> update(@RequestBody Track track)
     {
         trackService.update(track);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Track track)
+    public ResultVM<String> add(@RequestBody Track track)
     {
         org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         track.setCreateBy(user.getUsername());
         track.setCreateTime(new Date());
         trackService.save(track);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

@@ -4,7 +4,7 @@ import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,24 +31,24 @@ public class VoteRecordCtrl {
     private UserService userService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = voteRecordService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<VoteRecord> list(@PathVariable("id") String id)
+    public ResultVM<VoteRecord> list(@PathVariable("id") String id)
     {
         VoteRecord voteRecord = voteRecordService.findById(id);
 
-        return ResultVO.success(voteRecord);
+        return ResultVM.success(voteRecord);
     }
 
 
     @GetMapping("/all/{votetopicId}")
-    public ResultVO<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
+    public ResultVM<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
         List<VoteRecord> result = voteRecordService.findAll(votetopicId);
         org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -63,28 +63,28 @@ public class VoteRecordCtrl {
             ).collect(Collectors.toList());
 
         }
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         voteRecordService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody VoteRecord voteRecord)
+    public ResultVM<String> update(@RequestBody VoteRecord voteRecord)
     {
         voteRecordService.update(voteRecord);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody VoteRecord voteRecord)
+    public ResultVM<String> add(@RequestBody VoteRecord voteRecord)
     {
         voteRecordService.save(voteRecord);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

@@ -7,8 +7,8 @@ import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
 import com.coachtam.tqt.utils.PageUtils;
-import com.coachtam.tqt.vo.admin.EchartLineStackVO;
-import com.coachtam.tqt.vo.admin.EchartVO;
+import com.coachtam.tqt.viewmodel.admin.EchartLineStackVM;
+import com.coachtam.tqt.viewmodel.admin.EchartVM;
 import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
@@ -136,9 +136,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public EchartVO learnCurve(FeedbackForm feedbackForm) {
+    public EchartVM learnCurve(FeedbackForm feedbackForm) {
 
-        EchartVO result = new EchartVO();
+        EchartVM result = new EchartVM();
 
         Map<String, Object> paras = new HashMap<>();
 
@@ -231,8 +231,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public EchartLineStackVO learncurvepro(FeedbackForm searchForm) {
-        EchartLineStackVO result = new EchartLineStackVO();
+    public EchartLineStackVM learncurvepro(FeedbackForm searchForm) {
+        EchartLineStackVM result = new EchartLineStackVM();
         Map<String, Object> paras = new HashMap<>();
 
         if(StringUtils.isNotBlank(searchForm.getClassId()))

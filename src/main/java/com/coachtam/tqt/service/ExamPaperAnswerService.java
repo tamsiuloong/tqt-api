@@ -3,8 +3,8 @@ package com.coachtam.tqt.service;
 import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.entity.ExamPaperAnswerInfo;
 import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitVM;
-import com.coachtam.tqt.vo.student.exampaper.ExamPaperAnswerPageVM;
+import com.coachtam.tqt.viewmodel.student.exam.ExamPaperSubmitVM;
+import com.coachtam.tqt.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**

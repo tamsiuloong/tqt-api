@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.KnowledgePoint;
 import com.coachtam.tqt.service.KnowledgePointService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +23,48 @@ public class KnowledgePointCtrl {
     private KnowledgePointService knowledgePointService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize,String keyWord,String courseId)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, String keyWord, String courseId)
     {
         Page result = knowledgePointService.page(pageNo,pageSize,keyWord,courseId);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<KnowledgePoint> list(@PathVariable("id") Integer id)
+    public ResultVM<KnowledgePoint> list(@PathVariable("id") Integer id)
     {
         KnowledgePoint knowledgePoint = knowledgePointService.findById(id);
 
-        return ResultVO.success(knowledgePoint);
+        return ResultVM.success(knowledgePoint);
     }
 
 
     @GetMapping("/all/{courseId}")
-    public ResultVO<List<KnowledgePoint>> getAll(@PathVariable("courseId") String courseId)
+    public ResultVM<List<KnowledgePoint>> getAll(@PathVariable("courseId") String courseId)
     {
         List<KnowledgePoint> result = knowledgePointService.findAll(courseId);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
+    public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
         knowledgePointService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<Integer> update(@RequestBody KnowledgePoint knowledgePoint)
+    public ResultVM<Integer> update(@RequestBody KnowledgePoint knowledgePoint)
     {
         knowledgePointService.update(knowledgePoint);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<Integer> add(@RequestBody KnowledgePoint knowledgePoint)
+    public ResultVM<Integer> add(@RequestBody KnowledgePoint knowledgePoint)
     {
         knowledgePointService.save(knowledgePoint);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

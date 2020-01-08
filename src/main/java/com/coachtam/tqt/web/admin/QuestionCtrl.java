@@ -3,8 +3,8 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.service.QuestionService;
 import com.coachtam.tqt.to.QuestionForm;
-import com.coachtam.tqt.vo.admin.ResultVO;
-import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
+import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public class QuestionCtrl {
     private QuestionService questionService;
 
     @PostMapping("page")
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize, @RequestBody QuestionForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody QuestionForm searchForm)
     {
 
         Specification<Question> specification = (root, query, builder)->{
@@ -53,45 +53,45 @@ public class QuestionCtrl {
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page result = questionService.page(pageNo,pageSize,specification);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Question> list(@PathVariable("id") Integer id)
+    public ResultVM<Question> list(@PathVariable("id") Integer id)
     {
         Question question = questionService.findById(id);
 
-        return ResultVO.success(question);
+        return ResultVM.success(question);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Question>> getAll()
+    public ResultVM<List<Question>> getAll()
     {
         List<Question> result = questionService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<Integer> delete(@RequestBody Integer[] ids)
+    public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
         questionService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody QuestionEditRequestVM question)
+    public ResultVM<String> update(@RequestBody QuestionEditRequestVM question)
     {
         questionService.update(question);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<Integer> add(@RequestBody QuestionEditRequestVM question)
+    public ResultVM<Integer> add(@RequestBody QuestionEditRequestVM question)
     {
         questionService.save(question);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

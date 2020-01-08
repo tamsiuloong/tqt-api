@@ -3,8 +3,8 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.Leave;
 import com.coachtam.tqt.service.LeaveService;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.vo.admin.ResultVO;
-import com.coachtam.tqt.vo.admin.TaskVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
+import com.coachtam.tqt.viewmodel.admin.TaskVM;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -70,7 +70,7 @@ public class LeaveCtrl {
 
 
     @GetMapping("/deploy")
-    public ResultVO<Page> deploy()
+    public ResultVM<Page> deploy()
     {
         Deployment deploy = repositoryService.createDeployment().addClasspathResource("baoxiao.bpmn").deploy();
 
@@ -78,7 +78,7 @@ public class LeaveCtrl {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploy.getId()).singleResult();
         System.out.println("流程key:"+processDefinition.getKey());
         System.out.println("流程ID:"+processDefinition.getId());
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     /**
@@ -88,50 +88,50 @@ public class LeaveCtrl {
      * @return
      */
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Page result = leaveService.page(pageNo,pageSize,user.getUsername());
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Leave> list(@PathVariable("id") String id)
+    public ResultVM<Leave> list(@PathVariable("id") String id)
     {
         Leave leave = leaveService.findById(id);
 
-        return ResultVO.success(leave);
+        return ResultVM.success(leave);
     }
 
 
     @GetMapping("/all")
-    public ResultVO<List<Leave>> getAll()
+    public ResultVM<List<Leave>> getAll()
     {
         List<Leave> result = leaveService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         leaveService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Leave leave)
+    public ResultVM<String> update(@RequestBody Leave leave)
     {
         leaveService.update(leave);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Leave leave)
+    public ResultVM<String> add(@RequestBody Leave leave)
     {
         leaveService.save(leave);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
@@ -142,14 +142,14 @@ public class LeaveCtrl {
      * @return
      */
     @GetMapping("/myTaskList")
-    public List<TaskVO>  myTaskList(){
+    public List<TaskVM>  myTaskList(){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //没有做认证提示，先去登陆
         List<Task> list = taskService.createTaskQuery().taskAssignee(user.getUsername()).orderByTaskCreateTime().desc().list();
 
-        List<TaskVO> result = list.stream()
-                //Task --> TaskVO
+        List<TaskVM> result = list.stream()
+                //Task --> TaskVM
                 .map(x ->
                         {
                             String assignee = x.getAssignee();
@@ -159,7 +159,7 @@ public class LeaveCtrl {
                             {
                                 assignee = userInfo.getUserInfo().getName();
                             }
-                            return new TaskVO(x.getId(), x.getName(), x.getDescription(), assignee,x.getProcessInstanceId());
+                            return new TaskVM(x.getId(), x.getName(), x.getDescription(), assignee,x.getProcessInstanceId());
                         })
                 //将转好的数据封装到一个新list中
                 .collect(Collectors.toList());

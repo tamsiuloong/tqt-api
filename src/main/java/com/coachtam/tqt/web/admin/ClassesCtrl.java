@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.service.ClassesService;
-import com.coachtam.tqt.vo.admin.ResultVO;
+import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,55 +23,55 @@ public class ClassesCtrl {
     private ClassesService classesService;
 
     @GetMapping
-    public ResultVO<Page> list(Integer pageNo, Integer pageSize)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = classesService.page(pageNo,pageSize);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
 
     @GetMapping("/{id}")
-    public ResultVO<Classes> list(@PathVariable("id") String id)
+    public ResultVM<Classes> list(@PathVariable("id") String id)
     {
         Classes classes = classesService.findById(id);
 
-        return ResultVO.success(classes);
+        return ResultVM.success(classes);
     }
 
 
     @GetMapping("/all/{closed}")
-    public ResultVO<List<Classes>> getAll(@PathVariable("closed")Boolean closed)
+    public ResultVM<List<Classes>> getAll(@PathVariable("closed")Boolean closed)
     {
         List<Classes> result = classesService.findAllByClosed(closed);
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @GetMapping("/all")
-    public ResultVO<List<Classes>> getAll()
+    public ResultVM<List<Classes>> getAll()
     {
         List<Classes> result = classesService.findAll();
-        return ResultVO.success(result);
+        return ResultVM.success(result);
     }
 
     @DeleteMapping
-    public ResultVO<String> delete(@RequestBody String[] ids)
+    public ResultVM<String> delete(@RequestBody String[] ids)
     {
         classesService.deleteByIds(ids);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
 
     @PutMapping
-    public ResultVO<String> update(@RequestBody Classes classes)
+    public ResultVM<String> update(@RequestBody Classes classes)
     {
         classesService.update(classes);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 
     @PostMapping
-    public ResultVO<String> add(@RequestBody Classes classes)
+    public ResultVM<String> add(@RequestBody Classes classes)
     {
         classesService.save(classes);
-        return ResultVO.success(null);
+        return ResultVM.success(null);
     }
 }

@@ -2,8 +2,8 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
-import com.coachtam.tqt.vo.student.answer.QuestionPageStudentRequestVM;
-import com.coachtam.tqt.vo.student.exam.ExamPaperSubmitItemVM;
+import com.coachtam.tqt.viewmodel.student.answer.QuestionPageStudentRequestVM;
+import com.coachtam.tqt.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
