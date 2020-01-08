@@ -185,7 +185,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         ExamPaper examPaper = examPaperDao.getOne(id);
         ExamPaperEditRequestVM vm = modelMapper.map(examPaper, ExamPaperEditRequestVM.class);
 //        vm.setLevel(examPaper.getGradeLevel());
-        ExamPaperContent frameTextContent = examPaperContentDao.getOne(examPaper.getId());
+        ExamPaperContent frameTextContent = examPaperContentDao.getOne(examPaper.getFrameTextContentId());
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtils.toJsonListObject(frameTextContent.getContent(), ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream()
                 .flatMap(t -> t.getQuestionItems().stream()

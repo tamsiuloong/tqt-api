@@ -115,7 +115,7 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
             if (null != examPaperAnswer)
             {return null;}
         }
-        String frameTextContent = examPaperContentService.findById(examPaper.getId()).getContent();
+        String frameTextContent = examPaperContentService.findById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtils.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream().flatMap(t -> t.getQuestionItems().stream().map(q -> q.getId())).collect(Collectors.toList());
         List<Question> questions = questionDao.findByIdIn(questionIds);
