@@ -21,4 +21,6 @@ public interface UserEventLogService {
     void update(UserEventLog model);
 
     void deleteByIds(Integer[] id);
+
+    List<UserEventLog> getUserEventLogByUserId(String userId);
 }

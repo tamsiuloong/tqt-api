@@ -59,4 +59,9 @@ public class UserEventLogServiceImpl implements UserEventLogService {
     public UserEventLog findById(Integer id) {
         return userEventLogDao.findById(id).get();
     }
+
+    @Override
+    public List<UserEventLog> getUserEventLogByUserId(String userId) {
+        return userEventLogDao.findByUserId(userId);
+    }
 }
