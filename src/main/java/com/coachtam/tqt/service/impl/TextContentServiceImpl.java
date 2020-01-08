@@ -1,10 +1,8 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
-import com.coachtam.tqt.entity.ExamPaperContent;
-import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
-import com.coachtam.tqt.respository.ExamPaperContentDao;
-import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.entity.TextContent;
+import com.coachtam.tqt.respository.TextContentDao;
+import com.coachtam.tqt.service.TextContentService;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Page;
@@ -25,50 +23,50 @@ import java.util.stream.Collectors;
  */
 @Transactional
 @Service
-public class ExamPaperContentServiceImpl implements ExamPaperContentService {
+public class TextContentServiceImpl implements TextContentService {
     @Autowired
-    private ExamPaperContentDao examPaperContentDao;
+    private TextContentDao textContentDao;
 
 
     @Override
-    public Page<ExamPaperContent> page(Integer pageNo,Integer pageSize)
+    public Page<TextContent> page(Integer pageNo, Integer pageSize)
     {
-        return  examPaperContentDao.findAll(PageUtils.of(pageNo,pageSize));
+        return  textContentDao.findAll(PageUtils.of(pageNo,pageSize));
     }
 
 
 
     @Override
-    public List<ExamPaperContent> findAll() {
-        return examPaperContentDao.findAll();
+    public List<TextContent> findAll() {
+        return textContentDao.findAll();
     }
 
     @Override
-    public void save(ExamPaperContent bean) {
-        examPaperContentDao.save(bean);
+    public void save(TextContent bean) {
+        textContentDao.save(bean);
     }
 
     @Override
     public void deleteByIds(Integer[] ids) {
         for (Integer id:ids) {
-            examPaperContentDao.deleteById(id);
+            textContentDao.deleteById(id);
         }
 
     }
 
     @Override
-    public void update(ExamPaperContent bean) {
-        examPaperContentDao.saveAndFlush(bean);
+    public void update(TextContent bean) {
+        textContentDao.saveAndFlush(bean);
     }
 
     @Override
-    public ExamPaperContent findById(Integer id) {
-        return examPaperContentDao.findById(id).get();
+    public TextContent findById(Integer id) {
+        return textContentDao.findById(id).get();
     }
 
 
     @Override
-    public <T, R> ExamPaperContent jsonConvertInsert(List<T> list, Date now, Function<? super T, ? extends R> mapper) {
+    public <T, R> TextContent jsonConvertInsert(List<T> list, Date now, Function<? super T, ? extends R> mapper) {
         String frameTextContent = null;
         if (null == mapper) {
             frameTextContent = JsonUtils.toJsonStr(list);
@@ -76,13 +74,13 @@ public class ExamPaperContentServiceImpl implements ExamPaperContentService {
             List<R> mapList = list.stream().map(mapper).collect(Collectors.toList());
             frameTextContent = JsonUtils.toJsonStr(mapList);
         }
-        ExamPaperContent textContent = new ExamPaperContent(frameTextContent, now);
+        TextContent textContent = new TextContent(frameTextContent, now);
         //insertByFilter(textContent);  cache useless
         return textContent;
     }
 
     @Override
-    public <T, R> ExamPaperContent jsonConvertUpdate(ExamPaperContent textContent, List<T> list, Function<? super T, ? extends R> mapper) {
+    public <T, R> TextContent jsonConvertUpdate(TextContent textContent, List<T> list, Function<? super T, ? extends R> mapper) {
         String frameTextContent = null;
         if (null == mapper) {
             frameTextContent = JsonUtils.toJsonStr(list);

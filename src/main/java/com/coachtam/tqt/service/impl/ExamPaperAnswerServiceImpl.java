@@ -1,6 +1,5 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.entity.enums.ExamPaperAnswerStatusEnum;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
@@ -10,7 +9,7 @@ import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
 import com.coachtam.tqt.entity.task.TaskItemAnswerObject;
 import com.coachtam.tqt.respository.*;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
-import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.service.TextContentService;
 import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
 import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.utils.ExamUtil;
@@ -23,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +52,7 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     private ExamPaperService examPaperService;
 
     @Autowired
-    private ExamPaperContentService examPaperContentService;
+    private TextContentService textContentService;
 
     @Autowired
     private QuestionDao questionDao;
@@ -115,7 +113,7 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
             if (null != examPaperAnswer)
             {return null;}
         }
-        String frameTextContent = examPaperContentService.findById(examPaper.getFrameTextContentId()).getContent();
+        String frameTextContent = textContentService.findById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtils.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream().flatMap(t -> t.getQuestionItems().stream().map(q -> q.getId())).collect(Collectors.toList());
         List<Question> questions = questionDao.findByIdIn(questionIds);
@@ -279,13 +277,13 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
                 Integer taskId = examPaper.getTaskExamId();
                 String userId = examPaperAnswer.getUserId();
                 TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerDao.getBytaskExamIdAndUserId(taskId, userId);
-                ExamPaperContent textContent = examPaperContentService.findById(taskExamCustomerAnswer.getTextContentId());
+                TextContent textContent = textContentService.findById(taskExamCustomerAnswer.getTextContentId());
                 List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtils.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
                 taskItemAnswerObjects.stream()
                         .filter(d -> d.getExamPaperAnswerId() .equals(examPaperAnswer.getId()) )
                         .findFirst().ifPresent(taskItemAnswerObject -> taskItemAnswerObject.setStatus(examPaperAnswer.getStatus()));
-                examPaperContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
-                examPaperContentService.update(textContent);
+                textContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
+                textContentService.update(textContent);
                 break;
             default:
                 break;

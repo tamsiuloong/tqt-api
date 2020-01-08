@@ -1,14 +1,14 @@
 package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.ExamPaper;
-import com.coachtam.tqt.entity.ExamPaperContent;
+import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.entity.exam.ExamPaperQuestionItemObject;
 import com.coachtam.tqt.entity.exam.ExamPaperTitleItemObject;
 import com.coachtam.tqt.interceptor.LoginInterceptor;
-import com.coachtam.tqt.respository.ExamPaperContentDao;
+import com.coachtam.tqt.respository.TextContentDao;
 import com.coachtam.tqt.respository.ExamPaperDao;
 import com.coachtam.tqt.respository.QuestionDao;
 import com.coachtam.tqt.service.ExamPaperService;
@@ -22,7 +22,6 @@ import com.coachtam.tqt.vo.admin.exam.ExamPaperEditRequestVM;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperPageRequestVM;
 import com.coachtam.tqt.vo.admin.exam.ExamPaperTitleItemVM;
 import com.coachtam.tqt.vo.admin.question.QuestionEditRequestVM;
-import com.coachtam.tqt.vo.student.dashboard.PaperInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -52,7 +51,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     private ExamPaperDao examPaperDao;
 
     @Autowired
-    private ExamPaperContentDao examPaperContentDao;
+    private TextContentDao textContentDao;
 
     @Autowired
     private QuestionDao questionDao;
@@ -95,8 +94,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
 
 
         //保存试卷详情
-        ExamPaperContent frameTextContent = new ExamPaperContent(frameTextContentStr, examPaper.getCreateTime());
-        examPaperContentDao.save(frameTextContent);
+        TextContent frameTextContent = new TextContent(frameTextContentStr, examPaper.getCreateTime());
+        textContentDao.save(frameTextContent);
 
         examPaper = modelMapper.map(model, ExamPaper.class);
 
@@ -170,9 +169,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         examPaper.setCreateTime(dbExamPaper.getCreateTime());
         examPaperDao.save(examPaper);
         //获取试卷对应详情
-        ExamPaperContent examPaperContent = examPaperContentDao.getOne(dbExamPaper.getFrameTextContentId());
-        examPaperContent.setContent(frameTextContentStr);
-        examPaperContentDao.save(examPaperContent);
+        TextContent textContent = textContentDao.getOne(dbExamPaper.getFrameTextContentId());
+        textContent.setContent(frameTextContentStr);
+        textContentDao.save(textContent);
     }
 
     @Override
@@ -185,7 +184,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         ExamPaper examPaper = examPaperDao.getOne(id);
         ExamPaperEditRequestVM vm = modelMapper.map(examPaper, ExamPaperEditRequestVM.class);
 //        vm.setLevel(examPaper.getGradeLevel());
-        ExamPaperContent frameTextContent = examPaperContentDao.getOne(examPaper.getFrameTextContentId());
+        TextContent frameTextContent = textContentDao.getOne(examPaper.getFrameTextContentId());
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtils.toJsonListObject(frameTextContent.getContent(), ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream()
                 .flatMap(t -> t.getQuestionItems().stream()

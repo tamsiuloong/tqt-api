@@ -1,12 +1,11 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
-import com.coachtam.tqt.entity.ExamPaperContent;
+import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.ExamPaperQuestionCustomerAnswer;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
 import com.coachtam.tqt.entity.other.ExamPaperAnswerUpdate;
 import com.coachtam.tqt.respository.ExamPaperQuestionCustomerAnswerDao;
-import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.service.TextContentService;
 import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
@@ -32,7 +31,7 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
     private ExamPaperQuestionCustomerAnswerDao examPaperQuestionCustomerAnswerDao;
 
     @Autowired
-    private ExamPaperContentService examPaperContentService;
+    private TextContentService textContentService;
 
     @Override
     public Page<ExamPaperQuestionCustomerAnswer> page(Integer pageNo,Integer pageSize)
@@ -96,13 +95,13 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
                 examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
                 break;
             case GapFilling:
-                ExamPaperContent textContent = examPaperContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
+                TextContent textContent = textContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
                 List<String> correctAnswer = JsonUtils.toJsonListObject(textContent.getContent(), String.class);
                 examPaperSubmitItemVM.setContentArray(correctAnswer);
                 break;
             default:
                 if (QuestionTypeEnum.needSaveTextContent(examPaperQuestionCustomerAnswer.getQuestionType())) {
-                    ExamPaperContent content = examPaperContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
+                    TextContent content = textContentService.findById(examPaperQuestionCustomerAnswer.getTextContentId());
                     examPaperSubmitItemVM.setContent(content.getContent());
                 } else {
                     examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());

@@ -6,7 +6,7 @@ import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
 import com.coachtam.tqt.event.CalculateExamPaperAnswerCompleteEvent;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
-import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.service.TextContentService;
 import com.coachtam.tqt.service.ExamPaperQuestionCustomerAnswerService;
 import com.coachtam.tqt.service.TaskExamCustomerAnswerService;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
 
     private final ExamPaperAnswerService examPaperAnswerService;
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
-    private final ExamPaperContentService textContentService;
+    private final TextContentService textContentService;
     private final TaskExamCustomerAnswerService examCustomerAnswerService;
 
     @Override
@@ -41,7 +41,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
 
         examPaperAnswerService.save(examPaperAnswer);
         examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
-            ExamPaperContent textContent = new ExamPaperContent(d.getAnswer(), now);
+            TextContent textContent = new TextContent(d.getAnswer(), now);
             textContentService.save(textContent);
             d.setTextContentId(textContent.getId());
             d.setAnswer(null);

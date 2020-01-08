@@ -1,14 +1,12 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.entity.ExamPaperAnswer;
-import com.coachtam.tqt.entity.ExamPaperContent;
+import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.TaskExamCustomerAnswer;
 import com.coachtam.tqt.entity.task.TaskItemAnswerObject;
-import com.coachtam.tqt.respository.ExamPaperContentDao;
 import com.coachtam.tqt.respository.TaskExamCustomerAnswerDao;
-import com.coachtam.tqt.service.ExamPaperContentService;
+import com.coachtam.tqt.service.TextContentService;
 import com.coachtam.tqt.service.TaskExamCustomerAnswerService;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
@@ -34,7 +32,7 @@ public class TaskExamCustomerAnswerServiceImpl implements TaskExamCustomerAnswer
     private TaskExamCustomerAnswerDao taskExamCustomerAnswerDao;
 
     @Autowired
-    private ExamPaperContentService examPaperContentService;
+    private TextContentService textContentService;
 
 
 
@@ -85,16 +83,16 @@ public class TaskExamCustomerAnswerServiceImpl implements TaskExamCustomerAnswer
             taskExamCustomerAnswer.setUserId(userId);
             taskExamCustomerAnswer.setTaskExamId(taskId);
             List<TaskItemAnswerObject> taskItemAnswerObjects = Arrays.asList(new TaskItemAnswerObject(examPaperAnswer.getExamPaperId(), examPaperAnswer.getId(), examPaperAnswer.getStatus()));
-            ExamPaperContent textContent = examPaperContentService.jsonConvertInsert(taskItemAnswerObjects, now, null);
-            examPaperContentService.save(textContent);
+            TextContent textContent = textContentService.jsonConvertInsert(taskItemAnswerObjects, now, null);
+            textContentService.save(textContent);
             taskExamCustomerAnswer.setTextContentId(textContent.getId());
             taskExamCustomerAnswerDao.save(taskExamCustomerAnswer);
         } else {
-            ExamPaperContent textContent = examPaperContentService.findById(taskExamCustomerAnswer.getTextContentId());
+            TextContent textContent = textContentService.findById(taskExamCustomerAnswer.getTextContentId());
             List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtils.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
             taskItemAnswerObjects.add(new TaskItemAnswerObject(examPaperAnswer.getExamPaperId(), examPaperAnswer.getId(), examPaperAnswer.getStatus()));
-            examPaperContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
-            examPaperContentService.update(textContent);
+            textContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
+            textContentService.update(textContent);
         }
     }
 }

@@ -10,16 +10,16 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name="EXAM_PAPER_CONTENT_P")
-public class ExamPaperContent implements Serializable {
+public class TextContent implements Serializable {
 
 
     private static final long serialVersionUID = -1279530310964668131L;
 
-    public ExamPaperContent(){
+    public TextContent(){
 
     }
 
-    public ExamPaperContent(String content, Date createTime) {
+    public TextContent(String content, Date createTime) {
         this.content = content;
         this.createTime = createTime;
     }
