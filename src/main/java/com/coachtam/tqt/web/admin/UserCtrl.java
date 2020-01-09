@@ -1,7 +1,12 @@
 package com.coachtam.tqt.web.admin;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
+import com.coachtam.tqt.entity.UserEventLog;
+import com.coachtam.tqt.event.UserEvent;
+import com.coachtam.tqt.interceptor.LogInterceptor;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
@@ -9,10 +14,12 @@ import com.coachtam.tqt.viewmodel.admin.RoleVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +37,9 @@ public class UserCtrl {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @ApiOperation(value = "分页查询")
     @PostMapping("/search")
@@ -66,11 +76,9 @@ public class UserCtrl {
      */
     @GetMapping("/myinfo")
     @ApiOperation(value = "我的资料(用于编辑用户)")
-    public ResultVM<User> myinfo()
+    public ResultVM<UserDetail> myinfo()
     {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User dbuser = userService.findByUsername(user.getUsername());
-
+        UserDetail dbuser  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResultVM.success(dbuser);
     }
     /**
@@ -81,13 +89,7 @@ public class UserCtrl {
     @ApiOperation(value = "我的资料(用于返回权限信息)")
     public ResultVM<Map<String,Object>> info(String access_token)
     {
-//        name: 'admin',
-//                user_id: '2',
-//            access: ['admin'],
-//        token: 'admin',
-//                avator: 'https://avatars0.githubusercontent.com/u/20942571?s=460&v=4'
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HashMap<String,Object> data = new HashMap<>();
         data.put("name",user.getUsername());
         data.put("user_id","");
@@ -135,6 +137,12 @@ public class UserCtrl {
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
     {
+        UserDetail user = LoginInterceptor.getCurrUser();
+        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUsername(), user.getName(), new Date());
+        String content = user.getName() + "删除用户"+ids;
+        userEventLog.setContent(content);
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+
         userService.deleteByIds(ids);
         return ResultVM.success(null);
     }
@@ -143,6 +151,12 @@ public class UserCtrl {
     @PutMapping
     public ResultVM<String> update(@RequestBody User user)
     {
+        UserDetail currUser = LoginInterceptor.getCurrUser();
+        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
+        String content = currUser.getName() + "修改用户:"+user;
+        userEventLog.setContent(content);
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+
         userService.update(user);
         return ResultVM.success(null);
     }
@@ -151,6 +165,12 @@ public class UserCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody User user)
     {
+        UserDetail currUser = LoginInterceptor.getCurrUser();
+        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
+        String content = currUser.getName() + "新增用户:"+user;
+        userEventLog.setContent(content);
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+
         userService.save(user);
         return ResultVM.success(null);
     }
@@ -194,6 +214,13 @@ public class UserCtrl {
     @PutMapping("/updateMyInfo")
     public ResultVM<String> updateMyInfo(@RequestBody User user)
     {
+
+        UserDetail currUser = LoginInterceptor.getCurrUser();
+        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
+        String content = currUser.getName() + "更新个人资料:"+user;
+        userEventLog.setContent(content);
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+
         userService.updateMyInfo(user);
 
         return ResultVM.success(null);

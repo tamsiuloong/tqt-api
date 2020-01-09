@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.Question;
@@ -84,10 +85,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public void save(ExamPaperEditRequestVM model) {
         ExamPaper examPaper = new ExamPaper();
 
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currUser = userService.findByUsername(user.getUsername());
+        UserDetail currUser  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
+        User user = userService.findByUsername(currUser.getUsername());
 
 
         List<ExamPaperTitleItemVM> titleItemsVM = model.getTitleItems();
@@ -105,7 +105,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         examPaper.setDeleted(false);
         examPaperFromVM(model, examPaper, titleItemsVM);
 
-        examPaper.setUser(currUser);
+        examPaper.setUser(user);
         examPaper.setCreateTime(new Date());
         //设置关系
         examPaper.setFrameTextContentId(frameTextContent.getId());

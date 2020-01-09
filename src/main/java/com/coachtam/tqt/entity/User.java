@@ -23,7 +23,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name="USER_P")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class User  {
+public class User   {
 	@Id
 	@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "jpa-uuid")
@@ -76,11 +76,15 @@ public class User  {
 	private Set<Role> roleSet = new HashSet<>();
 
 
-
-
-	public User(String id) {
-		this.id = id;
+	public User(String userId) {
+		this.id = userId;
 	}
 
-
+	@Override
+	public String toString() {
+		return
+				"id='" + id + '\'' +
+				", userName='" + userName + '\''
+				;
+	}
 }

@@ -5,12 +5,9 @@ import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.utils.DateTimeUtil;
 import com.coachtam.tqt.utils.ModelMapperSingle;
 import lombok.Data;
-import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 
-/**
- * @author alvis
- */
+
 
 @Data
 public class UserResponseVM  {

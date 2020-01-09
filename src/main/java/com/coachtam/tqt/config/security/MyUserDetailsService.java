@@ -54,14 +54,15 @@ public class MyUserDetailsService implements UserDetailsService {
         );
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        User userDetails = new User(
+        UserDetail userDetails = new UserDetail(
                 username,
                 user.getPassword(),
                 enabled,
                 accountNonExpired,
                 credentialsNonExpired,
                 accountNonLocked,
-                grantedAuthorities);
+                grantedAuthorities,user.getId(),user.getUserInfo().getName());
+
 
         return userDetails;
     }

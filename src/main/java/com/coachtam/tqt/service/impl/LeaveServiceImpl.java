@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.Leave;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.LeaveDao;
@@ -59,8 +60,7 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Override
     public void save(Leave bean) {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        User dbUser = userService.findByUsername(user.getUsername());
         //1.开启申请流程
         //用来封装流程所需要的变量

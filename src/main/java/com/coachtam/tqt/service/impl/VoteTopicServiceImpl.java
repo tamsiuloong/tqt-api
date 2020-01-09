@@ -1,5 +1,6 @@
 package com.coachtam.tqt.service.impl;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
@@ -46,7 +47,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     @Override
     public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll)
     {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
         User dbUser = userService.findByUsername(username);
 
@@ -83,7 +84,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
 
     @Override
     public List<VoteTopic> findAll() {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User dbuser = userService.findByUsername(user.getUsername());
 
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {

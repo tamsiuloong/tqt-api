@@ -1,5 +1,6 @@
 package com.coachtam.tqt.web.admin;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.service.TrackService;
 import com.coachtam.tqt.to.TrackForm;
@@ -90,7 +91,8 @@ public class TrackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Track track)
     {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         track.setCreateBy(user.getUsername());
         track.setCreateTime(new Date());
         trackService.save(track);

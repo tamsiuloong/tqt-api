@@ -1,5 +1,6 @@
 package com.coachtam.tqt.web.admin;
 
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.service.UserService;
@@ -51,8 +52,7 @@ public class VoteRecordCtrl {
     public ResultVM<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
         List<VoteRecord> result = voteRecordService.findAll(votetopicId);
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+         UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User dbuser = userService.findByUsername(user.getUsername());
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {
             result = result.stream().map(vr -> {

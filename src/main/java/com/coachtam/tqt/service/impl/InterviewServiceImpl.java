@@ -2,6 +2,7 @@ package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.config.properties.GlobalProperteis;
 import com.coachtam.tqt.config.properties.UploadProperteis;
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.InterviewDao;
 import com.coachtam.tqt.service.InterviewService;
@@ -51,7 +52,7 @@ public class InterviewServiceImpl implements InterviewService {
     {
 
 
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);
@@ -106,7 +107,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public void save(Interview bean) {
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);

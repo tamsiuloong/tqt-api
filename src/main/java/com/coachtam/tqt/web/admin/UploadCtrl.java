@@ -1,6 +1,7 @@
 package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.config.properties.UploadProperteis;
+import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -44,7 +45,7 @@ public class UploadCtrl {
     @PostMapping("/api/uploadFiles/{type}")
     public ResponseEntity<String> uploadFiles(@RequestParam("file")MultipartFile[] files,@PathVariable("type") Integer type,@RequestParam("companyName")String companyName){
 
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
 
 //        User dbUser = userService.findByUsername(username);
