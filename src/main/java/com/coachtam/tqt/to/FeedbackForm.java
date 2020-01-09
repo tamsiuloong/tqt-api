@@ -14,4 +14,6 @@ public class FeedbackForm {
     private String stuName;
     private String courseId;
     private String dayNum;
+    private String startDate;
+    private String endDate;
 }

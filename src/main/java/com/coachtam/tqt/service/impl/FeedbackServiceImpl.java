@@ -171,6 +171,14 @@ public class FeedbackServiceImpl implements FeedbackService {
                 paras.put("stuName",feedbackForm.getStuName());
             }
 
+            if(StringUtils.isNotBlank(feedbackForm.getStartDate())&&StringUtils.isNotBlank(feedbackForm.getEndDate()))
+            {
+                sb.append(" and backTime  between :startTime and :endTime");
+                paras.put("startTime",feedbackForm.getStartDate());
+                paras.put("endTime",feedbackForm.getEndDate());
+            }
+
+
             sb.append(" order by f.backTime asc");
             //创建jpql查询(hql)
             Query query = entityManager.createQuery(sb.toString());
@@ -214,6 +222,13 @@ public class FeedbackServiceImpl implements FeedbackService {
                 paras.put("couseId", feedbackForm.getCourseId());
             }
 
+            if(StringUtils.isNotBlank(feedbackForm.getStartDate())&&StringUtils.isNotBlank(feedbackForm.getEndDate()))
+            {
+                sb.append(" and back_Time  between :startTime and :endTime");
+                paras.put("startTime",feedbackForm.getStartDate());
+                paras.put("endTime",feedbackForm.getEndDate());
+            }
+
             sb.append(") t GROUP BY backtime");
             Query nativeQuery = entityManager.createNativeQuery(sb.toString());
             //设置查询参数
@@ -247,6 +262,12 @@ public class FeedbackServiceImpl implements FeedbackService {
             {
                 sb.append(" AND f.COURSE_ID = :courseId");
                 paras.put("courseId", searchForm.getCourseId());
+            }
+            if(StringUtils.isNotBlank(searchForm.getStartDate())&&StringUtils.isNotBlank(searchForm.getEndDate()))
+            {
+                sb.append(" and back_Time  between :startTime and :endTime");
+                paras.put("startTime",searchForm.getStartDate());
+                paras.put("endTime",searchForm.getEndDate());
             }
             sb.append(" ) t GROUP BY t.backtime");
 

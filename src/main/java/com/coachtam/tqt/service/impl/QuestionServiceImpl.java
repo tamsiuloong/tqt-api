@@ -118,7 +118,7 @@ public class QuestionServiceImpl implements QuestionService {
         bean.setCreateTime(new Date());
         if(form.getQuestionType().equals(QuestionTypeEnum.MultipleChoice.getCode()))
         {
-            bean.setCorrect(JsonUtils.toJson(form.getCorrectArray()));
+            bean.setCorrect(StringUtils.join(form.getCorrectArray(),","));
         }
         questionDao.save(bean);
 
