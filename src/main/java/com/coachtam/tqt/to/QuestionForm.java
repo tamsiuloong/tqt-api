@@ -12,4 +12,5 @@ import lombok.Data;
 public class QuestionForm {
     private String title;
     private String courseId;
+    private Integer questionType;
 }

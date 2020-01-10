@@ -42,7 +42,12 @@ public class QuestionCtrl {
                 Predicate equal = builder.like(root.get("title"), "%"+searchForm.getTitle()+"%");
                 predicates.add(equal);
             }
-            if(searchForm.getCourseId()!=null && !searchForm.getCourseId().isEmpty())
+            if(null!=searchForm.getQuestionType())
+            {
+                Predicate equal = builder.equal(root.get("questionType"), searchForm.getQuestionType());
+                predicates.add(equal);
+            }
+            if(StringUtils.isNotBlank(searchForm.getCourseId()))
             {
                 Predicate equal = builder.equal(root.join("course").get("id"), searchForm.getCourseId());
                 predicates.add(equal);

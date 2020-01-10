@@ -157,23 +157,29 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public void update(ExamPaperEditRequestVM model) {
         ExamPaper dbExamPaper = examPaperDao.findById(model.getId()).get();
 
+
+
         ExamPaper examPaper = new ExamPaper();
         List<ExamPaperTitleItemVM> titleItemsVM = model.getTitleItems();
         List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
         String frameTextContentStr = JsonUtils.toJson(frameTextContentList);
+
+        //获取试卷对应详情
+        TextContent textContent = textContentDao.getOne(dbExamPaper.getFrameTextContentId());
+        textContent.setContent(frameTextContentStr);
+        textContentDao.save(textContent);
+
         examPaper = modelMapper.map(model, ExamPaper.class);
 
 
         examPaperFromVM(model, examPaper, titleItemsVM);
 
+        examPaper.setFrameTextContentId(dbExamPaper.getFrameTextContentId());
         examPaper.setUser(dbExamPaper.getUser());
         examPaper.setDeleted(dbExamPaper.getDeleted());
         examPaper.setCreateTime(dbExamPaper.getCreateTime());
         examPaperDao.save(examPaper);
-        //获取试卷对应详情
-        TextContent textContent = textContentDao.getOne(dbExamPaper.getFrameTextContentId());
-        textContent.setContent(frameTextContentStr);
-        textContentDao.save(textContent);
+
     }
 
     @Override

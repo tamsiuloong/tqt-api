@@ -71,9 +71,15 @@ public class QuestionServiceImpl implements QuestionService {
         Question bean = new Question();
         BeanUtils.copyProperties(form,bean);
         bean.setDeleted(false);
-        if(form.getQuestionType().equals(2))
+        if(form.getQuestionType().equals(QuestionTypeEnum.MultipleChoice.getCode()))
         {
             bean.setCorrect(StringUtils.join(form.getCorrectArray(),","));
+        }
+
+        //如果是简单题
+        if(form.getQuestionType().equals(QuestionTypeEnum.ShortAnswer.getCode()))
+        {
+            bean.setQuestionItems(null);
         }
         bean.setCreateTime(new Date());
 
@@ -180,15 +186,19 @@ public class QuestionServiceImpl implements QuestionService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<QuestionEditItemVM> editItems =questionItems.stream().map(o -> {
-            QuestionEditItemVM questionEditItemVM = modelMapper.map(o, QuestionEditItemVM.class);
-            Integer score = (Integer) o.get("score");
-            if (o.get("score") != null) {
-                questionEditItemVM.setScore(ExamUtil.scoreToVM(score));
-            }
-            return questionEditItemVM;
-        }).collect(Collectors.toList());
-        questionEditRequestVM.setItems(editItems);
+        if(questionItems!=null&&questionItems.size()>0)
+        {
+            List<QuestionEditItemVM> editItems =questionItems.stream().map(o -> {
+                QuestionEditItemVM questionEditItemVM = modelMapper.map(o, QuestionEditItemVM.class);
+                Integer score = (Integer) o.get("score");
+                if (o.get("score") != null) {
+                    questionEditItemVM.setScore(ExamUtil.scoreToVM(score));
+                }
+                return questionEditItemVM;
+            }).collect(Collectors.toList());
+            questionEditRequestVM.setItems(editItems);
+        }
+
         return questionEditRequestVM;
     }
 
