@@ -10,4 +10,6 @@ public class ExamPaperAnswerPageVM extends BasePage {
 
     private String createUser;
 
+    private Integer examPaperId;
+
 }

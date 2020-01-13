@@ -44,4 +44,11 @@ public interface ExamPaperAnswerService {
      * @return String
      */
     String judge(ExamPaperSubmitVM examPaperSubmitVM);
+
+    /**
+     * 查询该试卷答卷
+     * @param model
+     * @return
+     */
+    Page<ExamPaperAnswer> findByExamPaperId(ExamPaperAnswerPageVM model);
 }

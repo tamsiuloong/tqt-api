@@ -29,4 +29,6 @@ public class ExamPaperAnswerPageResponseVM {
     private Integer status;
 
     private String paperName;
+
+    private String userName;
 }

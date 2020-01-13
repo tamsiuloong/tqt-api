@@ -231,6 +231,11 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     }
 
     @Override
+    public Page<ExamPaperAnswer> findByExamPaperId(ExamPaperAnswerPageVM model) {
+        return examPaperAnswerDao.findByExamPaperId(model.getExamPaperId(),PageUtils.of(model.getPageIndex(), model.getPageSize()));
+    }
+
+    @Override
     public ExamPaperSubmitVM examPaperAnswerToVM(Integer id) {
         ExamPaperSubmitVM examPaperSubmitVM = new ExamPaperSubmitVM();
         ExamPaperAnswer examPaperAnswer = examPaperAnswerDao.findById(id).get();
