@@ -35,28 +35,28 @@ public class DashboardController {
 //        User user = LoginInterceptor.getCurrUser();
         List<ExamPaper> list = examPaperService.findPaperByType(ExamPaperTypeEnum.Fixed.getCode());
 
-        indexVM.setFixedPaper(list.stream().map(ep->{
-            PaperInfo paperInfo = new PaperInfo();
-            paperInfo.setId(ep.getId());
-            paperInfo.setName(ep.getName());
-            return paperInfo;
-        }).collect(Collectors.toList()));
+        if(list!=null)
+        {
+            indexVM.setFixedPaper(list.stream().map(ep->{
+                PaperInfo paperInfo = new PaperInfo();
+                paperInfo.setId(ep.getId());
+                paperInfo.setName(ep.getName());
+                return paperInfo;
+            }).collect(Collectors.toList()));
 
+            List<ExamPaper> limitPaper = examPaperService.findPaperByType(ExamPaperTypeEnum.TimeLimit.getCode());
 
-        List<ExamPaper> limitPaper = examPaperService.findPaperByType(ExamPaperTypeEnum.TimeLimit.getCode());
+            List<PaperInfoVM> paperInfoVMS = limitPaper.stream().map(ep -> {
+                PaperInfoVM paperInfo = new PaperInfoVM();
+                paperInfo.setId(ep.getId());
+                paperInfo.setName(ep.getName());
+                paperInfo.setStartTime(DateTimeUtil.dateFormat(ep.getLimitStartTime()));
+                paperInfo.setEndTime(DateTimeUtil.dateFormat(ep.getLimitEndTime()));
+                return paperInfo;
+            }).collect(Collectors.toList());
 
-        List<PaperInfoVM> paperInfoVMS = limitPaper.stream().map(ep -> {
-            PaperInfoVM paperInfo = new PaperInfoVM();
-            paperInfo.setId(ep.getId());
-            paperInfo.setName(ep.getName());
-            paperInfo.setStartTime(DateTimeUtil.dateFormat(ep.getLimitStartTime()));
-            paperInfo.setEndTime(DateTimeUtil.dateFormat(ep.getLimitEndTime()));
-            return paperInfo;
-        }).collect(Collectors.toList());
-
-        indexVM.setTimeLimitPaper(paperInfoVMS);
-
-
+            indexVM.setTimeLimitPaper(paperInfoVMS);
+        }
 
 
         return RestResponse.ok(indexVM);

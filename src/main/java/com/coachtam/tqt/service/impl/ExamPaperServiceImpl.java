@@ -27,6 +27,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -221,13 +222,13 @@ public class ExamPaperServiceImpl implements ExamPaperService {
 
     @Override
     public List<ExamPaper> findPaperByType(int type) {
-        ExamPaper examPaper = new ExamPaper();
-        examPaper.setPaperType(type);
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
-        examPaper.setClasses(user.getClasses());
-        Example<ExamPaper> example = Example.of(examPaper);
-        List<ExamPaper> all = examPaperDao.findAll(example);
 
-        return all;
+        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        if(user.getClasses()!=null)
+        {
+            return examPaperDao.findListByTypeAndClass(type,user.getClasses().getId(), PageRequest.of(0,5));
+        }
+
+        return null;
     }
 }

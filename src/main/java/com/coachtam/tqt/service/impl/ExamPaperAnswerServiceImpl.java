@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -227,7 +228,7 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return examPaperAnswerDao.findAll(specification,PageUtils.of(model.getPageIndex(), model.getPageSize()));
+        return examPaperAnswerDao.findAll(specification,PageUtils.of(model.getPageIndex(), model.getPageSize(), Sort.by(Sort.Direction.DESC,"createTime")));
     }
 
     @Override
