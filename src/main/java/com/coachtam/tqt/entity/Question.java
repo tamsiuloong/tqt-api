@@ -2,6 +2,7 @@ package com.coachtam.tqt.entity;
 
 import java.util.Date;
 
+import com.coachtam.tqt.utils.HtmlUtil;
 import com.coachtam.tqt.utils.StringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -78,4 +79,15 @@ public class Question {
 	private Boolean deleted;
 
 
+	@Transient
+	private String shortTitle;
+
+
+	public String getShortTitle() {
+		return HtmlUtil.clear(this.getTitle());
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
 }

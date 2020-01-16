@@ -34,7 +34,7 @@ spring:
       #hibernate 其它属性，可以用来配置其它hibernate配置
       hibernate:
         dialect: org.hibernate.dialect.MySQL55Dialect
-        show_sql: true
+        show_sql: false
     #是否在视图层也打开session(open session in view)
     open-in-view: true
   #ACTIVITI
@@ -64,5 +64,5 @@ tqt:
   upload:
 #    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
 #    accessPath: http://localhost:9999
-    uploadPath: /usr/local/nginx/html/ROOT
-    accessPath: http://www.coachtam.cn:88
+    uploadPath: /usr/local/nginx/html/admin
+    accessPath: http://39.108.56.138:88

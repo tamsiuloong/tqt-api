@@ -3,6 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.service.QuestionService;
 import com.coachtam.tqt.to.QuestionForm;
+import com.coachtam.tqt.utils.HtmlUtil;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +58,8 @@ public class QuestionCtrl {
             predicates.add(equal);
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page result = questionService.page(pageNo,pageSize,specification);
+        Page<Question> result = questionService.page(pageNo,pageSize,specification);
+
         return ResultVM.success(result);
     }
 
