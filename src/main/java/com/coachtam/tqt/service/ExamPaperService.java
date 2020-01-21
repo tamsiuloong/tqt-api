@@ -32,4 +32,6 @@ public interface ExamPaperService {
     ExamPaperEditRequestVM examPaperToVM(Integer id);
 
     List<ExamPaper> findPaperByType(int type);
+
+    void updateStatus(Integer paperId, Boolean deleted);
 }

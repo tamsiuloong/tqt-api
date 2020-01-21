@@ -24,7 +24,6 @@ import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperTitleItemVM;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -226,9 +225,15 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
         if(user.getClasses()!=null)
         {
-            return examPaperDao.findListByTypeAndClass(type,user.getClasses().getId(), PageRequest.of(0,5));
+            return examPaperDao.findListByTypeAndClass(type,user.getClasses().getId(),PageRequest.of(0,5));
         }
 
         return null;
+    }
+
+    @Override
+    public void updateStatus(Integer paperId, Boolean deleted) {
+        ExamPaper examPaper = examPaperDao.getOne(paperId);
+        examPaper.setDeleted(deleted);
     }
 }

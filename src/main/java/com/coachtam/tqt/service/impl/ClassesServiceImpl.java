@@ -36,7 +36,11 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public List<Classes> findAll() {
-        return classesDao.findAll();
+//        Classes classes = new Classes();
+//        classes.setClosed(false);
+//        Example<Classes> example = Example.of(classes);
+//        return classesDao.findAll(example);
+        return classesDao.findAll(Sort.by(Sort.Direction.DESC,"beginTime"));
     }
 
     @Override
@@ -44,7 +48,7 @@ public class ClassesServiceImpl implements ClassesService {
         Classes classes = new Classes();
         classes.setClosed(closed);
         Example<Classes> example = Example.of(classes);
-        return classesDao.findAll(example);
+        return classesDao.findAll(example,Sort.by(Sort.Direction.DESC,"beginTime"));
     }
 
     @Override

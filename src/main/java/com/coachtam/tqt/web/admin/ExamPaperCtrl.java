@@ -55,9 +55,9 @@ public class ExamPaperCtrl {
                 Predicate equal = builder.equal(root.join("course").get("id"), searchForm.getCourseId());
                 predicates.add(equal);
             }
-            //查询可用的
-            Predicate equal = builder.equal(root.get("deleted"), 0);
-            predicates.add(equal);
+//            //查询可用的
+//            Predicate equal = builder.equal(root.get("deleted"), 0);
+//            predicates.add(equal);
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page result = examPaperService.page(pageNo,pageSize,specification);
@@ -107,5 +107,11 @@ public class ExamPaperCtrl {
     public ResultVM<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
         ExamPaperEditRequestVM vm = examPaperService.examPaperToVM(id);
         return ResultVM.success(vm);
+    }
+
+    @PutMapping("status")
+    public ResultVM<ExamPaperEditRequestVM> status(@RequestParam("deleted")Boolean deleted,@RequestParam("paperId")Integer paperId){
+        examPaperService.updateStatus(paperId,deleted);
+        return ResultVM.success(null);
     }
 }
