@@ -1,4 +1,4 @@
-//package com.coachtam.tqt.web.admin;
+package com.coachtam.tqt.web.admin;//package com.coachtam.tqt.web.admin;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.core.Ordered;
 //import org.springframework.core.annotation.Order;

@@ -11,7 +11,7 @@ import java.util.List;
  * @CreateDate:		2019-6-27 14:49:39
  */
 public interface InterviewService {
-    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm,boolean all);
+    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm, boolean all);
 
     List<Interview> findAll();
 
