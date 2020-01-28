@@ -1,14 +1,13 @@
 package com.coachtam.tqt.web.admin;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.TrackService;
 import com.coachtam.tqt.to.TrackForm;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Join;
@@ -91,8 +90,7 @@ public class TrackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Track track)
     {
-
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         track.setCreateBy(user.getUsername());
         track.setCreateTime(new Date());
         trackService.save(track);

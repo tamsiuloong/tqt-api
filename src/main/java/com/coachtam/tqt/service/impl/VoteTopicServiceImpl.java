@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
 import com.coachtam.tqt.service.UserService;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +46,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     @Override
     public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll)
     {
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         String username = user.getUsername();
         User dbUser = userService.findByUsername(username);
 
@@ -84,7 +83,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
 
     @Override
     public List<VoteTopic> findAll() {
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
 
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {

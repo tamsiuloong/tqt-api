@@ -1,11 +1,9 @@
 package com.coachtam.tqt.web.admin;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.UserEventLog;
 import com.coachtam.tqt.event.UserEvent;
-import com.coachtam.tqt.interceptor.LogInterceptor;
 import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.UserForm;
@@ -16,13 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description:	用户
@@ -76,9 +70,10 @@ public class UserCtrl {
      */
     @GetMapping("/myinfo")
     @ApiOperation(value = "我的资料(用于编辑用户)")
-    public ResultVM<UserDetail> myinfo()
+    public ResultVM<User> myinfo()
     {
-        UserDetail dbuser  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        User dbuser = userService.findByUsername(user.getUsername());
         return ResultVM.success(dbuser);
     }
     /**
@@ -89,11 +84,17 @@ public class UserCtrl {
     @ApiOperation(value = "我的资料(用于返回权限信息)")
     public ResultVM<Map<String,Object>> info(String access_token)
     {
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        User dbuser = userService.findByUsername(user.getUsername());
+        Set<String> moduleSet = new HashSet<>();
+
+        dbuser.getRoleSet().forEach(role->role.getModuleSet().forEach(module->moduleSet.add(module.getName())));
+
+
         HashMap<String,Object> data = new HashMap<>();
         data.put("name",user.getUsername());
         data.put("user_id","");
-        data.put("access",user.getAuthorities().stream().map(a->a.getAuthority()).toArray());
+        data.put("access",moduleSet.toArray());
         data.put("token",access_token);
         data.put("avator","https://avatars0.githubusercontent.com/u/20942571?s=460&v=4");
         return ResultVM.success(data);
@@ -137,9 +138,10 @@ public class UserCtrl {
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
     {
-        UserDetail user = LoginInterceptor.getCurrUser();
-        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUsername(), user.getName(), new Date());
-        String content = user.getName() + "删除用户"+ids;
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        User dbuser  = userService.findByUsername(user.getUsername());
+        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUsername(), dbuser.getUserInfo().getName(), new Date());
+        String content = dbuser.getUserInfo().getName() + "删除用户"+ids;
         userEventLog.setContent(content);
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 
@@ -151,9 +153,10 @@ public class UserCtrl {
     @PutMapping
     public ResultVM<String> update(@RequestBody User user)
     {
-        UserDetail currUser = LoginInterceptor.getCurrUser();
-        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
-        String content = currUser.getName() + "修改用户:"+user;
+        com.coachtam.tqt.config.utils.UserInfo userinfo = LoginInterceptor.getCurrUser();
+        User dbuser  = userService.findByUsername(userinfo.getUsername());
+        UserEventLog userEventLog = new UserEventLog(dbuser.getId(), dbuser.getUserName(), dbuser.getUserInfo().getName(), new Date());
+        String content = dbuser.getUserInfo().getName() + "修改用户:"+user;
         userEventLog.setContent(content);
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 
@@ -165,9 +168,10 @@ public class UserCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody User user)
     {
-        UserDetail currUser = LoginInterceptor.getCurrUser();
-        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
-        String content = currUser.getName() + "新增用户:"+user;
+        com.coachtam.tqt.config.utils.UserInfo userinfo = LoginInterceptor.getCurrUser();
+        User dbuser  = userService.findByUsername(userinfo.getUsername());
+        UserEventLog userEventLog = new UserEventLog(userinfo.getId(), userinfo.getUsername(), dbuser.getUserInfo().getName(), new Date());
+        String content = dbuser.getUserInfo().getName() + "新增用户:"+user;
         userEventLog.setContent(content);
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 
@@ -215,9 +219,12 @@ public class UserCtrl {
     public ResultVM<String> updateMyInfo(@RequestBody User user)
     {
 
-        UserDetail currUser = LoginInterceptor.getCurrUser();
-        UserEventLog userEventLog = new UserEventLog(currUser.getId(), currUser.getUsername(), currUser.getName(), new Date());
-        String content = currUser.getName() + "更新个人资料:"+user;
+
+        com.coachtam.tqt.config.utils.UserInfo userinfo = LoginInterceptor.getCurrUser();
+        User dbuser  = userService.findByUsername(userinfo.getUsername());
+        UserEventLog userEventLog = new UserEventLog(userinfo.getId(), userinfo.getUsername(), dbuser.getUserInfo().getName(), new Date());
+
+        String content =userinfo.getUsername() + "更新个人资料:"+user;
         userEventLog.setContent(content);
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 

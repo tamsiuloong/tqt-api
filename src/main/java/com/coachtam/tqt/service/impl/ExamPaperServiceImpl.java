@@ -1,6 +1,5 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.entity.TextContent;
 import com.coachtam.tqt.entity.Question;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,8 +83,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public void save(ExamPaperEditRequestVM model) {
         ExamPaper examPaper = new ExamPaper();
 
-        UserDetail currUser  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        com.coachtam.tqt.config.utils.UserInfo currUser = LoginInterceptor.getCurrUser();
         User user = userService.findByUsername(currUser.getUsername());
 
 

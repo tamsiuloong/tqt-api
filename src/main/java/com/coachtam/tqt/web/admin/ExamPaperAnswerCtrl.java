@@ -1,10 +1,8 @@
 package com.coachtam.tqt.web.admin;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.Course;
 import com.coachtam.tqt.entity.ExamPaperAnswer;
 import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.CourseService;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
 import com.coachtam.tqt.service.UserService;

@@ -1,17 +1,16 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.entity.QuestionItems;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.respository.QuestionDao;
 import com.coachtam.tqt.respository.QuestionItemsDao;
 import com.coachtam.tqt.service.QuestionService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.ExamUtil;
-import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditItemVM;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,8 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
             bean.setQuestionItems(null);
         }
         bean.setCreateTime(new Date());
-
-        org.springframework.security.core.userdetails.User user  = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         User currUser = userService.findByUsername(user.getUsername());
 
         bean.setUser(currUser);

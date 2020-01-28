@@ -1,10 +1,10 @@
 server:
   port: 9999
-logging:
-  level:
-    org.springframework: error
-    org.springframework.boot.autoconfigure: ERROR
-    org.springframework.web: warn
+#logging:
+#  level:
+#    org.springframework: debug
+#    org.springframework.boot.autoconfigure: error
+#    org.springframework.web: info
 spring:
   devtools:
     restart:
@@ -66,3 +66,9 @@ tqt:
 #    accessPath: http://localhost:9999
     uploadPath: /usr/local/nginx/html/admin
     accessPath: http://tqt2020.oss-cn-chengdu.aliyuncs.com
+  jwt:
+    paramName: access_token
+    secret: ego@Login(Auth}*^31)&ego% # 登录校验的密钥
+    priKeyPath: /Users/macbook/rsa/rsa.pri # 私钥地址
+    pubKeyPath: /Users/macbook/rsa/rsa.pub # 公钥地址
+    expire: 1 # 过期时间,单位分钟

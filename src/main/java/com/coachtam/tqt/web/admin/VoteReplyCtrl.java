@@ -1,16 +1,15 @@
 package com.coachtam.tqt.web.admin;
 
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.service.VoteReplyService;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,12 +76,11 @@ public class VoteReplyCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
     {
-        UserDetail dbUser  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        User user = userService.findByUsername(dbUser.getUsername());
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        User dbuser = userService.findByUsername(user.getUsername());
 
         //判断是否已经提交过
-        Boolean hasCommited = voteRecordService.findByVoteTopicId(voteTopicId,dbUser.getId());
+        Boolean hasCommited = voteRecordService.findByVoteTopicId(voteTopicId,dbuser.getId());
 
         if(hasCommited)
         {
@@ -91,7 +89,7 @@ public class VoteReplyCtrl {
 
         VoteRecord voteRecord = new VoteRecord();
         voteRecord.setVotetopicId(voteTopicId);
-        voteRecord.setUser(user);
+        voteRecord.setUser(dbuser);
         voteRecord.setVoteIp(request.getRemoteAddr());
         voteRecord.setVoteTime(new Date());
 

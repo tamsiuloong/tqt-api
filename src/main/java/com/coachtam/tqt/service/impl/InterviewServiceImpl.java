@@ -2,8 +2,8 @@ package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.config.properties.GlobalProperteis;
 import com.coachtam.tqt.config.properties.UploadProperteis;
-import com.coachtam.tqt.config.security.UserDetail;
 import com.coachtam.tqt.entity.*;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.respository.InterviewDao;
 import com.coachtam.tqt.service.InterviewService;
 import com.coachtam.tqt.service.UserService;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +50,7 @@ public class InterviewServiceImpl implements InterviewService {
     public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm,boolean all)
     {
 
-
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);
@@ -107,8 +105,8 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public void save(Interview bean) {
-        UserDetail user  = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = user.getUsername();
+        com.coachtam.tqt.config.utils.UserInfo currUser = LoginInterceptor.getCurrUser();
+        String username = currUser.getUsername();
 
         User dbUser = userService.findByUsername(username);
         bean.setUser(dbUser);

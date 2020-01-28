@@ -1,28 +1,17 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.entity.Role;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.respository.VoteRecordDao;
-import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.utils.PageUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * @Description:	投票记录
  * @Author:			Coach tam

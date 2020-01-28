@@ -3,6 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.entity.UserInfo;
+import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.to.FeedbackForm;
@@ -15,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.*;
@@ -42,7 +41,7 @@ public class FeedbackCtrl {
     @GetMapping
     public ResultVM<Page> page(Integer pageNo, Integer pageSize)
     {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         //查询当前用户学习反馈
@@ -136,7 +135,7 @@ public class FeedbackCtrl {
     public ResultVM<String> update(@RequestBody Feedback feedback)
     {
         //所属用户是不能变的
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         feedback.setUser(dbUser);
@@ -147,7 +146,7 @@ public class FeedbackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Feedback feedback)
     {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         feedback.setUser(dbUser);

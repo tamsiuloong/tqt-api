@@ -8,9 +8,9 @@ import com.coachtam.tqt.to.UserForm;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +37,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public Page<User> page(Integer pageNo, Integer pageSize, UserForm searchForm)
