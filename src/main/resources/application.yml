@@ -51,16 +51,6 @@ tqt:
     adminRoles: #管理员角色
       - 管理员
       - 老师
-  security:
-    oauth2:
-      storeType: jwt #或者jwt
-      jwtSigningKey: tqt
-      clients[0]:
-        clientId: tqt
-        clientSecret: tqt
-      clients[1]:
-        clientId: tqt1
-        clientSecret: tqt1
   upload:
 #    uploadPath: /Users/macbook/Desktop/tqt/src/tqt-api/target/classes/static
 #    accessPath: http://localhost:9999
@@ -71,4 +61,5 @@ tqt:
     secret: ego@Login(Auth}*^31)&ego% # 登录校验的密钥
     priKeyPath: /Users/macbook/rsa/rsa.pri # 私钥地址
     pubKeyPath: /Users/macbook/rsa/rsa.pub # 公钥地址
-    expire: 1 # 过期时间,单位分钟
+    expire: 10080 # 过期时间,单位分钟
+    clients: tqt:tqt,tqt:tqt-student

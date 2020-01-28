@@ -232,6 +232,6 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
             result.add(m.group(1));
         }
 
-        System.out.println();
+//        System.out.println();
     }
 }
