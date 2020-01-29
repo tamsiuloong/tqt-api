@@ -7,6 +7,7 @@ import com.coachtam.tqt.respository.VoteTopicDao;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteTopicService;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     @Override
     public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll)
     {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = LoginInterceptor.getCurrUser();
         String username = user.getUsername();
         User dbUser = userService.findByUsername(username);
 
@@ -83,7 +84,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
 
     @Override
     public List<VoteTopic> findAll() {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = LoginInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
 
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {

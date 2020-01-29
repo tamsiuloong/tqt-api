@@ -90,7 +90,7 @@ public class TrackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Track track)
     {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
         track.setCreateBy(user.getUsername());
         track.setCreateTime(new Date());
         trackService.save(track);

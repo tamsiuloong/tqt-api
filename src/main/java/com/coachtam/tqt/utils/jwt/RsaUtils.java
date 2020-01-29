@@ -1,4 +1,4 @@
-package com.coachtam.tqt.config.utils;
+package com.coachtam.tqt.utils.jwt;
 
 import java.io.File;
 import java.io.IOException;

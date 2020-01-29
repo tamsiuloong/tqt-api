@@ -1,4 +1,4 @@
-package com.coachtam.tqt.config.utils;
+package com.coachtam.tqt.utils.jwt;
 
 public abstract class JwtConstans {
     public static final String JWT_KEY_ID = "id";

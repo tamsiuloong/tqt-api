@@ -1,8 +1,8 @@
 package com.coachtam.tqt;
 
-import com.coachtam.tqt.config.utils.JwtUtils;
-import com.coachtam.tqt.config.utils.RsaUtils;
-import com.coachtam.tqt.config.utils.UserInfo;
+import com.coachtam.tqt.utils.jwt.JwtUtils;
+import com.coachtam.tqt.utils.jwt.RsaUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 

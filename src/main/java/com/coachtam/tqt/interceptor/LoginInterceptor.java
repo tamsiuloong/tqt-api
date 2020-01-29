@@ -1,8 +1,8 @@
 package com.coachtam.tqt.interceptor;
 
 import com.coachtam.tqt.config.properties.JwtProperties;
-import com.coachtam.tqt.config.utils.JwtUtils;
-import com.coachtam.tqt.config.utils.UserInfo;
+import com.coachtam.tqt.utils.jwt.JwtUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @Copyright (C), 2018-2020
@@ -35,12 +36,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         return threadLocal.get();
     }
 
+    private final static String ERROR_MSG = "{\n" +
+            "        \"code\":401\n" +
+            "        \"message\": \"Unauthorized\"\n" +
+            "    }";
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getParameter(jwtProperties.getParamName());
         if (StringUtils.isBlank(token)){
             //2.未登录，返回401
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            print401(response);
             return false;
         }
         //3.有token，查询用户信息
@@ -52,9 +57,15 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }catch (Exception e){
             //6.抛出异常，证明未登录，返回401
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            print401(response);
             return false;
         }
+    }
+
+    private void print401(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.getWriter().write(ERROR_MSG);
+        response.getWriter().flush();
     }
 
     @Override

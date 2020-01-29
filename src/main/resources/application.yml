@@ -1,10 +1,10 @@
 server:
   port: 9999
-#logging:
-#  level:
-#    org.springframework: debug
-#    org.springframework.boot.autoconfigure: error
-#    org.springframework.web: info
+logging:
+  level:
+    org.springframework: error
+    org.springframework.boot.autoconfigure: error
+    org.springframework.web: info
 spring:
   devtools:
     restart:

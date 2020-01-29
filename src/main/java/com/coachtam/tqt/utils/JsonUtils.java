@@ -1,8 +1,5 @@
 package com.coachtam.tqt.utils;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
-import com.coachtam.tqt.entity.exam.ExamPaperTitleItemObject;
-import com.coachtam.tqt.entity.question.QuestionObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +17,7 @@ import java.util.List;
  */
 public class JsonUtils {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     public static String toJson(Object obj) {
         ObjectMapper objectMapper = new ObjectMapper();

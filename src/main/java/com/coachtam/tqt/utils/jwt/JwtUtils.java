@@ -1,5 +1,6 @@
-package com.coachtam.tqt.config.utils;
+package com.coachtam.tqt.utils.jwt;
 
+import com.coachtam.tqt.utils.ObjectUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

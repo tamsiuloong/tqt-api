@@ -41,7 +41,7 @@ public class FeedbackCtrl {
     @GetMapping
     public ResultVM<Page> page(Integer pageNo, Integer pageSize)
     {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         //查询当前用户学习反馈
@@ -135,7 +135,7 @@ public class FeedbackCtrl {
     public ResultVM<String> update(@RequestBody Feedback feedback)
     {
         //所属用户是不能变的
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         feedback.setUser(dbUser);
@@ -146,7 +146,7 @@ public class FeedbackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Feedback feedback)
     {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
         com.coachtam.tqt.entity.User dbUser = userService.findByUsername(user.getUsername());
 
         feedback.setUser(dbUser);

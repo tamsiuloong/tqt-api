@@ -7,6 +7,7 @@ import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.service.VoteReplyService;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,7 @@ public class VoteReplyCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
     {
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = LoginInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
 
         //判断是否已经提交过

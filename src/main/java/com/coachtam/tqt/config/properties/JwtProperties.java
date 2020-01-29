@@ -1,6 +1,6 @@
 package com.coachtam.tqt.config.properties;
 
-import com.coachtam.tqt.config.utils.RsaUtils;
+import com.coachtam.tqt.utils.jwt.RsaUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

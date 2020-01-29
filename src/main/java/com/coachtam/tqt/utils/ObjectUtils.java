@@ -1,4 +1,4 @@
-package com.coachtam.tqt.config.utils;
+package com.coachtam.tqt.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

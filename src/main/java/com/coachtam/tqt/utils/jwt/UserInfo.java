@@ -1,4 +1,4 @@
-package com.coachtam.tqt.config.utils;
+package com.coachtam.tqt.utils.jwt;
 
 /**
  * 用户信息

@@ -1,6 +1,5 @@
 package com.coachtam.tqt.service.impl;
 
-import com.coachtam.tqt.config.utils.JsonUtil;
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.entity.QuestionItems;
 import com.coachtam.tqt.entity.User;
@@ -11,7 +10,9 @@ import com.coachtam.tqt.respository.QuestionItemsDao;
 import com.coachtam.tqt.service.QuestionService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.ExamUtil;
+import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditItemVM;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -80,7 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
             bean.setQuestionItems(null);
         }
         bean.setCreateTime(new Date());
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = LoginInterceptor.getCurrUser();
         User currUser = userService.findByUsername(user.getUsername());
 
         bean.setUser(currUser);
@@ -89,7 +90,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         List<QuestionEditItemVM> items = form.getItems();
 
-        String json = JsonUtil.toJson(items);
+        String json = JsonUtils.toJson(items);
         QuestionItems questionItems = new QuestionItems();
         questionItems.setContent(json);
         questionItems.setId(bean.getId());
@@ -126,7 +127,7 @@ public class QuestionServiceImpl implements QuestionService {
         questionDao.save(bean);
 
         List<QuestionEditItemVM> items = form.getItems();
-        String json = JsonUtil.toJson(items);
+        String json = JsonUtils.toJson(items);
         QuestionItems questionItems = bean.getQuestionItems();
         questionItems.setContent(json);
         questionItemsDao.save(questionItems);

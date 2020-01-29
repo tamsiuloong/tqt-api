@@ -50,7 +50,7 @@ public class InterviewServiceImpl implements InterviewService {
     public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm,boolean all)
     {
 
-        com.coachtam.tqt.config.utils.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);
@@ -105,7 +105,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public void save(Interview bean) {
-        com.coachtam.tqt.config.utils.UserInfo currUser = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo currUser = LoginInterceptor.getCurrUser();
         String username = currUser.getUsername();
 
         User dbUser = userService.findByUsername(username);

@@ -1,15 +1,13 @@
 package com.coachtam.tqt.web.auth;
 
 import com.coachtam.tqt.config.properties.JwtProperties;
-import com.coachtam.tqt.config.utils.JwtUtils;
-import com.coachtam.tqt.config.utils.UserInfo;
+import com.coachtam.tqt.utils.jwt.JwtUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +19,6 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 

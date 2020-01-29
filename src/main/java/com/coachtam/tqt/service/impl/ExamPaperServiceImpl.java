@@ -18,6 +18,7 @@ import com.coachtam.tqt.utils.DateTimeUtil;
 import com.coachtam.tqt.utils.ExamUtil;
 import com.coachtam.tqt.utils.JsonUtils;
 import com.coachtam.tqt.utils.PageUtils;
+import com.coachtam.tqt.utils.jwt.UserInfo;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperTitleItemVM;
@@ -83,7 +84,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public void save(ExamPaperEditRequestVM model) {
         ExamPaper examPaper = new ExamPaper();
 
-        com.coachtam.tqt.config.utils.UserInfo currUser = LoginInterceptor.getCurrUser();
+        UserInfo currUser = LoginInterceptor.getCurrUser();
         User user = userService.findByUsername(currUser.getUsername());
 
 
