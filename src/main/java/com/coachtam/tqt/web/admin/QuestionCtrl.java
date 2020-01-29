@@ -2,8 +2,7 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.service.QuestionService;
-import com.coachtam.tqt.to.QuestionForm;
-import com.coachtam.tqt.utils.HtmlUtil;
+import com.coachtam.tqt.qo.QuestionQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import com.coachtam.tqt.viewmodel.admin.question.QuestionEditRequestVM;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +29,7 @@ public class QuestionCtrl {
     private QuestionService questionService;
 
     @PostMapping("page")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody QuestionForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody QuestionQO searchForm)
     {
 
         Specification<Question> specification = (root, query, builder)->{

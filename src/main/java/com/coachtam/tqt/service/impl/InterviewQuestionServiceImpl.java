@@ -3,15 +3,12 @@ package com.coachtam.tqt.service.impl;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.InterviewQuestionDao;
 import com.coachtam.tqt.service.InterviewQuestionService;
-import com.coachtam.tqt.to.BatchInterviewQuestionForm;
-import com.coachtam.tqt.to.InterviewQuestionForm;
+import com.coachtam.tqt.qo.BatchInterviewQuestionQO;
+import com.coachtam.tqt.qo.InterviewQuestionQO;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
-import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,7 +61,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     }
 
     @Override
-    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, InterviewQuestionForm searchForm) {
+    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, InterviewQuestionQO searchForm) {
 
 
         return  interviewQuestionDao.findAll((root,query,builder)->{
@@ -127,7 +122,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 
     @Override
-    public void batchImport(BatchInterviewQuestionForm form)  {
+    public void batchImport(BatchInterviewQuestionQO form)  {
 
 //        SAXReader reader = new SAXReader();
 //

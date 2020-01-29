@@ -6,7 +6,7 @@ import com.coachtam.tqt.entity.UserInfo;
 import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.qo.FeedbackQO;
 import com.coachtam.tqt.viewmodel.admin.FeedbackVM;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import io.swagger.annotations.Api;
@@ -58,7 +58,7 @@ public class FeedbackCtrl {
     @ApiOperation(value = "分页查询(作为老师查询所有学生反馈)")
     @PostMapping("/teaching")
     public ResultVM<FeedbackVM> page(Integer pageNo, Integer pageSize,
-                                     @RequestBody FeedbackForm searchForm)
+                                     @RequestBody FeedbackQO searchForm)
     {
 //
         Specification<Feedback> specification = (root,query,builder)->{

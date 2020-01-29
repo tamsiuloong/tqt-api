@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.ExamPaper;
 import com.coachtam.tqt.service.ExamPaperService;
-import com.coachtam.tqt.to.ExamPaperForm;
+import com.coachtam.tqt.qo.ExamPaperQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import org.assertj.core.util.Lists;
@@ -31,7 +31,7 @@ public class ExamPaperCtrl {
     private ExamPaperService examPaperService;
 
     @PostMapping("page")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperQO searchForm)
     {
         Specification<ExamPaper> specification = (root, query, builder)->{
             List<Predicate> predicates = Lists.newArrayList();

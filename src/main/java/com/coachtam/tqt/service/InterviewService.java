@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Interview;
-import com.coachtam.tqt.to.InterviewForm;
+import com.coachtam.tqt.qo.InterviewQO;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * @CreateDate:		2019-6-27 14:49:39
  */
 public interface InterviewService {
-    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm, boolean all);
+    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewQO searchForm, boolean all);
 
     List<Interview> findAll();
 

@@ -6,7 +6,7 @@ import com.coachtam.tqt.entity.UserEventLog;
 import com.coachtam.tqt.event.UserEvent;
 import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.to.UserForm;
+import com.coachtam.tqt.qo.UserQO;
 import com.coachtam.tqt.utils.jwt.UserInfo;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import com.coachtam.tqt.viewmodel.admin.RoleVM;
@@ -38,9 +38,9 @@ public class UserCtrl {
 
     @ApiOperation(value = "分页查询")
     @PostMapping("/search")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody UserForm userForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody UserQO userQo)
     {
-        Page result = userService.page(pageNo,pageSize,userForm);
+        Page result = userService.page(pageNo,pageSize, userQo);
         return ResultVM.success(result);
     }
 

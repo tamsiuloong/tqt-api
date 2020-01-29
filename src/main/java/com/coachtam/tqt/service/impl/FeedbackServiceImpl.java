@@ -5,7 +5,7 @@ import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.respository.FeedbackDao;
 import com.coachtam.tqt.service.FeedbackService;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.qo.FeedbackQO;
 import com.coachtam.tqt.utils.PageUtils;
 import com.coachtam.tqt.viewmodel.admin.EchartLineStackVM;
 import com.coachtam.tqt.viewmodel.admin.EchartVM;
@@ -89,7 +89,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Object[]> absorption(FeedbackForm feedbackForm) {
+    public List<Object[]> absorption(FeedbackQO feedbackQo) {
         Map<String, Object> paras = new HashMap<>();
 
         StringBuilder sb
@@ -100,28 +100,28 @@ public class FeedbackServiceImpl implements FeedbackService {
                 "left join u.classes c " +
                 " where 1 = 1");
 
-        if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
+        if(feedbackQo.getClassId()!=null && !feedbackQo.getClassId().isEmpty())
         {
             sb.append(" and c.id = :classId");
-            paras.put("classId",feedbackForm.getClassId());
+            paras.put("classId", feedbackQo.getClassId());
         }
 
-        if(feedbackForm.getCourseId()!=null && !feedbackForm.getCourseId().isEmpty())
+        if(feedbackQo.getCourseId()!=null && !feedbackQo.getCourseId().isEmpty())
         {
             sb.append(" and course.id = :courseId");
-            paras.put("courseId",feedbackForm.getCourseId());
+            paras.put("courseId", feedbackQo.getCourseId());
         }
 
-        if(feedbackForm.getDayNum()!=null && !feedbackForm.getDayNum().isEmpty())
+        if(feedbackQo.getDayNum()!=null && !feedbackQo.getDayNum().isEmpty())
         {
             sb.append(" and f.dayNum = :dayNum");
-            paras.put("dayNum",Integer.valueOf(feedbackForm.getDayNum()));
+            paras.put("dayNum",Integer.valueOf(feedbackQo.getDayNum()));
         }
 
-        if(feedbackForm.getStuName()!=null && !feedbackForm.getStuName().isEmpty())
+        if(feedbackQo.getStuName()!=null && !feedbackQo.getStuName().isEmpty())
         {
             sb.append(" and u.userInfo.name = :stuName");
-            paras.put("stuName",feedbackForm.getStuName());
+            paras.put("stuName", feedbackQo.getStuName());
         }
 
         sb.append(" group by f.absorption");
@@ -136,7 +136,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public EchartVM learnCurve(FeedbackForm feedbackForm) {
+    public EchartVM learnCurve(FeedbackQO feedbackQo) {
 
         EchartVM result = new EchartVM();
 
@@ -144,7 +144,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         StringBuilder sb = new StringBuilder();
 
-        if(StringUtils.isNotBlank(feedbackForm.getStuName()))
+        if(StringUtils.isNotBlank(feedbackQo.getStuName()))
         {
             sb.append("select DATE_FORMAT(f.backTime,'%Y-%m-%d'),f.absorption " +
                     "from Feedback  f  " +
@@ -153,29 +153,29 @@ public class FeedbackServiceImpl implements FeedbackService {
                     "join u.classes c " +
                     " where 1 = 1 ");
 
-            if(feedbackForm.getClassId()!=null && !feedbackForm.getClassId().isEmpty())
+            if(feedbackQo.getClassId()!=null && !feedbackQo.getClassId().isEmpty())
             {
                 sb.append(" and c.id = :classId");
-                paras.put("classId",feedbackForm.getClassId());
+                paras.put("classId", feedbackQo.getClassId());
             }
 
-            if(feedbackForm.getCourseId()!=null && !feedbackForm.getCourseId().isEmpty())
+            if(feedbackQo.getCourseId()!=null && !feedbackQo.getCourseId().isEmpty())
             {
                 sb.append(" and course.id = :courseId");
-                paras.put("courseId",feedbackForm.getCourseId());
+                paras.put("courseId", feedbackQo.getCourseId());
             }
 
-            if(feedbackForm.getStuName()!=null && !feedbackForm.getStuName().isEmpty())
+            if(feedbackQo.getStuName()!=null && !feedbackQo.getStuName().isEmpty())
             {
                 sb.append(" and u.userInfo.name = :stuName");
-                paras.put("stuName",feedbackForm.getStuName());
+                paras.put("stuName", feedbackQo.getStuName());
             }
 
-            if(StringUtils.isNotBlank(feedbackForm.getStartDate())&&StringUtils.isNotBlank(feedbackForm.getEndDate()))
+            if(StringUtils.isNotBlank(feedbackQo.getStartDate())&&StringUtils.isNotBlank(feedbackQo.getEndDate()))
             {
                 sb.append(" and backTime  between :startTime and :endTime");
-                paras.put("startTime",feedbackForm.getStartDate());
-                paras.put("endTime",feedbackForm.getEndDate());
+                paras.put("startTime", feedbackQo.getStartDate());
+                paras.put("endTime", feedbackQo.getEndDate());
             }
 
 
@@ -205,28 +205,28 @@ public class FeedbackServiceImpl implements FeedbackService {
             });
         }
         else {
-            if(StringUtils.isBlank(feedbackForm.getClassId()))
+            if(StringUtils.isBlank(feedbackQo.getClassId()))
             {
                 return null;
             }
             sb.append("SELECT backtime , avg(ab) FROM( SELECT DATE_FORMAT(f.back_Time , '%Y-%m-%d') backtime , SUBSTRING_INDEX(f.ABSORPTION , '-' , 1) ab FROM FEEDBACK_P f ");
 
-            if(StringUtils.isNotBlank(feedbackForm.getClassId()))
+            if(StringUtils.isNotBlank(feedbackQo.getClassId()))
             {
                 sb.append("JOIN USER_P u ON f.USER_ID = u.USER_ID JOIN CLASSES_P c ON u.CLASS_ID = c.ID WHERE c.id = :classId");
-                paras.put("classId", feedbackForm.getClassId());
+                paras.put("classId", feedbackQo.getClassId());
             }
-            if(StringUtils.isNotBlank(feedbackForm.getCourseId()))
+            if(StringUtils.isNotBlank(feedbackQo.getCourseId()))
             {
                 sb.append(" and COURSE_ID = :couseId");
-                paras.put("couseId", feedbackForm.getCourseId());
+                paras.put("couseId", feedbackQo.getCourseId());
             }
 
-            if(StringUtils.isNotBlank(feedbackForm.getStartDate())&&StringUtils.isNotBlank(feedbackForm.getEndDate()))
+            if(StringUtils.isNotBlank(feedbackQo.getStartDate())&&StringUtils.isNotBlank(feedbackQo.getEndDate()))
             {
                 sb.append(" and back_Time  between :startTime and :endTime");
-                paras.put("startTime",feedbackForm.getStartDate());
-                paras.put("endTime",feedbackForm.getEndDate());
+                paras.put("startTime", feedbackQo.getStartDate());
+                paras.put("endTime", feedbackQo.getEndDate());
             }
 
             sb.append(") t GROUP BY backtime");
@@ -246,7 +246,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public EchartLineStackVM learncurvepro(FeedbackForm searchForm) {
+    public EchartLineStackVM learncurvepro(FeedbackQO searchForm) {
         EchartLineStackVM result = new EchartLineStackVM();
         Map<String, Object> paras = new HashMap<>();
 
@@ -374,7 +374,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<User> unCommitedList(Specification<Feedback> specification, FeedbackForm searchForm) {
+    public List<User> unCommitedList(Specification<Feedback> specification, FeedbackQO searchForm) {
         //所有已提交的反馈列表
         List<Feedback> commitedList = feedbackDao.findAll(specification);
 

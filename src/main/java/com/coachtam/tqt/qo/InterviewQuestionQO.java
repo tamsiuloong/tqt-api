@@ -1,4 +1,4 @@
-package com.coachtam.tqt.to;
+package com.coachtam.tqt.qo;
 
 import lombok.Data;
 
@@ -9,8 +9,8 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class QuestionForm {
-    private String title;
+public class InterviewQuestionQO {
     private String courseId;
-    private Integer questionType;
+    private String knowledgePointId;
+    private String title;
 }

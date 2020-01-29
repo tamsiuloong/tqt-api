@@ -1,4 +1,4 @@
-package com.coachtam.tqt.to;
+package com.coachtam.tqt.qo;
 
 import lombok.Data;
 
@@ -9,7 +9,11 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class TrackForm {
+public class FeedbackQO {
     private String classId;
     private String stuName;
+    private String courseId;
+    private String dayNum;
+    private String startDate;
+    private String endDate;
 }

@@ -7,7 +7,7 @@ import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.respository.InterviewDao;
 import com.coachtam.tqt.service.InterviewService;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.to.InterviewForm;
+import com.coachtam.tqt.qo.InterviewQO;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
@@ -47,7 +47,7 @@ public class InterviewServiceImpl implements InterviewService {
     private GlobalProperteis globalProperteis;
 
     @Override
-    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewForm searchForm,boolean all)
+    public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewQO searchForm, boolean all)
     {
 
         com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();

@@ -1,7 +1,7 @@
 package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.service.FeedbackService;
-import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.qo.FeedbackQO;
 import com.coachtam.tqt.viewmodel.admin.EchartLineStackVM;
 import com.coachtam.tqt.viewmodel.admin.EchartVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class ReportCtrl {
     @Autowired
     private FeedbackService feedbackService;
     @PostMapping("/absorption")
-    public EchartVM absorption(@RequestBody FeedbackForm searchForm)
+    public EchartVM absorption(@RequestBody FeedbackQO searchForm)
     {
 
         EchartVM result = new EchartVM();
@@ -42,7 +42,7 @@ public class ReportCtrl {
      * @return
      */
     @PostMapping("/learncurve")
-    public EchartVM learncurve(@RequestBody FeedbackForm searchForm)
+    public EchartVM learncurve(@RequestBody FeedbackQO searchForm)
     {
 
         EchartVM result = feedbackService.learnCurve(searchForm);
@@ -55,7 +55,7 @@ public class ReportCtrl {
      * @return
      */
     @PostMapping("/learncurvepro")
-    public EchartLineStackVM learncurvepro(@RequestBody FeedbackForm searchForm)
+    public EchartLineStackVM learncurvepro(@RequestBody FeedbackQO searchForm)
     {
 
         EchartLineStackVM result = feedbackService.learncurvepro(searchForm);

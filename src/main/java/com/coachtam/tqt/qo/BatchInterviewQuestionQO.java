@@ -1,4 +1,4 @@
-package com.coachtam.tqt.to;
+package com.coachtam.tqt.qo;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.List;
  * @Description:
  */
 @Data
-public class BatchInterviewQuestionForm {
+public class BatchInterviewQuestionQO {
     private String company;
     private String text;
     private List<InterviewQuestion> interviewQuestionList;

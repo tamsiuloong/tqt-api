@@ -1,4 +1,4 @@
-package com.coachtam.tqt.web.admin;//package com.coachtam.tqt.web.admin;
+package com.coachtam.tqt.config.cors;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -25,11 +25,10 @@ import javax.servlet.*;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
-public class CORSFilter implements Filter {
+public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-//        System.out.println("Filtering on...........................................................");
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         response.setHeader("Access-Control-Allow-Origin", "*");

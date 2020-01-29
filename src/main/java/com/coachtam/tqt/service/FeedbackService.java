@@ -2,7 +2,7 @@ package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.Feedback;
 import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.to.FeedbackForm;
+import com.coachtam.tqt.qo.FeedbackQO;
 import com.coachtam.tqt.viewmodel.admin.EchartLineStackVM;
 import com.coachtam.tqt.viewmodel.admin.EchartVM;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public interface FeedbackService {
 
     void deleteByIds(String[] id);
 
-    List<Object[]> absorption(FeedbackForm specification);
+    List<Object[]> absorption(FeedbackQO specification);
 
     /**
      * 查询未提交名单
@@ -37,10 +37,10 @@ public interface FeedbackService {
      * @param searchForm
      * @return
      */
-    List<User> unCommitedList(Specification<Feedback> specification, FeedbackForm searchForm);
+    List<User> unCommitedList(Specification<Feedback> specification, FeedbackQO searchForm);
 
 
-    EchartVM learnCurve(FeedbackForm searchForm);
+    EchartVM learnCurve(FeedbackQO searchForm);
 
-    EchartLineStackVM learncurvepro(FeedbackForm searchForm);
+    EchartLineStackVM learncurvepro(FeedbackQO searchForm);
 }

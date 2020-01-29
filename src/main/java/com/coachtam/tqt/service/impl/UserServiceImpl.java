@@ -4,7 +4,7 @@ import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.respository.UserDao;
 import com.coachtam.tqt.service.RoleService;
 import com.coachtam.tqt.service.UserService;
-import com.coachtam.tqt.to.UserForm;
+import com.coachtam.tqt.qo.UserQO;
 import com.coachtam.tqt.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public Page<User> page(Integer pageNo, Integer pageSize, UserForm searchForm)
+    public Page<User> page(Integer pageNo, Integer pageSize, UserQO searchForm)
     {
 
         return  userDao.findAll((root,query,builder)->{

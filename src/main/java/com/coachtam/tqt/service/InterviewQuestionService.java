@@ -1,8 +1,8 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
-import com.coachtam.tqt.to.BatchInterviewQuestionForm;
-import com.coachtam.tqt.to.InterviewQuestionForm;
+import com.coachtam.tqt.qo.BatchInterviewQuestionQO;
+import com.coachtam.tqt.qo.InterviewQuestionQO;
 import org.springframework.data.domain.Page;
 import java.util.List;
 /**
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface InterviewQuestionService {
     public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, Integer interviewId);
-    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, InterviewQuestionForm searchForm);
+    public Page<InterviewQuestion> page(Integer pageNo, Integer pageSize, InterviewQuestionQO searchForm);
 
     List<InterviewQuestion> findAll();
 
@@ -29,7 +29,7 @@ public interface InterviewQuestionService {
     /**
      * 批量导入面试题
      */
-    void batchImport(BatchInterviewQuestionForm form);
+    void batchImport(BatchInterviewQuestionQO form);
 
 
     /**

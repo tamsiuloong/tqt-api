@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.interceptor.LoginInterceptor;
 import com.coachtam.tqt.service.TrackService;
-import com.coachtam.tqt.to.TrackForm;
+import com.coachtam.tqt.qo.TrackQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public class TrackCtrl {
     private TrackService trackService;
 
     @PostMapping("/search")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody TrackForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody TrackQO searchForm)
     {
         Page result = trackService.page(pageNo,pageSize,(root,query,builder)->{
             List<Predicate> predicates = Lists.newArrayList();

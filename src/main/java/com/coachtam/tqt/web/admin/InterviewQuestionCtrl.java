@@ -2,8 +2,8 @@ package com.coachtam.tqt.web.admin;
 
 import com.coachtam.tqt.entity.InterviewQuestion;
 import com.coachtam.tqt.service.InterviewQuestionService;
-import com.coachtam.tqt.to.BatchInterviewQuestionForm;
-import com.coachtam.tqt.to.InterviewQuestionForm;
+import com.coachtam.tqt.qo.BatchInterviewQuestionQO;
+import com.coachtam.tqt.qo.InterviewQuestionQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class InterviewQuestionCtrl {
 
 
     @PostMapping("/search")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody InterviewQuestionForm searchForm)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody InterviewQuestionQO searchForm)
     {
         Page result = interviewQuestionService.page(pageNo,pageSize,searchForm);
         return ResultVM.success(result);
@@ -79,7 +79,7 @@ public class InterviewQuestionCtrl {
 
 
     @PostMapping("/batchImport")
-    public ResultVM<Integer> batchImport(@RequestBody BatchInterviewQuestionForm form)
+    public ResultVM<Integer> batchImport(@RequestBody BatchInterviewQuestionQO form)
     {
         try {
             interviewQuestionService.batchImport(form);
@@ -92,7 +92,7 @@ public class InterviewQuestionCtrl {
     }
 
     @PostMapping("/wordToTable")
-    public ResultVM<List<InterviewQuestion>> wordToTable(@RequestBody BatchInterviewQuestionForm form)
+    public ResultVM<List<InterviewQuestion>> wordToTable(@RequestBody BatchInterviewQuestionQO form)
     {
         List<InterviewQuestion> result = interviewQuestionService.parseWord(form.getText());
         return ResultVM.success(result);

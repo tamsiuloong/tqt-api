@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.admin;
 import com.coachtam.tqt.config.properties.UploadProperteis;
 import com.coachtam.tqt.entity.Interview;
 import com.coachtam.tqt.service.InterviewService;
-import com.coachtam.tqt.to.InterviewForm;
+import com.coachtam.tqt.qo.InterviewQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class InterviewCtrl {
 
     @ApiOperation(value = "分页查询")
     @PostMapping("/search/{all}")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody InterviewForm searchForm, @PathVariable("all")Boolean all)
+    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody InterviewQO searchForm, @PathVariable("all")Boolean all)
     {
         Page<Interview> result = interviewService.page(pageNo,pageSize,searchForm,all);
         result.forEach(interview ->{

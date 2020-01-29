@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service;
 
 import com.coachtam.tqt.entity.User;
-import com.coachtam.tqt.to.UserForm;
+import com.coachtam.tqt.qo.UserQO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    public Page<User> page(Integer pageNo, Integer pageSize, UserForm userForm);
+    public Page<User> page(Integer pageNo, Integer pageSize, UserQO userQo);
 
     List<User> findAll();
 
