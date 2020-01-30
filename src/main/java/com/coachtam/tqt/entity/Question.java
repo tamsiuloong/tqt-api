@@ -82,12 +82,4 @@ public class Question {
 	@Transient
 	private String shortTitle;
 
-
-	public String getShortTitle() {
-		return HtmlUtil.clear(this.getTitle());
-	}
-
-	public void setShortTitle(String shortTitle) {
-		this.shortTitle = shortTitle;
-	}
 }

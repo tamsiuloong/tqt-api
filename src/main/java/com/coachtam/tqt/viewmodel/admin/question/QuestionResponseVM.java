@@ -1,32 +1,35 @@
 package com.coachtam.tqt.viewmodel.admin.question;
 
-import lombok.Data;
+import lombok.*;
+
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class QuestionResponseVM {
 
     private Integer id;
 
     private Integer questionType;
 
-    private Integer textContentId;
-
     private String createTime;
 
-    private Integer subjectId;
+    private String courseName;
 
-    private Integer createUser;
+    private String createUser;
 
-    private String score;
-
-    private Integer status;
-
-    private String correct;
-
-    private Integer analyzeTextContentId;
+    private Integer score;
 
     private Integer difficult;
 
     private String shortTitle;
+
+
+//        private Integer status;
+//
+//    private String correct;
+//
+//    private Integer analyzeTextContentId;
+//        private Integer textContentId;
 
 }
