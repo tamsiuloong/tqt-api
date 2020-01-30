@@ -6,6 +6,8 @@ import com.coachtam.tqt.service.ExamPaperService;
 import com.coachtam.tqt.qo.ExamPaperQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
 import com.coachtam.tqt.viewmodel.admin.exam.ExamPaperEditRequestVM;
+import com.coachtam.tqt.viewmodel.admin.question.QuestionResponseVM;
+import com.coachtam.tqt.web.converter.ExamPaperConverter;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:	试卷
@@ -30,14 +34,15 @@ public class ExamPaperCtrl {
     @Autowired
     private ExamPaperService examPaperService;
 
+    @Autowired
+    private ExamPaperConverter examPaperConverter;
+
     @PostMapping("page")
-    public ResultVM<Page> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperQO searchForm)
+    public ResultVM<Map<String, Object>> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperQO searchForm)
     {
         Specification<ExamPaper> specification = (root, query, builder)->{
             List<Predicate> predicates = Lists.newArrayList();
 
-//            query.multiselect(builder.count(root.get("absorption")))
-//                 .multiselect(root.get("absorption"));
             if(searchForm.getClassId()!=null && !searchForm.getClassId().isEmpty() &&!"all".equals(searchForm.getClassId()))
             {
                 Join<ExamPaper, Classes> joins = root.join("classes");
@@ -60,8 +65,14 @@ public class ExamPaperCtrl {
 //            predicates.add(equal);
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page result = examPaperService.page(pageNo,pageSize,specification);
-        return ResultVM.success(result);
+        Page page = examPaperService.page(pageNo,pageSize,specification);
+
+        List<QuestionResponseVM> vmList = examPaperConverter.domain2dto(page.getContent());
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalPages", page.getTotalPages());
+        map.put("totalElements", page.getTotalElements());
+        map.put("content", vmList);
+        return ResultVM.success(map);
     }
 
 

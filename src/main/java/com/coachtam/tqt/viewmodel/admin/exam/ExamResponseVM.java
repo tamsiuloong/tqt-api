@@ -14,11 +14,16 @@ public class ExamResponseVM {
 
     private String createTime;
 
-    private Integer createUser;
+    private String createUser;
 
-    private Integer subjectId;
+    private String courseName;
+
+    private String classesName;
 
     private Integer paperType;
 
     private Integer frameTextContentId;
+
+    private Boolean deleted;
+
 }

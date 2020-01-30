@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +36,7 @@ public class QuestionCtrl {
     private QuestionConverter questionConverter;
 
     @PostMapping("page")
-    public ResultVM<Map<String, Object>> list(Integer pageNo, Integer pageSize, @RequestBody QuestionQO searchForm)
+    public ResultVM<Map<String, Object>> list(Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize, @RequestBody QuestionQO searchForm)
     {
 
         Specification<Question> specification = (root, query, builder)->{
@@ -73,6 +72,8 @@ public class QuestionCtrl {
         map.put("totalPages", page.getTotalPages());
         map.put("totalElements", page.getTotalElements());
         map.put("content", vmList);
+        map.put("number", page.getNumber());
+        map.put("size", page.getSize());
         return ResultVM.success(map);
     }
 
