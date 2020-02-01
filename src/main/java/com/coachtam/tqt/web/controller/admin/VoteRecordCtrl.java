@@ -2,7 +2,7 @@ package com.coachtam.tqt.web.controller.admin;
 
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.utils.jwt.UserInfo;
@@ -52,7 +52,7 @@ public class VoteRecordCtrl {
     public ResultVM<List<VoteRecord>> getAll(@PathVariable("votetopicId")Integer votetopicId)
     {
         List<VoteRecord> result = voteRecordService.findAll(votetopicId);
-        UserInfo currUser = LoginInterceptor.getCurrUser();
+        UserInfo currUser = AuthInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(currUser.getUsername());
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {
             result = result.stream().map(vr -> {

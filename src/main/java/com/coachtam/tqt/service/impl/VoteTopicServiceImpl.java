@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.*;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.respository.VoteSubtopicDao;
 import com.coachtam.tqt.respository.VoteTopicDao;
 import com.coachtam.tqt.service.UserService;
@@ -47,7 +47,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
     @Override
     public Page<VoteTopic> page(Integer pageNo, Integer pageSize, boolean isAll)
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         String username = user.getUsername();
         User dbUser = userService.findByUsername(username);
 
@@ -84,7 +84,7 @@ public class VoteTopicServiceImpl implements VoteTopicService {
 
     @Override
     public List<VoteTopic> findAll() {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
 
         if(dbuser.getRoleSet().stream().anyMatch(role -> "老师".equals(role.getName()))&&!dbuser.getRoleSet().stream().anyMatch(role -> "管理员".equals(role.getName()))) {

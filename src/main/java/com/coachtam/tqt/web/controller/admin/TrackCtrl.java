@@ -1,7 +1,7 @@
 package com.coachtam.tqt.web.controller.admin;
 
 import com.coachtam.tqt.entity.*;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.TrackService;
 import com.coachtam.tqt.qo.TrackQO;
 import com.coachtam.tqt.viewmodel.admin.ResultVM;
@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @RequestMapping("/api/track")
 @RestController
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class TrackCtrl {
 
     @Autowired
@@ -90,7 +92,7 @@ public class TrackCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody Track track)
     {
-        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = AuthInterceptor.getCurrUser();
         track.setCreateBy(user.getUsername());
         track.setCreateTime(new Date());
         trackService.save(track);

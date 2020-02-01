@@ -1,7 +1,7 @@
 package com.coachtam.tqt.service.impl;
 
 import com.coachtam.tqt.entity.Leave;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.respository.LeaveDao;
 import com.coachtam.tqt.service.LeaveService;
 import com.coachtam.tqt.service.UserService;
@@ -59,7 +59,7 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Override
     public void save(Leave bean) {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
 //        User dbUser = userService.findByUsername(user.getUsername());
         //1.开启申请流程
         //用来封装流程所需要的变量

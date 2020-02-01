@@ -1,7 +1,7 @@
 package com.coachtam.tqt.web.controller.admin;
 
 import com.coachtam.tqt.entity.Leave;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.LeaveService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.jwt.UserInfo;
@@ -91,7 +91,7 @@ public class LeaveCtrl {
     @GetMapping
     public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         Page result = leaveService.page(pageNo,pageSize,user.getUsername());
         return ResultVM.success(result);
     }
@@ -144,7 +144,7 @@ public class LeaveCtrl {
      */
     @GetMapping("/myTaskList")
     public List<TaskVM>  myTaskList(){
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         //没有做认证提示，先去登陆
         List<Task> list = taskService.createTaskQuery().taskAssignee(user.getUsername()).orderByTaskCreateTime().desc().list();
 
@@ -189,7 +189,7 @@ public class LeaveCtrl {
     @PutMapping("/complete/{taskId}")
     public String complete(@PathVariable("taskId") String taskId, @RequestBody Leave leave){
 
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
 
         //完成该任务，并指定由他的上级来处理
         Map<String,Object> valMap = new HashMap<>(1);

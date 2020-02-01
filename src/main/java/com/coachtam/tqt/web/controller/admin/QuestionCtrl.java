@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.criteria.Predicate;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 @RequestMapping("/api/question")
 @RestController
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class QuestionCtrl {
 
     @Autowired

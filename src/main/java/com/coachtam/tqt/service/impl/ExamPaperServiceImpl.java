@@ -7,7 +7,7 @@ import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.ExamPaperTypeEnum;
 import com.coachtam.tqt.entity.exam.ExamPaperQuestionItemObject;
 import com.coachtam.tqt.entity.exam.ExamPaperTitleItemObject;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.respository.TextContentDao;
 import com.coachtam.tqt.respository.ExamPaperDao;
 import com.coachtam.tqt.respository.QuestionDao;
@@ -84,7 +84,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public void save(ExamPaperEditRequestVM model) {
         ExamPaper examPaper = new ExamPaper();
 
-        UserInfo currUser = LoginInterceptor.getCurrUser();
+        UserInfo currUser = AuthInterceptor.getCurrUser();
         User user = userService.findByUsername(currUser.getUsername());
 
 
@@ -220,7 +220,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     @Override
     public List<ExamPaper> findPaperByType(int type) {
 
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         if(user.getClasses()!=null)
         {
             return examPaperDao.findListByTypeAndClass(type,user.getClasses().getId(),PageRequest.of(0,5));

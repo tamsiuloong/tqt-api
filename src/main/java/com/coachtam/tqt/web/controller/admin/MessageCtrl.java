@@ -1,6 +1,6 @@
 package com.coachtam.tqt.web.controller.admin;
 
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.utils.jwt.UserInfo;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
@@ -27,7 +27,7 @@ public class MessageCtrl {
     public Integer count()
     {
         Integer result = 0;
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         //没有做认证提示，先去登陆
         List<Task> list = taskService.createTaskQuery().taskAssignee(user.getUsername()).orderByTaskCreateTime().desc().list();
 

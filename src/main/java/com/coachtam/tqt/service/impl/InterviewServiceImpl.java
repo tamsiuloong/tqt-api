@@ -3,7 +3,7 @@ package com.coachtam.tqt.service.impl;
 import com.coachtam.tqt.config.properties.GlobalProperteis;
 import com.coachtam.tqt.config.properties.UploadProperteis;
 import com.coachtam.tqt.entity.*;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.respository.InterviewDao;
 import com.coachtam.tqt.service.InterviewService;
 import com.coachtam.tqt.service.UserService;
@@ -50,7 +50,7 @@ public class InterviewServiceImpl implements InterviewService {
     public Page<Interview> page(Integer pageNo, Integer pageSize, InterviewQO searchForm, boolean all)
     {
 
-        com.coachtam.tqt.utils.jwt.UserInfo user = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo user = AuthInterceptor.getCurrUser();
         String username = user.getUsername();
 
         User dbUser = userService.findByUsername(username);
@@ -105,7 +105,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public void save(Interview bean) {
-        com.coachtam.tqt.utils.jwt.UserInfo currUser = LoginInterceptor.getCurrUser();
+        com.coachtam.tqt.utils.jwt.UserInfo currUser = AuthInterceptor.getCurrUser();
         String username = currUser.getUsername();
 
         User dbUser = userService.findByUsername(username);

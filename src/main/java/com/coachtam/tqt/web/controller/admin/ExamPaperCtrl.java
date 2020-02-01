@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import java.util.Map;
  */
 @RequestMapping("/api/examPaper")
 @RestController
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class ExamPaperCtrl {
 
     @Autowired

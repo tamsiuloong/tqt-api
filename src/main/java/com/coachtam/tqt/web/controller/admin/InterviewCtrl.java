@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @EnableConfigurationProperties(UploadProperteis.class)
 @Api(value = "面试服务")
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class InterviewCtrl {
 
     @Autowired

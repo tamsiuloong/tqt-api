@@ -7,6 +7,7 @@ import com.coachtam.tqt.viewmodel.admin.EchartVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/report")
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class ReportCtrl {
 
     @Autowired

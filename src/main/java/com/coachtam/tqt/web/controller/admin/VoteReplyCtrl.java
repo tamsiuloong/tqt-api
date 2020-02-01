@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.controller.admin;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.VoteRecord;
 import com.coachtam.tqt.entity.VoteReply;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.service.VoteRecordService;
 import com.coachtam.tqt.service.VoteReplyService;
@@ -77,7 +77,7 @@ public class VoteReplyCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody List<VoteReply> voteReplyList, @RequestParam("voteTopicId")Integer voteTopicId, HttpServletRequest request)
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
 
         //判断是否已经提交过

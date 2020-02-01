@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.List;
 
 public class JwtUtils {
     /**
@@ -24,6 +25,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())
                 .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())
+                .claim(JwtConstans.JWT_KEY_ROLES, userInfo.getRoles())
                 .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact();
@@ -85,7 +87,8 @@ public class JwtUtils {
         Claims body = claimsJws.getBody();
         return new UserInfo(
                 ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_ID)),
-                ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME))
+                ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME)),
+                (List<String>) body.get(JwtConstans.JWT_KEY_ROLES)
         );
     }
 

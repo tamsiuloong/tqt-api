@@ -1,7 +1,7 @@
 package com.coachtam.tqt.web.controller.student;
 
 import com.coachtam.tqt.entity.*;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.*;
 import com.coachtam.tqt.utils.DateTimeUtil;
 import com.coachtam.tqt.utils.HtmlUtil;
@@ -37,7 +37,7 @@ public class QuestionAnswerController{
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<Map<String, Object>> pageList(@RequestBody QuestionPageStudentRequestVM model) {
 
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         model.setCreateUser(user.getId());
 
         Page<ExamPaperQuestionCustomerAnswer> page = examPaperQuestionCustomerAnswerService.findByUserId(model);

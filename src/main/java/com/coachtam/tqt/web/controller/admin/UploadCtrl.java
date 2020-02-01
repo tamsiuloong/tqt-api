@@ -1,7 +1,7 @@
 package com.coachtam.tqt.web.controller.admin;
 
 import com.coachtam.tqt.config.properties.UploadProperteis;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.jwt.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class UploadCtrl {
     @PostMapping("/api/uploadFiles/{type}")
     public ResponseEntity<String> uploadFiles(@RequestParam("file")MultipartFile[] files,@PathVariable("type") Integer type,@RequestParam("companyName")String companyName){
 
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         String username = user.getUsername();
 
 //        User dbUser = userService.findByUsername(username);

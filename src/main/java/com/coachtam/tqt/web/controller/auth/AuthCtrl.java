@@ -19,7 +19,9 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,7 +80,11 @@ public class AuthCtrl {
             map.put("error_description","密码错误");
             return ResponseEntity.badRequest().body(map);
         }
-        UserInfo userInfo = new UserInfo(user.getId(), user.getUserName());
+        //获取该用户拥有权限
+        List<String> roles = new ArrayList<>();
+        user.getRoleSet().forEach(role -> roles.add(role.getName()));
+
+        UserInfo userInfo = new UserInfo(user.getId(), user.getUserName(),roles);
         try {
             String token = JwtUtils.generateToken(userInfo, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
             map.put("access_token", token);

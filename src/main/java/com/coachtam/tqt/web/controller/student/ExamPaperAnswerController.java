@@ -4,7 +4,7 @@ import com.coachtam.tqt.entity.*;
 import com.coachtam.tqt.entity.enums.ExamPaperAnswerStatusEnum;
 import com.coachtam.tqt.event.CalculateExamPaperAnswerCompleteEvent;
 import com.coachtam.tqt.event.UserEvent;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.CourseService;
 import com.coachtam.tqt.service.ExamPaperAnswerService;
 import com.coachtam.tqt.service.ExamPaperService;
@@ -51,7 +51,7 @@ public class ExamPaperAnswerController  {
 
     @RequestMapping(value = "/pageList", method = RequestMethod.POST)
     public RestResponse<Map<String, Object>> pageList(@RequestBody @Valid ExamPaperAnswerPageVM model) {
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         model.setCreateUser(user.getId());
 
         Page<ExamPaperAnswer> page = examPaperAnswerService.findByUserIdAndCourseId(model);
@@ -79,7 +79,7 @@ public class ExamPaperAnswerController  {
 
     @RequestMapping(value = "/answerSubmit", method = RequestMethod.POST)
     public RestResponse<String> answerSubmit(@RequestBody @Valid ExamPaperSubmitVM examPaperSubmitVM) {
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername()) ;
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername()) ;
 
         ExamPaperAnswerInfo examPaperAnswerInfo = examPaperAnswerService.calculateExamPaperAnswer(examPaperSubmitVM, user);
         if (null == examPaperAnswerInfo) {
@@ -110,7 +110,7 @@ public class ExamPaperAnswerController  {
             return RestResponse.fail(3, "试卷已完成");
         }
         String score = examPaperAnswerService.judge(examPaperSubmitVM);
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getUserInfo().getName(), new Date());
         String content = user.getUserName() + " 批改试卷：" + examPaperAnswer.getPaperName() + " 得分：" + score;
         userEventLog.setContent(content);

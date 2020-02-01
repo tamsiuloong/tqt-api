@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  */
 @RequestMapping("/api/examPaperAnswer")
 @RestController
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class ExamPaperAnswerCtrl {
 
     @Autowired

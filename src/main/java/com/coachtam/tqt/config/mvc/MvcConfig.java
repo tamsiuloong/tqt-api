@@ -1,6 +1,6 @@
 package com.coachtam.tqt.config.mvc;
 
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     @Autowired
-    private LoginInterceptor loginInterceptor ;
+    private AuthInterceptor loginInterceptor ;
 
 
 

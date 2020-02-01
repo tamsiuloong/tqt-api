@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ import java.util.Set;
  */
 @RequestMapping("/api/module")
 @RestController
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class ModuleCtrl {
 
     @Autowired

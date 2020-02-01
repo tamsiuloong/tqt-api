@@ -3,7 +3,7 @@ package com.coachtam.tqt.web.controller.student;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.UserEventLog;
 import com.coachtam.tqt.event.UserEvent;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.UserEventLogService;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.utils.DateTimeUtil;
@@ -42,7 +42,7 @@ public class UserController{
 
     @RequestMapping(value = "/current", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> current() {
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         UserResponseVM userVm = UserResponseVM.from(user);
         return RestResponse.ok(userVm);
     }
@@ -76,7 +76,7 @@ public class UserController{
         if (StringUtils.isBlank(model.getBirthDay())) {
             model.setBirthDay(null);
         }
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         modelMapper.map(model, user);
         user.getUserInfo().setUpdateTime(new Date());
         userService.update(user);
@@ -88,7 +88,7 @@ public class UserController{
 
     @RequestMapping(value = "/log", method = RequestMethod.POST)
     public RestResponse<List<UserEventLogVM>> log() {
-        User user = userService.findByUsername(LoginInterceptor.getCurrUser().getUsername());
+        User user = userService.findByUsername(AuthInterceptor.getCurrUser().getUsername());
         List<UserEventLog> userEventLogs = userEventLogService.getUserEventLogByUserId(user.getId());
         List<UserEventLogVM> userEventLogVMS = userEventLogs.stream().map(d -> {
             UserEventLogVM vm = modelMapper.map(d, UserEventLogVM.class);

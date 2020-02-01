@@ -4,7 +4,7 @@ import com.coachtam.tqt.entity.Classes;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.UserEventLog;
 import com.coachtam.tqt.event.UserEvent;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.service.UserService;
 import com.coachtam.tqt.qo.UserQO;
 import com.coachtam.tqt.utils.jwt.UserInfo;
@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.*;
 
 /**
@@ -28,6 +29,7 @@ import java.util.*;
 @RequestMapping("/api/user")
 @RestController
 @Api(value = "用户服务")
+@RolesAllowed({"老师","管理员","测试","班主任"})
 public class UserCtrl {
 
     @Autowired
@@ -73,7 +75,7 @@ public class UserCtrl {
     @ApiOperation(value = "我的资料(用于编辑用户)")
     public ResultVM<User> myinfo()
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
         return ResultVM.success(dbuser);
     }
@@ -85,7 +87,7 @@ public class UserCtrl {
     @ApiOperation(value = "我的资料(用于返回权限信息)")
     public ResultVM<Map<String,Object>> info(String access_token)
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User dbuser = userService.findByUsername(user.getUsername());
         Set<String> moduleSet = new HashSet<>();
 
@@ -139,7 +141,7 @@ public class UserCtrl {
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
     {
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User dbuser  = userService.findByUsername(user.getUsername());
         UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUsername(), dbuser.getUserInfo().getName(), new Date());
         String content = dbuser.getUserInfo().getName() + "删除用户"+ids;
@@ -154,7 +156,7 @@ public class UserCtrl {
     @PutMapping
     public ResultVM<String> update(@RequestBody User user)
     {
-        UserInfo userinfo = LoginInterceptor.getCurrUser();
+        UserInfo userinfo = AuthInterceptor.getCurrUser();
         User dbuser  = userService.findByUsername(userinfo.getUsername());
         UserEventLog userEventLog = new UserEventLog(dbuser.getId(), dbuser.getUserName(), dbuser.getUserInfo().getName(), new Date());
         String content = dbuser.getUserInfo().getName() + "修改用户:"+user;
@@ -169,7 +171,7 @@ public class UserCtrl {
     @PostMapping
     public ResultVM<String> add(@RequestBody User user)
     {
-        UserInfo userinfo = LoginInterceptor.getCurrUser();
+        UserInfo userinfo = AuthInterceptor.getCurrUser();
         User dbuser  = userService.findByUsername(userinfo.getUsername());
         UserEventLog userEventLog = new UserEventLog(userinfo.getId(), userinfo.getUsername(), dbuser.getUserInfo().getName(), new Date());
         String content = dbuser.getUserInfo().getName() + "新增用户:"+user;
@@ -221,7 +223,7 @@ public class UserCtrl {
     {
 
 
-        UserInfo userinfo = LoginInterceptor.getCurrUser();
+        UserInfo userinfo = AuthInterceptor.getCurrUser();
         User dbuser  = userService.findByUsername(userinfo.getUsername());
         UserEventLog userEventLog = new UserEventLog(userinfo.getId(), userinfo.getUsername(), dbuser.getUserInfo().getName(), new Date());
 

@@ -4,7 +4,7 @@ import com.coachtam.tqt.entity.Question;
 import com.coachtam.tqt.entity.QuestionItems;
 import com.coachtam.tqt.entity.User;
 import com.coachtam.tqt.entity.enums.QuestionTypeEnum;
-import com.coachtam.tqt.interceptor.LoginInterceptor;
+import com.coachtam.tqt.interceptor.AuthInterceptor;
 import com.coachtam.tqt.respository.QuestionDao;
 import com.coachtam.tqt.respository.QuestionItemsDao;
 import com.coachtam.tqt.service.QuestionService;
@@ -81,7 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
             bean.setQuestionItems(null);
         }
         bean.setCreateTime(new Date());
-        UserInfo user = LoginInterceptor.getCurrUser();
+        UserInfo user = AuthInterceptor.getCurrUser();
         User currUser = userService.findByUsername(user.getUsername());
 
         bean.setUser(currUser);
