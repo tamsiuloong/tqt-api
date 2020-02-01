@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RequestMapping("/api/knowledgePoint")
 @RestController
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class KnowledgePointCtrl {
 
     @Autowired
@@ -47,7 +47,7 @@ public class KnowledgePointCtrl {
         List<KnowledgePoint> result = knowledgePointService.findAll(courseId);
         return ResultVM.success(result);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
@@ -55,14 +55,14 @@ public class KnowledgePointCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<Integer> update(@RequestBody KnowledgePoint knowledgePoint)
     {
         knowledgePointService.update(knowledgePoint);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<Integer> add(@RequestBody KnowledgePoint knowledgePoint)
     {

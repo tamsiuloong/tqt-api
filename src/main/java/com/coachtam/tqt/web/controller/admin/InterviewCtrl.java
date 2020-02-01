@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @EnableConfigurationProperties(UploadProperteis.class)
 @Api(value = "面试服务")
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class InterviewCtrl {
 
     @Autowired
@@ -45,14 +45,14 @@ public class InterviewCtrl {
                 //拼接完整访问地址
                 if(StringUtils.isNotBlank(interview.getSoundRecording()))
                 {
-                    interview.setSoundRecording(uploadProperteis.getAccessPath()+"/sound/"+interview.getSoundRecording());
+                    interview.setSoundRecording(uploadProperteis.getAccessPath()+uploadProperteis.getSoundPrefix()+interview.getSoundRecording());
                 }
 
 
                 if(StringUtils.isNotBlank(interview.getAppendixs()))
                 {
                     List<String> imgs = Arrays.stream(interview.getAppendixs().split(",")).map(img ->
-                             StringUtils.isNotBlank(img)?uploadProperteis.getAccessPath() + "/image/" + img:img
+                             StringUtils.isNotBlank(img)?uploadProperteis.getAccessPath() + uploadProperteis.getAppendixPrefix() + img:img
                     ).collect(Collectors.toList());
                     interview.setAppendixs(StringUtils.join(imgs, ","));
                 }

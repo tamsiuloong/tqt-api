@@ -17,4 +17,11 @@ public class UploadProperteis {
 
     //访问路径
     private String accessPath;
+
+    //附件前缀
+    private String appendixPrefix;
+    //录音前缀
+    private String soundPrefix;
+
+
 }

@@ -29,7 +29,7 @@ import java.util.*;
 @RequestMapping("/api/user")
 @RestController
 @Api(value = "用户服务")
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class UserCtrl {
 
     @Autowired
@@ -136,7 +136,7 @@ public class UserCtrl {
         }
         return result;
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @ApiOperation(value = "根据id删除用户")
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
@@ -151,7 +151,7 @@ public class UserCtrl {
         userService.deleteByIds(ids);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @ApiOperation(value = "更新用户")
     @PutMapping
     public ResultVM<String> update(@RequestBody User user)
@@ -166,7 +166,7 @@ public class UserCtrl {
         userService.update(user);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @ApiOperation(value = "新增用户")
     @PostMapping
     public ResultVM<String> add(@RequestBody User user)
@@ -181,7 +181,7 @@ public class UserCtrl {
         userService.save(user);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @ApiOperation(value = "更新用户角色")
     @PutMapping("/role")
     public ResultVM<String> role(@RequestBody RoleVM role)

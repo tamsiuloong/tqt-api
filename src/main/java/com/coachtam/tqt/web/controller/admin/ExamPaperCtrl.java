@@ -30,7 +30,6 @@ import java.util.Map;
  */
 @RequestMapping("/api/examPaper")
 @RestController
-@RolesAllowed({"老师","管理员","测试","班主任"})
 public class ExamPaperCtrl {
 
     @Autowired
@@ -38,7 +37,7 @@ public class ExamPaperCtrl {
 
     @Autowired
     private ExamPaperConverter examPaperConverter;
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping("page")
     public ResultVM<Map<String, Object>> list(Integer pageNo, Integer pageSize, @RequestBody ExamPaperQO searchForm)
     {
@@ -74,6 +73,8 @@ public class ExamPaperCtrl {
         map.put("totalPages", page.getTotalPages());
         map.put("totalElements", page.getTotalElements());
         map.put("content", vmList);
+        map.put("number", page.getNumber());
+        map.put("size", page.getSize());
         return ResultVM.success(map);
     }
 
@@ -86,14 +87,14 @@ public class ExamPaperCtrl {
         return ResultVM.success(examPaper);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @GetMapping("/all")
     public ResultVM<List<ExamPaper>> getAll()
     {
         List<ExamPaper> result = examPaperService.findAll();
         return ResultVM.success(result);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
@@ -101,27 +102,27 @@ public class ExamPaperCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<Integer> update(@RequestBody @Valid ExamPaperEditRequestVM model)
     {
         examPaperService.update(model);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<Integer> add(@RequestBody @Valid ExamPaperEditRequestVM model)
     {
         examPaperService.save(model);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public ResultVM<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
         ExamPaperEditRequestVM vm = examPaperService.examPaperToVM(id);
         return ResultVM.success(vm);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping("status")
     public ResultVM<ExamPaperEditRequestVM> status(@RequestParam("deleted")Boolean deleted,@RequestParam("paperId")Integer paperId){
         examPaperService.updateStatus(paperId,deleted);

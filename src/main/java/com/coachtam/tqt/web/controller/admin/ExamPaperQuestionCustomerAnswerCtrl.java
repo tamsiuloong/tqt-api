@@ -47,7 +47,7 @@ public class ExamPaperQuestionCustomerAnswerCtrl {
         List<ExamPaperQuestionCustomerAnswer> result = examPaperQuestionCustomerAnswerService.findAll();
         return ResultVM.success(result);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
@@ -55,14 +55,14 @@ public class ExamPaperQuestionCustomerAnswerCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<Integer> update(@RequestBody ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer)
     {
         examPaperQuestionCustomerAnswerService.update(examPaperQuestionCustomerAnswer);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<Integer> add(@RequestBody ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer)
     {

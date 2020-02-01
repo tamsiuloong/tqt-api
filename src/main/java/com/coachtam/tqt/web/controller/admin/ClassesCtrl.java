@@ -18,13 +18,14 @@ import java.util.List;
  */
 @RequestMapping("/api/classes")
 @RestController
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class ClassesCtrl {
 
     @Autowired
     private ClassesService classesService;
 
     @GetMapping
+
     public ResultVM<Page> list(Integer pageNo, Integer pageSize)
     {
         Page result = classesService.page(pageNo,pageSize);
@@ -55,6 +56,7 @@ public class ClassesCtrl {
         return ResultVM.success(result);
     }
 
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
     {
@@ -62,14 +64,14 @@ public class ClassesCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<String> update(@RequestBody Classes classes)
     {
         classesService.update(classes);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<String> add(@RequestBody Classes classes)
     {

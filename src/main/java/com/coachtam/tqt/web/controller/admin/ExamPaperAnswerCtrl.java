@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @RequestMapping("/api/examPaperAnswer")
 @RestController
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class ExamPaperAnswerCtrl {
 
     @Autowired
@@ -97,7 +97,7 @@ public class ExamPaperAnswerCtrl {
         List<ExamPaperAnswer> result = examPaperAnswerService.findAll();
         return ResultVM.success(result);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<Integer> delete(@RequestBody Integer[] ids)
     {
@@ -105,14 +105,14 @@ public class ExamPaperAnswerCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<Integer> update(@RequestBody ExamPaperAnswer examPaperAnswer)
     {
         examPaperAnswerService.update(examPaperAnswer);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<Integer> add(@RequestBody ExamPaperAnswer examPaperAnswer)
     {

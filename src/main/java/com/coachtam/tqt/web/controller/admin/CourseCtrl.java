@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RequestMapping("/api/course")
 @RestController
-@RolesAllowed({"老师","管理员","测试","班主任"})
+
 public class CourseCtrl {
 
     @Autowired
@@ -47,7 +47,7 @@ public class CourseCtrl {
         List<Course> result = courseService.findAll();
         return ResultVM.success(result);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @DeleteMapping
     public ResultVM<String> delete(@RequestBody String[] ids)
     {
@@ -55,14 +55,14 @@ public class CourseCtrl {
         return ResultVM.success(null);
     }
 
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PutMapping
     public ResultVM<String> update(@RequestBody Course course)
     {
         courseService.update(course);
         return ResultVM.success(null);
     }
-
+    @RolesAllowed({"老师","管理员","测试","班主任"})
     @PostMapping
     public ResultVM<String> add(@RequestBody Course course)
     {
