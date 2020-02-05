@@ -35,7 +35,7 @@ public class QuestionResponseVM {
 
 //        private Integer status;
 //
-    private String analyze;
+//    private String analyze;
 
     private Course course;
 //

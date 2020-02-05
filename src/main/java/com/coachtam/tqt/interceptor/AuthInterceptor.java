@@ -3,6 +3,7 @@ package com.coachtam.tqt.interceptor;
 import com.coachtam.tqt.config.properties.JwtProperties;
 import com.coachtam.tqt.utils.jwt.JwtUtils;
 import com.coachtam.tqt.utils.jwt.UserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.Arrays;
  * @Date: 2020-01-07 14:37
  * @Description:
  */
+@Slf4j
 @Component
 @EnableConfigurationProperties(JwtProperties.class)
 public class AuthInterceptor implements HandlerInterceptor {
@@ -48,7 +50,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = request.getParameter(jwtProperties.getParamName());
         if (StringUtils.isBlank(token)){
             //2.未登录，返回401
-            render(response,401,"未授权");
+            render(response,401,"未授权:token为空");
             return false;
         }
         //3.有token，查询用户信息
@@ -87,7 +89,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }catch (Exception e){
             //7.抛出异常，证明未登录，返回401
-            render(response,401,"未授权");
+            render(response,401,"未授权:异常");
             return false;
         }
     }

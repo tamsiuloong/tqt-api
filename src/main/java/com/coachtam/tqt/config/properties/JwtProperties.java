@@ -59,6 +59,8 @@ public class JwtProperties {
 
     private List<String> clients;
 
+    private String publicPath;
+
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 
 
@@ -66,10 +68,17 @@ public class JwtProperties {
 
     @PostConstruct
     public void init()  {
+        File dic = new File(publicPath);
+        if(!dic.exists())
+        {
+            dic.mkdirs();
+        }
+
         //判断是否存在，不存在生成公钥和私钥
         File file = new File(pubKeyPath);
         if(!file.exists())
         {
+
             try {
                 RsaUtils.generateKey(pubKeyPath, priKeyPath, secret);
             } catch (Exception e) {
