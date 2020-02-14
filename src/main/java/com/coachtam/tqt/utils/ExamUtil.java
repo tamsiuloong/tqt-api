@@ -3,6 +3,7 @@ package com.coachtam.tqt.utils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,10 @@ public class ExamUtil {
 
 
     public static List<String> contentToArray(String contentArray) {
+        if(contentArray==null)
+        {
+            return Collections.emptyList();
+        }
         return Arrays.asList(contentArray.split(ANSWER_SPLIT));
     }
 

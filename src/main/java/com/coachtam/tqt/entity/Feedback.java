@@ -53,6 +53,17 @@ public class Feedback {
     /*吸收程度*/
     @Column(name = "absorption")
     private String absorption;
+
+
+    /*任务进度*/
+    @Column(name = "progress")
+    private String progress;
+
+
+    /*学习感受*/
+    @Column(name = "feeling")
+    private String feeling;
+
     /*所属课程*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")

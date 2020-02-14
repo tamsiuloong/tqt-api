@@ -89,10 +89,10 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
         examPaperSubmitItemVM.setItemOrder(qa.getItemOrder());
         examPaperSubmitItemVM.setQuestionScore(ExamUtil.scoreToVM(qa.getQuestionScore()));
         examPaperSubmitItemVM.setScore(ExamUtil.scoreToVM(qa.getCustomerScore()));
-        if(qa.getAnswer()!=null)
-        {
+//        if(qa.getAnswer()!=null)
+//        {
             setSpecialToVM(examPaperSubmitItemVM, qa);
-        }
+//        }
 
         return examPaperSubmitItemVM;
     }
@@ -102,7 +102,6 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl implements ExamPaperQues
         switch (questionTypeEnum) {
             case MultipleChoice:
                 examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
-
                 examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
                 break;
             case GapFilling:
