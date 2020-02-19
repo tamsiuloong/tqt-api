@@ -75,10 +75,10 @@ https://github.com/tamsiuloong/tqt-api.git
 ```
 
 教学跟踪管理系统-admin管理ui
-https://github.com/tamsiuloong/tqt-admin.git
+https://github.com/tamsiuloong/tqt.git
 
 教学跟踪管理系统-学生在线考试ui
-https://github.com/tamsiuloong/tqt-exam.git
+https://github.com/tamsiuloong/tqt-student.git
 
 ```
 
