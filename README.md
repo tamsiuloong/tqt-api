@@ -25,7 +25,7 @@ https://github.com/tamsiuloong/tqt-api.git
   - 模块管理
   - 班级管理
 
-  ![image-20200219112644788](assets/image-20200219112644788.png)
+  ![image-20200219112644788](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219112644788.png)
 
 - 教学管理
 
@@ -38,25 +38,25 @@ https://github.com/tamsiuloong/tqt-api.git
   - 试卷管理
   - 题目管理
 
-  ![image-20200219112811950](assets/image-20200219112811950.png)
+  ![image-20200219112811950](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219112811950.png)
 
 - 工作流
 
   - 请假申请
   - 我的任务
 
-  ![image-20200219112843495](assets/image-20200219112843495.png)
+  ![image-20200219112843495](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219112843495.png)
 
 - 学习反馈
 
-  ![image-20200219112926658](assets/image-20200219112926658.png)
+  ![image-20200219112926658](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219112926658.png)
 
 - 面试管理
 
   - 我的面试记录
   - 查询面试记录
 
-  ![image-20200219112952892](assets/image-20200219112952892.png)
+  ![image-20200219112952892](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219112952892.png)
 
 - 统计分析
 
@@ -64,7 +64,7 @@ https://github.com/tamsiuloong/tqt-api.git
   - 整体学习曲线
   - 个人学习曲线
 
-  ![image-20200219113126211](assets/image-20200219113126211.png)
+  ![image-20200219113126211](https://gitee.com/tamsiuloong/tqt-api/tree/master/README.assets/image-20200219113126211.png)
 
 
 
