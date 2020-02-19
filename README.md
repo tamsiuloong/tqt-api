@@ -4,7 +4,7 @@
 
 ```
 教学跟踪管理系统-api服务器
-https://gitee.com/tamsiuloong/tqt-api.git
+https://github.com/tamsiuloong/tqt-api.git
 ```
 # 技术体系
 ```
@@ -75,10 +75,10 @@ https://gitee.com/tamsiuloong/tqt-api.git
 ```
 
 教学跟踪管理系统-admin管理ui
-https://gitee.com/tamsiuloong/tqt-admin.git
+https://github.com/tamsiuloong/tqt-admin.git
 
 教学跟踪管理系统-学生在线考试ui
-https://gitee.com/tamsiuloong/tqt-exam.git
+https://github.com/tamsiuloong/tqt-exam.git
 
 ```
 
